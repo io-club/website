@@ -1,0 +1,20 @@
+{
+  "name": "ioclub",
+  "version": "0.0.1",
+  "description": "site for ioclub",
+  "main": "index.js",
+  "authors": {
+    "name": "xhe",
+    "email": "xw897002528@gmail.com"
+  },
+  "repository": "https://github.com/xhebox/ioclub/ioclub",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  },
+  "dependencies": {}
+}
