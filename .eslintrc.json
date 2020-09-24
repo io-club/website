@@ -1,0 +1,33 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:vue/essential"
+	],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parserOptions": {
+		"ecmaVersion": 2018
+	},
+	"plugins": [
+		"vue"
+	],
+	"rules": {
+		"no-new": 0,
+		"no-console": 0,
+		"indent": [
+			"error",
+			"tab"
+		],
+		"camelcase": [
+			"off"
+		],
+		"no-tabs": 0
+	}
+}

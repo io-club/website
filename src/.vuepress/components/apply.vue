@@ -1,0 +1,10 @@
+<template>
+	<iframe
+		height="800"
+		allowtransparency="true"
+		scrolling="no"
+		style="display:block;min-width:100%;width:100px;border:none;overflow:auto;"
+		frameborder="0"
+		src="http://hnyp1b1i7935nilf.mikecrm.com/XsS9k1C"
+	></iframe>
+</template>
