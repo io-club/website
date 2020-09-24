@@ -1,32 +1,34 @@
 {
-  "name": "ioclub",
-  "version": "0.0.1",
-  "description": "site for ioclub",
-  "main": "index.js",
-  "authors": {
-    "name": "xhe",
-    "email": "xw897002528@gmail.com"
-  },
-  "repository": "https://github.com/xhebox/ioclub/ioclub",
-  "scripts": {
-    "dev": "vuepress dev src",
-    "build": "vuepress build src"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "@form-create/element-ui": "^1.0.19",
-    "@vuepress/plugin-back-to-top": "^1.5.4",
-    "@vuepress/plugin-pwa": "^1.5.4",
-    "buefy": "^0.9.3",
-    "eslint": "^7.9.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-vue": "^6.2.2",
-    "jsxm": "^1.0.1",
-    "p5": "^0.9.0",
-    "vuepress": "^1.5.3",
-    "vuepress-plugin-graysite": "^0.1.0"
-  },
-  "dependencies": {}
+	"name": "ioclub",
+	"version": "0.0.1",
+	"description": "site for ioclub",
+	"main": "index.js",
+	"authors": {
+		"name": "xhe",
+		"email": "xw897002528@gmail.com"
+	},
+	"repository": "https://github.com/xhebox/ioclub/ioclub",
+	"scripts": {
+		"dev": "vuepress dev src",
+		"vue": "vuepress build src --dest dist",
+		"git": "cd site && rm -rf * && mv ../dist/* . && git add . && git commit -s -m 'update'",
+		"site": "npm run vue && npm run git"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@form-create/element-ui": "^1.0.19",
+		"@vuepress/plugin-back-to-top": "^1.5.4",
+		"@vuepress/plugin-pwa": "^1.5.4",
+		"buefy": "^0.9.3",
+		"eslint": "^7.9.0",
+		"eslint-config-standard": "^14.1.1",
+		"eslint-plugin-import": "^2.22.0",
+		"eslint-plugin-standard": "^4.0.1",
+		"eslint-plugin-vue": "^6.2.2",
+		"jsxm": "^1.0.1",
+		"p5": "^0.9.0",
+		"vuepress": "^1.5.3",
+		"vuepress-plugin-graysite": "^0.1.0"
+	},
+	"dependencies": {}
 }
