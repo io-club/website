@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"target": "esnext",
+		"moduleResolution": "node",
+		"strict": true,
+		"declaration": true,
+		"noUnusedLocals": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"forceConsistentCasingInFileNames": true,
+		"paths": {
+			"/posts/*": [
+				"posts/*"
+			]
+		}
+	},
+	"exclude": [
+		"dist",
+		"node_modules"
+	]
+}
