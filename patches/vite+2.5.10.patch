@@ -1,0 +1,13 @@
+diff --git a/node_modules/vite/dist/node/chunks/dep-36bf480c.js b/node_modules/vite/dist/node/chunks/dep-36bf480c.js
+index 25ae4b4..83a6a25 100644
+--- a/node_modules/vite/dist/node/chunks/dep-36bf480c.js
++++ b/node_modules/vite/dist/node/chunks/dep-36bf480c.js
+@@ -6003,7 +6007,7 @@ function assetPlugin(config) {
+         },
+         generateBundle(_, bundle) {
+             // do not emit assets for SSR build
+-            if (config.command === 'build' && config.build.ssr) {
++            if (config.command === 'build' && config.build.ssr && config.mode !== 'development') {
+                 for (const file in bundle) {
+                     if (bundle[file].type === 'asset' &&
+                         !file.includes('ssr-manifest.json')) {

@@ -103,4 +103,11 @@ dist
 # TernJS port file
 .tern-port
 
-src/pages/posts/*
+src/wave-ui
+
+.vercel
+
+io
+.vercel_build_output
+*.rdb
+.output

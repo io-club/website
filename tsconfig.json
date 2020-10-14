@@ -2,16 +2,25 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"target": "esnext",
+		"module": "esnext",
 		"moduleResolution": "node",
 		"strict": true,
 		"declaration": true,
+		"jsx": "preserve",
 		"noUnusedLocals": true,
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
+		"allowJs": true,
+		"types": [
+			"@nuxtjs/auth-next"
+		],
 		"paths": {
-			"/posts/*": [
-				"posts/*"
+			"~*": [
+				"./src/*"
+			],
+			"@*": [
+				"./src/*"
 			]
 		}
 	},
