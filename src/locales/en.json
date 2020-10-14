@@ -1,0 +1,17 @@
+{
+	"en": "English",
+	"zh-CN": "简体中文",
+	"IO LAB": "IO LAB",
+	"languages": "languages",
+	"language: {0}": "language: {0}",
+	"home_sec1_hero": "Hi, there!",
+	"home_sec1_sub": "This is IO LAB, where geeks gather",
+	"home_sec2_hero": "What is this lab?",
+	"home_sec2_sub": "It is a club created by students in TJPU. We love to create just4fun & hacking projects in both hardware and software. Also, we have a room at CSB408 for regular meeting and activities.",
+	"home_sec3_hero": "Say HI to new class!",
+	"home_sec3_sub": "This is a whole new introduction class on programming, powered by a interactive website! IO tried to teach the grade one every year, but we can made it better: more materials, more communications and more practices.",
+	"home_sec4_hero": "Free hardware boards",
+	"home_sec4_sub": "We provide members some free hardware development kit, embbedded boards like STM32, rasberry PI, or even FPGA. Remove the barrier of learning hardware! But be lovely to the boards.",
+	"home_sec5_hero": "May I ask ... ?",
+	"home_sec5_sub": "There is a FAQ page. You can check 'About' on the top navigation bar, or just click the link here: "
+}

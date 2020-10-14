@@ -5,8 +5,7 @@ module.exports = {
 		require('postcss-import'),
 		require('tailwindcss'),
 		require('postcss-pseudo-class-enter'),
-		require('postcss-nested-ancestors'),
-		require('postcss-nested'),
+		require('postcss-nesting'),
 		require('autoprefixer'),
 	]
 }

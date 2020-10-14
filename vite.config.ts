@@ -1,38 +1,42 @@
-import voie from 'vite-plugin-voie'
-import components from 'vite-plugin-components'
-import icon from 'vite-plugin-purge-icons'
-import i18n from '@intlify/vite-plugin-vue-i18n'
-import {transform as markdown} from './lib/markdown'
-import {UserConfig} from 'vite'
 import path from 'path'
+import {UserConfig} from 'vite'
+import svg from 'vite-plugin-svg'
+import voie from 'vite-plugin-voie'
+
+import {transform as markdown} from './markdown/markdown'
 
 const alias = {
-	'/posts/': path.join(__dirname, 'posts'),
+	'/@/': path.join(__dirname, 'src'),
 }
 
-export const markdownOptions = {
-}
+const languages = ['clike', 'javascript', 'python']
 
 export default {
 	mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 	alias,
 	vueCustomBlockTransforms: {
-		i18n,
+	},
+	optimizeDeps: {
+		include: ['hast-to-hyperscript',
+			...languages.map(e => `codemirror/mode/${e}/${e}`),
+		],
 	},
 	transforms: [
-		markdown(markdownOptions),
+		markdown(),
 	],
 	plugins: [
 		voie({
 			pagesDir: 'src/pages',
-			extensions: ['vue', 'js', 'ts', 'md'],
+			extensions: ['vue', 'jsx', 'tsx', 'md'],
 		}),
-		components({
-			alias,
-			dirs: ['src/components'],
-			extensions: ['vue'],
-			deep: true,
+		svg({
+			svgoConfig: {
+				plugins: [{
+					removeDimensions: true,
+				}, {
+					removeViewBox: false,
+				}],
+			},
 		}),
-		icon(),
 	],
 } as UserConfig
