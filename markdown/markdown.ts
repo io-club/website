@@ -108,8 +108,6 @@ export default defineComponent({
 	setup(props) {
 		const router = useRouter()
 		const hast = ${JSON.stringify(hast)}
-		props['onUpdate:toc'](${JSON.stringify(tocs)})
-		props['onUpdate:attributes'](${JSON.stringify(attributes)})
 		return () => {
 			const blocks = []
 			const ret = toH((e, p, c) => {
@@ -126,6 +124,8 @@ export default defineComponent({
 				return h(e, p, c)
 			}, hast)
 			props['onUpdate:codeblocks'](blocks)
+			props['onUpdate:toc'](${JSON.stringify(tocs)})
+			props['onUpdate:attributes'](${JSON.stringify(attributes)})
 			return ret
 		}
 	},
