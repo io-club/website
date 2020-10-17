@@ -1,0 +1,9 @@
+digraph abc {
+	node [shape=box]
+	edge [dir=back]
+
+	a_0 [label="a_0 = 3"]
+	a_1 [label="a_1 = a_0 + 1"]
+
+	a_0->a_1 [color=red, dir=front]
+}

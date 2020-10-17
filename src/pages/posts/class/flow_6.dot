@@ -1,0 +1,14 @@
+digraph abc {
+	node [shape=box]
+	edge [dir=back]
+
+	a [label="a = 3"]
+	cond [label="a > 4"]
+	b [label="b = 1"]
+
+	a->cond [color=red, dir=front]
+
+	subgraph cluster_cond {
+		cond->b [color=red, dir=front]
+	}
+}

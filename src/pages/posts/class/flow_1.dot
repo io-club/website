@@ -1,0 +1,27 @@
+digraph abc{
+	node [shape=box]
+	edge [dir=back]
+
+	a_0 [label="a_0 = 1"]
+	a_1 [label="a_1 = a_0 + 1"]
+	a_2 [label="a_2 = a_0 - 1"]
+	cond [label="a_0 > 5"]
+	merge [label="a_3 = phi(a_1, a_2)"]
+
+	1->a_0
+
+	1->a_1
+	a_0->a_1
+
+	1->a_2
+	a_0->a_2
+
+	5->cond
+	a_0->cond [color=red, dir=double]
+
+	cond->a_1 [color=red, dir=front]
+	cond->a_2 [color=red, dir=front]
+
+	a_1->merge [color=red, dir=front]
+	a_2->merge [color=red, dir=front]
+}

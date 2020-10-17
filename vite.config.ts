@@ -9,17 +9,13 @@ const alias = {
 	'/@/': path.join(__dirname, 'src'),
 }
 
-const languages = ['clike', 'javascript', 'python']
-
 export default {
 	mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 	alias,
 	vueCustomBlockTransforms: {
 	},
 	optimizeDeps: {
-		include: ['hast-to-hyperscript',
-			...languages.map(e => `codemirror/mode/${e}/${e}`),
-		],
+		include: ['hast-to-hyperscript'],
 	},
 	transforms: [
 		markdown(),
@@ -27,7 +23,7 @@ export default {
 	plugins: [
 		voie({
 			pagesDir: 'src/pages',
-			extensions: ['vue', 'jsx', 'tsx', 'md'],
+			extensions: ['vue', 'tsx', 'md'],
 		}),
 		svg({
 			svgoConfig: {

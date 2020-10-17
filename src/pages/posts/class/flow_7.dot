@@ -1,0 +1,17 @@
+digraph abc {
+	node [shape=box]
+	edge [dir=back]
+
+	cond [label="a > 4"]
+	dec [label="a--"]
+	other [label="b = 4"]
+	start [label="b = 3"]
+
+	start->entry [color=red, dir=front]
+	subgraph cluster_while {
+		entry->cond [color=red, dir=front]
+		cond->dec [color=red, dir=front]
+	}
+	cond->other [color=red, dir=front]
+	dec->entry [color=red, dir=front]
+}

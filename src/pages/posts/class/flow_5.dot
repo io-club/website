@@ -1,0 +1,20 @@
+digraph abc {
+	node [shape=box]
+	edge [dir=back]
+	b1 [label="b = 1"]
+	b2 [label="b = 2"]
+	b3 [label="b = 3"]
+	b4 [label="b = ..."]
+	dot [label="..."]
+	branch [label="switch(a, 1, 2, 3, ...)"]
+
+	a->branch
+	1->branch
+	2->branch
+	3->branch
+	dot->branch
+	branch->b1 [color=red, dir=front]
+	branch->b2 [color=red, dir=front]
+	branch->b3 [color=red, dir=front]
+	branch->b4 [color=red, dir=front]
+}

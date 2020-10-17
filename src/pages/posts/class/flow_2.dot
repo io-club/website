@@ -1,0 +1,9 @@
+digraph abc {
+	node [shape=box]
+	edge [dir=back]
+
+	3->add
+	4->add
+
+	add->a
+}
