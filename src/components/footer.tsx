@@ -34,7 +34,7 @@ export default defineComponent({
 				</a>)
 			}
 
-			return <footer class="itms-center justify-center w-full px-6 py-3 mt-6">
+			return <footer class="itms-center justify-center w-full px-6 py-4">
 				<div class="flex flex-row flex-center w-4/5 mx-auto">
 					{extra}
 					<div class="flex flex-row items-center children:mr-1">

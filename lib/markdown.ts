@@ -97,7 +97,7 @@ export const transform = (): Transform => {
 			const {attributes, tocs, hast} = await render(code, file)
 			return {
 				code: `
-import { defineComponent, reactive, h, withModifiers, onBeforeMount } from 'vue'
+import { defineComponent, reactive, h, withModifiers, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import toH from 'hast-to-hyperscript'
 
@@ -105,13 +105,17 @@ export default defineComponent({
 	props: [
 		'onUpdate:toc',
 		'onUpdate:attributes',
-		'onUpdate:codeblocks',
+		'onUpdate:mounted',
 	],
 	setup(props) {
 		const router = useRouter()
 		const hast = ${JSON.stringify(hast)}
+		props['onUpdate:toc'](${JSON.stringify(tocs)})
+		props['onUpdate:attributes'](${JSON.stringify(attributes)})
+		onMounted(() => {
+			props['onUpdate:mounted'](true)
+		})
 		return () => {
-			const blocks = []
 			const ret = toH((e, p, c) => {
 				if (p && p.class) {
 					if (p.class.includes('footnote-ref')) {
@@ -120,14 +124,8 @@ export default defineComponent({
 						p.onClick = withModifiers(() => router.back(), ['stop', 'prevent'])
 					}
 				}
-				if (e === 'code') {
-					blocks.push(p.id)
-				}
 				return h(e, p, c)
 			}, hast)
-			props['onUpdate:codeblocks'](blocks)
-			props['onUpdate:toc'](${JSON.stringify(tocs)})
-			props['onUpdate:attributes'](${JSON.stringify(attributes)})
 			return ret
 		}
 	},

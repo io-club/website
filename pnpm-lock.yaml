@@ -1,8 +1,5 @@
 dependencies:
   '@fikrikarim/local-echo': 0.4.1
-  '@wasmer/wasi': 0.12.0
-  '@wasmer/wasm-transformer': 0.12.0
-  '@wasmer/wasmfs': 0.12.0
   hast-to-hyperscript: 9.0.0
   highlight.js: 10.2.1
   katex: 0.12.0
@@ -11,9 +8,9 @@ dependencies:
   vue-composable: 1.0.0-beta.10
   vue-router: 4.0.0-beta.13_vue@3.0.0
   xterm: 4.9.0
+  xterm-addon-fit: 0.4.0_xterm@4.9.0
 devDependencies:
   '@mdi/svg': 5.6.55
-  '@rollup/plugin-replace': 2.3.3_rollup@2.29.0
   '@types/lodash': 4.14.162
   '@types/object-hash': 1.3.4
   '@typescript-eslint/eslint-plugin': 4.4.0_a71b0516f86a95383173f79e74386c73
@@ -224,17 +221,6 @@ packages:
     resolution:
       integrity: sha1-Jh15poDp3D2GdhwURi8kEmuoNXU=
       tarball: '@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-8.4.0.tgz'
-  /@rollup/plugin-replace/2.3.3_rollup@2.29.0:
-    dependencies:
-      '@rollup/pluginutils': 3.1.0_rollup@2.29.0
-      magic-string: 0.25.7
-      rollup: 2.29.0
-    dev: true
-    peerDependencies:
-      rollup: ^1.20.0 || ^2.0.0
-    resolution:
-      integrity: sha1-zWuuOURN4Rn12QUyK5Hr1AeFYuc=
-      tarball: '@rollup/plugin-replace/download/@rollup/plugin-replace-2.3.3.tgz'
   /@rollup/pluginutils/3.1.0_rollup@2.29.0:
     dependencies:
       '@types/estree': 0.0.39
@@ -674,32 +660,6 @@ packages:
     resolution:
       integrity: sha1-7AiSNmKezA8QNGuS8QH/QzkWnxo=
       tarball: '@vue/shared/download/@vue/shared-3.0.0.tgz'
-  /@wasmer/wasi/0.12.0:
-    dependencies:
-      browser-process-hrtime: 1.0.0
-      buffer-es6: 4.9.3
-      path-browserify: 1.0.1
-      randomfill: 1.0.4
-    dev: false
-    resolution:
-      integrity: sha1-icfF5bpY99+uTjIzWTRmOcTsOCo=
-      tarball: '@wasmer/wasi/download/@wasmer/wasi-0.12.0.tgz'
-  /@wasmer/wasm-transformer/0.12.0:
-    dependencies:
-      wasm-feature-detect: 1.2.9
-    dev: false
-    resolution:
-      integrity: sha1-cnhvVoihojNFmytt19n7nQVjxVU=
-      tarball: '@wasmer/wasm-transformer/download/@wasmer/wasm-transformer-0.12.0.tgz'
-  /@wasmer/wasmfs/0.12.0:
-    dependencies:
-      memfs: 3.0.4
-      pako: 1.0.11
-      tar-stream: 2.1.4
-    dev: false
-    resolution:
-      integrity: sha1-fyrVG0K4cxb6xd8LkyVtG35WfBs=
-      tarball: '@wasmer/wasmfs/download/@wasmer/wasmfs-0.12.0.tgz'
   /@zeit/schemas/2.6.0:
     dev: true
     resolution:
@@ -918,11 +878,6 @@ packages:
     resolution:
       integrity: sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
       tarball: balanced-match/download/balanced-match-1.0.0.tgz
-  /base64-js/1.3.1:
-    dev: false
-    resolution:
-      integrity: sha1-WOzoy3XdB+ce0IxzarxfrE2/jfE=
-      tarball: base64-js/download/base64-js-1.3.1.tgz
   /big.js/5.2.2:
     dev: true
     resolution:
@@ -935,15 +890,6 @@ packages:
     resolution:
       integrity: sha1-MPpAyef+B9vIlWeM0ocCTeokHdk=
       tarball: binary-extensions/download/binary-extensions-2.1.0.tgz
-  /bl/4.0.3:
-    dependencies:
-      buffer: 5.6.0
-      inherits: 2.0.4
-      readable-stream: 3.6.0
-    dev: false
-    resolution:
-      integrity: sha1-EtYoetwpCA4ipwXldksqlSLNxIk=
-      tarball: bl/download/bl-4.0.3.tgz
   /bluebird/3.7.2:
     dev: true
     resolution:
@@ -1011,11 +957,6 @@ packages:
     resolution:
       integrity: sha1-oF7j+q08DnAKLy2oJrprTXbmnl4=
       tarball: brotli-size/download/brotli-size-4.0.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbrotli-size%2Fdownload%2Fbrotli-size-4.0.0.tgz
-  /browser-process-hrtime/1.0.0:
-    dev: false
-    resolution:
-      integrity: sha1-PJtLfXgsgSHlbxAQbYTA0P/JRiY=
-      tarball: browser-process-hrtime/download/browser-process-hrtime-1.0.0.tgz
   /browserslist/4.14.5:
     dependencies:
       caniuse-lite: 1.0.30001146
@@ -1029,24 +970,11 @@ packages:
     resolution:
       integrity: sha1-HHUUYaEC3cYOQJk2ObcJvn8sQBU=
       tarball: browserslist/download/browserslist-4.14.5.tgz
-  /buffer-es6/4.9.3:
-    dev: false
-    resolution:
-      integrity: sha1-8mNHuC33b9N+GLy1KIxJcM/VxAQ=
-      tarball: buffer-es6/download/buffer-es6-4.9.3.tgz
   /buffer-from/1.1.1:
     dev: true
     resolution:
       integrity: sha1-MnE7wCj3XAL9txDXx7zsHyxgcO8=
       tarball: buffer-from/download/buffer-from-1.1.1.tgz
-  /buffer/5.6.0:
-    dependencies:
-      base64-js: 1.3.1
-      ieee754: 1.1.13
-    dev: false
-    resolution:
-      integrity: sha1-oxdJ3H2B2E2wir+Te2uMQDP2J4Y=
-      tarball: buffer/download/buffer-5.6.0.tgz
   /builtin-modules/1.1.1:
     dev: true
     engines:
@@ -1904,6 +1832,7 @@ packages:
   /end-of-stream/1.4.4:
     dependencies:
       once: 1.4.0
+    dev: true
     resolution:
       integrity: sha1-WuZKX0UFe682JuwU2gyl5LJDHrA=
       tarball: end-of-stream/download/end-of-stream-1.4.4.tgz
@@ -2357,11 +2286,6 @@ packages:
     resolution:
       integrity: sha1-On1WtVnWy8PrUSMlJE5hmmXGxSU=
       tarball: fast-deep-equal/download/fast-deep-equal-3.1.3.tgz
-  /fast-extend/1.0.2:
-    dev: false
-    resolution:
-      integrity: sha1-O4pbCcvI/z1tR+rzlzmMCmQ+RBs=
-      tarball: fast-extend/download/fast-extend-1.0.2.tgz
   /fast-glob/3.2.4:
     dependencies:
       '@nodelib/fs.stat': 2.0.3
@@ -2462,11 +2386,6 @@ packages:
     resolution:
       integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
       tarball: fresh/download/fresh-0.5.2.tgz
-  /fs-constants/1.0.0:
-    dev: false
-    resolution:
-      integrity: sha1-a+Dem+mYzhavivwkSXue6bfM2a0=
-      tarball: fs-constants/download/fs-constants-1.0.0.tgz
   /fs-extra/8.1.0:
     dependencies:
       graceful-fs: 4.2.4
@@ -2490,11 +2409,6 @@ packages:
     resolution:
       integrity: sha1-kQ2gBiQ3ukw5/t2GPxZ1zP78ufw=
       tarball: fs-extra/download/fs-extra-9.0.1.tgz
-  /fs-monkey/0.3.3:
-    dev: false
-    resolution:
-      integrity: sha1-eWC7Kx+iZTcxudDi6EgSp+izZko=
-      tarball: fs-monkey/download/fs-monkey-0.3.3.tgz
   /fs.realpath/1.0.0:
     dev: true
     resolution:
@@ -2879,11 +2793,6 @@ packages:
     resolution:
       integrity: sha1-IRcLU3ie4nRHwvR91oMIFAP5pGc=
       tarball: icss-utils/download/icss-utils-4.1.1.tgz
-  /ieee754/1.1.13:
-    dev: false
-    resolution:
-      integrity: sha1-7BaFWOlaoYH9h9N/VcMrvLZwi4Q=
-      tarball: ieee754/download/ieee754-1.1.13.tgz
   /ignore/4.0.6:
     dev: true
     engines:
@@ -2974,6 +2883,7 @@ packages:
       integrity: sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
       tarball: inherits/download/inherits-2.0.3.tgz
   /inherits/2.0.4:
+    dev: true
     resolution:
       integrity: sha1-D6LGT5MpF8NDOg3tVTY6rjdBa3w=
       tarball: inherits/download/inherits-2.0.4.tgz
@@ -3745,14 +3655,6 @@ packages:
     resolution:
       integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
       tarball: media-typer/download/media-typer-0.3.0.tgz
-  /memfs/3.0.4:
-    dependencies:
-      fast-extend: 1.0.2
-      fs-monkey: 0.3.3
-    dev: false
-    resolution:
-      integrity: sha1-F5l+w01n0KR1b2o08v79E6jbqwg=
-      tarball: memfs/download/memfs-3.0.4.tgz
   /merge-source-map/1.1.0:
     dependencies:
       source-map: 0.6.1
@@ -4140,6 +4042,7 @@ packages:
   /once/1.4.0:
     dependencies:
       wrappy: 1.0.2
+    dev: true
     resolution:
       integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
       tarball: once/download/once-1.4.0.tgz
@@ -4223,11 +4126,6 @@ packages:
     resolution:
       integrity: sha1-b+7ayjXnVyWHbQsOZJdGl/7RRbA=
       tarball: package-json/download/package-json-6.5.0.tgz
-  /pako/1.0.11:
-    dev: false
-    resolution:
-      integrity: sha1-bJWZ00DVTf05RjgCUqNXBaa5kr8=
-      tarball: pako/download/pako-1.0.11.tgz
   /parent-module/1.0.1:
     dependencies:
       callsites: 3.1.0
@@ -4271,11 +4169,6 @@ packages:
     resolution:
       integrity: sha1-naGee+6NEt/wUT7Vt2lXeTvC6NQ=
       tarball: parseurl/download/parseurl-1.3.3.tgz
-  /path-browserify/1.0.1:
-    dev: false
-    resolution:
-      integrity: sha1-2YRUqcN1PVeQhg8W9ohnueRr4f0=
-      tarball: path-browserify/download/path-browserify-1.0.1.tgz
   /path-is-absolute/1.0.1:
     dev: true
     engines:
@@ -4654,17 +4547,10 @@ packages:
   /randombytes/2.1.0:
     dependencies:
       safe-buffer: 5.2.1
+    dev: true
     resolution:
       integrity: sha1-32+ENy8CcNxlzfYpE0mrekc9Tyo=
       tarball: randombytes/download/randombytes-2.1.0.tgz
-  /randomfill/1.0.4:
-    dependencies:
-      randombytes: 2.1.0
-      safe-buffer: 5.2.1
-    dev: false
-    resolution:
-      integrity: sha1-ySGW/IarQr6YPxvzF3giSTHWFFg=
-      tarball: randomfill/download/randomfill-1.0.4.tgz
   /range-parser/1.2.0:
     dev: true
     engines:
@@ -4690,17 +4576,6 @@ packages:
     resolution:
       integrity: sha1-5mTvMRYRZsl1HNvo28+GtftY93Q=
       tarball: read-cache/download/read-cache-1.0.0.tgz
-  /readable-stream/3.6.0:
-    dependencies:
-      inherits: 2.0.4
-      string_decoder: 1.3.0
-      util-deprecate: 1.0.2
-    dev: false
-    engines:
-      node: '>= 6'
-    resolution:
-      integrity: sha1-M3u9o63AcGvT4CRCaihtS0sskZg=
-      tarball: readable-stream/download/readable-stream-3.6.0.tgz
   /readdirp/3.4.0:
     dependencies:
       picomatch: 2.2.2
@@ -5073,6 +4948,7 @@ packages:
       integrity: sha1-mR7GnSluAxN0fVm9/St0XDX4go0=
       tarball: safe-buffer/download/safe-buffer-5.1.2.tgz
   /safe-buffer/5.2.1:
+    dev: true
     resolution:
       integrity: sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=
       tarball: safe-buffer/download/safe-buffer-5.2.1.tgz
@@ -5371,13 +5247,6 @@ packages:
     resolution:
       integrity: sha1-FK9tnzSwU/fPyJty+PLuFLkDmlQ=
       tarball: string.prototype.trimstart/download/string.prototype.trimstart-1.0.1.tgz
-  /string_decoder/1.3.0:
-    dependencies:
-      safe-buffer: 5.2.1
-    dev: false
-    resolution:
-      integrity: sha1-QvEUWUpGzxqOMLCoT1bHjD7awh4=
-      tarball: string_decoder/download/string_decoder-1.3.0.tgz
   /stringify-entities/3.0.1:
     dependencies:
       character-entities-html4: 1.1.4
@@ -5581,19 +5450,6 @@ packages:
     resolution:
       integrity: sha1-WjNpK17r15g2IQ2xRJ3L2Nbqm9M=
       tarball: tailwindcss/download/tailwindcss-1.8.12.tgz
-  /tar-stream/2.1.4:
-    dependencies:
-      bl: 4.0.3
-      end-of-stream: 1.4.4
-      fs-constants: 1.0.0
-      inherits: 2.0.4
-      readable-stream: 3.6.0
-    dev: false
-    engines:
-      node: '>=6'
-    resolution:
-      integrity: sha1-xPsaEesNopuJOlslR2OXui0FO/o=
-      tarball: tar-stream/download/tar-stream-2.1.4.tgz
   /term-size/1.2.0:
     dependencies:
       execa: 0.7.0
@@ -5983,6 +5839,7 @@ packages:
       integrity: sha1-FrXK/Afb42dsGxmZF3gj1lA6yww=
       tarball: url-parse-lax/download/url-parse-lax-3.0.0.tgz
   /util-deprecate/1.0.2:
+    dev: true
     resolution:
       integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
       tarball: util-deprecate/download/util-deprecate-1.0.2.tgz
@@ -6184,11 +6041,6 @@ packages:
     resolution:
       integrity: sha1-z7XfXDTvzjGbEToWZ9ErdNz9nJA=
       tarball: vue/download/vue-3.0.0.tgz
-  /wasm-feature-detect/1.2.9:
-    dev: false
-    resolution:
-      integrity: sha1-hX5d3BakdsUL4L/3zUrIddYAQcE=
-      tarball: wasm-feature-detect/download/wasm-feature-detect-1.2.9.tgz
   /wcwidth/1.0.1:
     dependencies:
       defaults: 1.0.3
@@ -6244,6 +6096,7 @@ packages:
       integrity: sha1-YQY29rH3A4kb00dxzLF/uTtHB5w=
       tarball: word-wrap/download/word-wrap-1.2.3.tgz
   /wrappy/1.0.2:
+    dev: true
     resolution:
       integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
       tarball: wrappy/download/wrappy-1.0.2.tgz
@@ -6294,6 +6147,15 @@ packages:
     resolution:
       integrity: sha1-u3J3n1+kZRhrH0OPZ0+jR/2121Q=
       tarball: xtend/download/xtend-4.0.2.tgz
+  /xterm-addon-fit/0.4.0_xterm@4.9.0:
+    dependencies:
+      xterm: 4.9.0
+    dev: false
+    peerDependencies:
+      xterm: ^4.0.0
+    resolution:
+      integrity: sha1-BuDF0KaqrPsAnvVl76HIHpPZAZM=
+      tarball: xterm-addon-fit/download/xterm-addon-fit-0.4.0.tgz
   /xterm/4.9.0:
     dev: false
     resolution:
@@ -6331,15 +6193,11 @@ packages:
 specifiers:
   '@fikrikarim/local-echo': ^0.4.1
   '@mdi/svg': ^5.6.55
-  '@rollup/plugin-replace': ^2.3.3
   '@types/lodash': ^4.14.162
   '@types/object-hash': ^1.3.4
   '@typescript-eslint/eslint-plugin': ^4.3.0
   '@typescript-eslint/parser': ^4.3.0
   '@vue/compiler-sfc': ^3.0.0
-  '@wasmer/wasi': ^0.12.0
-  '@wasmer/wasm-transformer': ^0.12.0
-  '@wasmer/wasmfs': ^0.12.0
   autoprefixer: ^9.8.6
   eslint: ^7.10.0
   eslint-plugin-simple-import-sort: ^5.0.3
@@ -6398,3 +6256,4 @@ specifiers:
   vue-composable: ^1.0.0-beta.10
   vue-router: ^4.0.0-beta.13
   xterm: ^4.9.0
+  xterm-addon-fit: ^0.4.0
