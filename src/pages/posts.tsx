@@ -2,12 +2,12 @@ import 'katex/dist/katex.min.css'
 import 'highlight.js/scss/monokai-sublime.scss'
 import './posts.styl'
 
-import {VueComponent as Loading} from '@mdi/svg/svg/loading.svg'
 import {defineComponent, h, inject, onBeforeUpdate, ref} from 'vue'
 import {useBreakpoint} from 'vue-composable'
 import {RouterView} from 'vue-router'
 
 import BreakpointsConfig from '/@/breakpoints.json'
+import Loading from '/@/components/loading'
 import {TocEntry} from '/@/components/toc'
 
 export default defineComponent({
@@ -29,7 +29,7 @@ export default defineComponent({
 		return () => {
 			const hidden = attributes.value.title ? '' : 'hidden'
 			return <section class={`flex flex-col flex-center flex-grow ${!sm.value ? 'px-2' : (attributes.value.toc ? 'ml-64' : '')}`}>
-				{!attributes.value.title ? <Loading class="animate-spin text-blue w-32 h-32" /> : ''}
+				{!attributes.value.title ? <Loading /> : ''}
 				<section class={`my-16 text-center ${hidden}`}>
 					<h1>{attributes.value.title || t('untitled')}</h1>
 					<h4>{attributes.value.desc}</h4>

@@ -7,7 +7,7 @@ import {useBreakpoint} from 'vue-composable'
 import {useRouter} from 'vue-router'
 
 import BreakpointsConfig from '/@/breakpoints.json'
-import Logo from '/@/components/logo.tsx'
+import Logo from '/@/components/logo'
 
 export default defineComponent({
 	setup() {
@@ -31,6 +31,10 @@ export default defineComponent({
 				{
 					text: 'class',
 					link: '/posts/class',
+				},
+				{
+					text: 'pyterm',
+					link: '/pyterm',
 				},
 				{
 					text: 'about',

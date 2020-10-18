@@ -1,70 +1,33 @@
 import 'xterm/css/xterm.css'
 
-import {defineComponent, onMounted, reactive} from 'vue'
+import localEchoController from '@fikrikarim/local-echo'
+import {defineComponent, onMounted, ref} from 'vue'
 import xterm from 'xterm'
 
-import pyodide from '../pyodide/pyodide.asm.js'
-import wasm from '../pyodide/pyodide.asm.wasm'
+import Loading from '/@/components/loading'
 
-declare interface InteractiveConsole {
-	push(a: unknown): boolean;
-	resetbuffer(): void;
-}
-
-declare interface Pyodide {
-	runPython(a: string): unknown;
-	pyimport(a: string): unknown;
-	run(): unknown;
-	con: InteractiveConsole;
-}
+import init, * as rp from '../rustpython/rustpython_wasm'
 
 export default defineComponent({
 	props: {'id': {type: String, required: true}},
-	setup(props) {
-		const py = reactive({} as Pyodide)
-		const term = new xterm.Terminal({
-			fontFamily: 'Ubuntu Mono, courier-new, courier, Mononoki, monospace',
-			fontSize: 16,
-			cursorBlink: true,
-			rendererType: 'canvas',
-		})
+	setup() {
+		const loading = ref(true)
 
-		wasm().then(exports => {
-			console.log(exports)
-		})
-			/*
+		const elem = ref(null)
+		onMounted(async () => {
+			const term = new xterm.Terminal({
+				fontFamily: 'Ubuntu Mono, courier-new, courier, Mononoki, monospace',
+				fontSize: 16,
+				cursorBlink: true,
+				rendererType: 'canvas',
+			})
 
-		pyodide.then(() => {
-			const pyodide = self.pyodide
-			py.runPython = (e) => pyodide.runPython(e)
-			py.pyimport = (e) => pyodide.pyimport(e)
-			self.runPy = py.runPython
-			py.runPython(`
-import io, code, sys
-from js import runPy
-class Console(code.InteractiveConsole):
-	def runcode(self, code):
-		sys.stdout = io.StringIO()
-		sys.stderr = sys.stdout
-		runPy("\\n".join(self.buffer))
-__c = Console(locals=globals())
-`)
-			py.con = py.pyimport('__c') as InteractiveConsole
-			term.write('welcome to the pyterm\r\n> ')
-		})
-			 */
-
-		onMounted(() => {
-			const elem = document.getElementById(props.id)
-			if (!elem) return
-
-			term.open(elem)
 			term.attachCustomKeyEventHandler((ev) => {
 				if (ev.key === 'v' && ev.ctrlKey && !ev.altKey && !ev.shiftKey) {
 					document.execCommand('paste');
 					return false;
 				}
-				if (ev.altKey || ev.ctrlKey || ev.shiftKey) {
+				if (ev.altKey || ev.ctrlKey) {
 					return false;
 				}
 				if (ev.key === 'Escape') {
@@ -72,48 +35,64 @@ __c = Console(locals=globals())
 				}
 				return true;
 			})
-			term.onKey(({key, domEvent: ev}) => {
-				if (!py.con) return
 
-				const printable = !ev.altKey && !ev.ctrlKey && !ev.metaKey;
-				const buffer = term.buffer.active
+			await init()
+			const terminalVM = rp.vmStore.init('term_vm');
 
-				if (ev.key === 'Enter' || (ev.ctrlKey && ev.key == 'd')) {
-					term.write('\r\n')
-				} else if (ev.key === 'Backspace') {
-					if (buffer.cursorX > 2) {
-						term.write('\b \b');
-					}
-					return
-				} else if (ev.key == 'ArrowUp') {
-					return
-				} else if (printable) {
-					term.write(key)
-					return
-				} else {
-					return
-				}
+			const localEcho = new localEchoController(term);
+			terminalVM.setStdout((data: unknown) => localEcho.print(data));
+			const getPrompt = (name: string) => {
+				terminalVM.exec(`
+try:
+    import sys as __sys
+    __prompt = __sys.${name}
+except:
+    __prompt = ''
+finally:
+    del __sys
+`);
+				return String(terminalVM.eval('__prompt'));
+			}
 
-				const line = buffer.getLine(buffer.cursorY)?.translateToString(true).slice(2) || ''
-				try {
-					const result = py.con.push(line)
-					if (!result) {
-						const stdout = (py.runPython('sys.stdout.getvalue()') as string).replaceAll('\n', '\r\n')
-						py.runPython('sys.stdout.truncate(0)')
-						term.write(stdout)
-						term.write('> ')
+			const readPrompts = async () => {
+				let continuing = false;
+
+				for (; ;) {
+					const ps1 = getPrompt('ps1');
+					const ps2 = getPrompt('ps2');
+					let input;
+					if (continuing) {
+						const prom = localEcho.read(ps2, ps2);
+						localEcho._activePrompt.prompt = ps1;
+						localEcho._input = localEcho.history.entries.pop() + '\n';
+						localEcho._cursor = localEcho._input.length;
+						localEcho._active = true;
+						input = await prom;
+						if (!input.endsWith('\n')) continue;
 					} else {
-						term.write('$ ')
+						input = await localEcho.read(ps1, ps2);
 					}
-				} catch (e) {
-					const stdout = `${e}`.trimEnd().replaceAll('\n', '\r\n')
-					py.con.resetbuffer()
-					term.write(stdout)
-					term.write('\r\n> ')
+					try {
+						terminalVM.execSingle(input);
+					} catch (err) {
+						if (err.canContinue) {
+							continuing = true;
+							continue;
+						}
+						localEcho.println(err);
+					}
+					continuing = false;
 				}
-			})
+			}
+			readPrompts().catch(err => console.error(err));
+			loading.value = false
+			term.open(elem.value as unknown as HTMLElement)
 			term.focus()
 		})
-		return () => <div id={props.id} />
+
+		return () => <div class="flex flex-col flex-center">
+			<div ref={elem} class="h-full w-full" />
+			{loading.value ? <Loading /> : '' }
+		</div>
 	}
 })

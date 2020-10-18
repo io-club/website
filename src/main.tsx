@@ -8,8 +8,8 @@ import {createApp, defineComponent, provide} from 'vue';
 import {buildI18n, useLanguage} from 'vue-composable';
 import {createRouter, createWebHistory, RouterView} from 'vue-router';
 
-import Footer from '/@/components/footer.tsx'
-import Header from '/@/components/header.tsx'
+import Footer from '/@/components/footer'
+import Header from '/@/components/header'
 
 const main = defineComponent({
 	setup() {

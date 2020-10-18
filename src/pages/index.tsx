@@ -4,7 +4,7 @@ import {VueComponent as HammerWrench} from '@mdi/svg/svg/hammer-wrench.svg'
 import {VueComponent as Memory} from '@mdi/svg/svg/memory.svg'
 import {defineComponent, inject} from 'vue'
 
-import Beer from '/@/components/beer.tsx'
+import Beer from '/@/components/beer'
 
 export default defineComponent({
 	setup() {
