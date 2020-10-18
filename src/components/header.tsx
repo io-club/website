@@ -68,16 +68,16 @@ export default defineComponent({
 
 			// the brand
 			const brand =
-				<button class="
+				<a class="
 flex flex-row items-center flex-shrink-0
 font-semibold
 children:mx-1
 focus:outline-none
 "
-					onClick={() => router.push('/#')}>
+					href='/#'>
 					<Logo class="w-8 h-8" />
 					{brand_text}
-				</button>
+				</a>
 
 			// burger for small
 			const burger = !sm.value &&
@@ -110,23 +110,25 @@ flex flex-row items-center flex-wrap
 enter:bg-bb enter:text-fa
 ">{m}</div>]
 
-				items.push(<button class={`
+				items.push(<a class={`
 focus:outline-none mx-2
 ${!sm.value ? 'w-full text-left my-1' : ''}
 `}
+					href={item.link}
 					onClick={withModifiers(() => {
 						router.push(item.link)
 						focus[item.text] = !focus[item.text]
 					}, ['stop', 'prevent'])}>
 					{m}
-				</button>)
+				</a>)
 
 				if (item.dropdown && focused) {
 					const dropdown: JSX.Element[] = []
 					for (const d of item.dropdown) {
-						dropdown.push(<button class="mx-1 p-2
+						dropdown.push(<a class="mx-1 p-2
 focus:outline-none text-left
 enter:bg-bb enter:text-fa"
+							href={d.link}
 							onClick={withModifiers(() => {
 								if (d.locale) {
 									locale.value = d.link
@@ -136,7 +138,7 @@ enter:bg-bb enter:text-fa"
 								if (d.clickToggleMenu) {
 									focus[item.text] = !focus[item.text]
 								}
-							}, ['stop', 'prevent'])}>{t(d.text)}</button>)
+							}, ['stop', 'prevent'])}>{t(d.text)}</a>)
 					}
 					items.push(<div class={`
 flex flex-col my-1
