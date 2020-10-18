@@ -5,8 +5,7 @@ import {defineComponent, onMounted, ref} from 'vue'
 import xterm from 'xterm'
 
 import Loading from '/@/components/loading'
-
-import init, * as rp from '../rustpython/rustpython_wasm'
+import init, * as rp from '/rustpython/rustpython_wasm.js'
 
 export default defineComponent({
 	props: {'id': {type: String, required: true}},
@@ -36,7 +35,7 @@ export default defineComponent({
 				return true;
 			})
 
-			await init()
+			await init('/rustpython/rustpython_wasm_bg.wasm')
 			const terminalVM = rp.vmStore.init('term_vm');
 
 			const localEcho = new localEchoController(term);
