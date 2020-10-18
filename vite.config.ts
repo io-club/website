@@ -1,4 +1,3 @@
-import replace from '@rollup/plugin-replace';
 import path from 'path'
 import {UserConfig} from 'vite'
 import svg from 'vite-plugin-svg'
@@ -16,13 +15,7 @@ export default {
 	vueCustomBlockTransforms: {
 	},
 	optimizeDeps: {
-		include: [
-			'hast-to-hyperscript',
-			'@wasmer/wasi',
-			'@wasmer/wasmfs',
-			'@wasmer/wasm-transformer',
-			'@wasmer/wasi/lib/bindings/browser',
-		],
+		include: ['hast-to-hyperscript'],
 	},
 	transforms: [
 		markdown(),
@@ -42,11 +35,4 @@ export default {
 			},
 		}),
 	],
-	rollupInputOptions: {
-		plugins: [
-			replace({
-				__buildEnv__: 'production',
-			}),
-		],
-	},
 } as UserConfig
