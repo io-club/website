@@ -23,7 +23,7 @@ export default defineComponent({
 			const hidden = mounted.value ? '' : 'hidden'
 			return <section class={`flex flex-col flex-center flex-grow ${!sm.value ? 'px-2' : (attributes.value.toc ? 'ml-64' : '')}`}>
 				{!mounted.value ? <Loading /> : ''}
-				<section class={`my-16 text-center ${hidden}`}>
+				<section class={`my-16 flex flex-col flex-center ${hidden}`}>
 					<h1>{attributes.value.title || t('untitled')}</h1>
 					<h4>{attributes.value.desc}</h4>
 					<License license={attributes.value.license} />
