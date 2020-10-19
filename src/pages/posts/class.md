@@ -1,7 +1,7 @@
 ---
 title: 程序结构导论
 desc: how to program?
-toc: false
+license: by-nc-sa
 ---
 
 ## 简介
