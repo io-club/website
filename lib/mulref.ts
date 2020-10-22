@@ -42,11 +42,6 @@ export default (): Transformer => {
 				throw 'duplicated tag'
 			}
 
-			let children = node.children as Node[]
-			if (children && children.length > 0 && children[0].type == 'paragraph') {
-				children = children[0].children as Node[]
-			}
-			children.unshift(u('text', `${identifier}: `))
 			footnoteDefs[identifier] = node
 			set(footnoteDefs[identifier], 'data.ref', [])
 		});

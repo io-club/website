@@ -7,7 +7,7 @@ import {useBreakpoint} from 'vue-composable'
 import {useRouter} from 'vue-router'
 
 import BreakpointsConfig from '/@/breakpoints.json'
-import Logo from '/@/components/logo'
+import Logo from '/@/components/logo.vue'
 
 export default defineComponent({
 	setup() {
@@ -15,6 +15,7 @@ export default defineComponent({
 
 		const router = useRouter()
 
+		console.log(inject('breakpoint'))
 		const sm = ref(useBreakpoint(BreakpointsConfig).sm)
 
 		const menuConfig = computed(() => {

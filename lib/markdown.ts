@@ -3,6 +3,7 @@ import {get, set} from 'lodash'
 import hash from 'object-hash'
 import path from 'path'
 import katex from 'rehype-katex'
+import collapse from 'remark-collapse'
 import embeded from 'remark-embed-images'
 import toc_extract from 'remark-extract-toc'
 import footnotes from 'remark-footnotes'
@@ -29,6 +30,7 @@ const render = async (code: string, file: string) => {
 	const remark = unified()
 		.use(markdown, {})
 		.use(gfm, {})
+		.use(collapse, {test: 'tango'})
 		.use(slug)
 		.use(footnotes, {inlineNotes: true})
 		.use(footnotes_numberd)

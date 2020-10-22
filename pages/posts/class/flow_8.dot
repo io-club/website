@@ -1,0 +1,18 @@
+digraph abc {
+	node [shape=box]
+	edge [dir=back]
+
+	entry [label="sum(x)"]
+	cond [label="x == 1"]
+	base [label="1"]
+	recursion [label="sum(x-1)"]
+	return [label="sum(x-1) + x"]
+
+	subgraph cluster_while {
+		entry->cond [color=red, dir=front]
+		cond->base [color=red, dir=front]
+		cond->return [color=red, dir=front]
+		entry->recursion
+		recursion->return
+	}
+}

@@ -17,12 +17,18 @@ export default {
 	optimizeDeps: {
 		include: ['hast-to-hyperscript'],
 	},
+	cssPreprocessOptions: {
+		scss: {
+			includePaths: ['src', 'node_modules'],
+			additionalData: '@import "variables.scss";'
+		},
+	},
 	transforms: [
 		markdown(),
 	],
 	plugins: [
 		voie({
-			pagesDir: 'src/pages',
+			pagesDir: 'pages',
 			extensions: ['vue', 'tsx', 'md'],
 		}),
 		svg({

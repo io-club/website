@@ -30,7 +30,7 @@ export default defineComponent({
 				</section>
 				<section class={`flex flex-row flex-wrap flex-grow justify-center ${hidden} ${!sm.value ? 'w-full' : 'w-4/5'} bg-ba shadow`}>
 					{h(RouterView, {
-						class: `flex-grow ${!sm.value ? 'px-4 py-8' : 'p-8'} ${hidden} markdown`,
+						class: `flex-grow ${!sm.value ? 'px-4 py-8' : 'p-12'} ${hidden} markdown`,
 						'onUpdate:toc': (e: TocEntry) => toc.value = e,
 						'onUpdate:attributes': (e: Record<string, unknown>) => attributes.value = e,
 						'onUpdate:mounted': (e: boolean) => mounted.value = e,

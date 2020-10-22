@@ -2,7 +2,7 @@ import {defineComponent, inject, reactive, ref} from 'vue'
 import {useBreakpoint, useFetch} from 'vue-composable'
 
 import BreakpointsConfig from '/@/breakpoints.json'
-import Logo from '/@/components/logo'
+import Logo from '/@/components/logo.vue'
 
 declare interface Hitokoto {
 	word?: string;
