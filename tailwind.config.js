@@ -10,6 +10,8 @@ module.exports = {
 			'./index.html',
 			'./src/**/*.vue',
 			'./src/**/*.tsx',
+			'./pages/**/*.vue',
+			'./pages/**/*.tsx',
 		],
 	},
 	theme: {
