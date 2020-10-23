@@ -1,0 +1,21 @@
+digraph abc {
+	node [shape=box]
+	edge [dir=back]
+
+	entry [label="f(x)"]
+	cond [label="x == 1 || x == 2"]
+	base [label="return x"]
+	re1 [label="f(x-1)"]
+	re2 [label="f(x-2)"]
+	return [label="f(x-1) + f(x-2)"]
+
+	subgraph cluster_while {
+		entry->cond [color=red, dir=front]
+		cond->base [color=red, dir=front]
+		cond->return [color=red, dir=front]
+		entry->re1
+		re1->return
+		entry->re2
+		re2->return
+	}
+}
