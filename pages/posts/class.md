@@ -26,9 +26,9 @@ license: by-nc-sa
 
 这门课不再教授具体的语法, 转而交给学生自学. python/c入门建议阅读[菜鸟教程](https://www.runoob.com/). c语言额外推荐c和指针, c专家编程, c的陷阱和缺陷, krc等书.
 
-编程离不开实践, 不管是python自己的REPL[^REPL], 还是本站浏览器提供的[pyterm](/pyterm)都是绝佳的实验场地. 务必多多实验.
+编程离不开实践, 不管是python自己的REPL[^REPL], 还是本站浏览器提供的[pyterm](/pyterm)都是绝佳的实验场地. 务必多多实验. 环境搭建可参考[菜鸟教程](https://www.runoob.com/python3/python3-install.html)
 
-[^REPL]: REPL, 即Read Eval Print Loop, 读取-执行-打印循环. 一个可以和你实时交互的编程环境.
+[^REPL]: REPL, 即Read Eval Print Loop, 读取-执行-打印循环. 一个可以和你实时交互的编程环境. [python3REPL - 菜鸟教程](https://www.runoob.com/python3/python3-interpreter.html)
 
 3 . 宣讲会上说过的在线运行python?
 
@@ -48,6 +48,22 @@ license: by-nc-sa
 
 1. 变量, 组成程序的基本要素, 类型是变量最重要的部分
 2. 数据流和控制流的概念可以帮你进行基本的代码逻辑分析
+
+相关菜鸟教程章节:
+
++ [c基本语法](https://www.runoob.com/cprogramming/c-basic-syntax.html)
++ [c变量](https://www.runoob.com/cprogramming/c-variables.html)
++ [c常量](https://www.runoob.com/cprogramming/c-constants.html)
++ [c数据类型](https://www.runoob.com/cprogramming/c-data-types.html)
++ [c程序结构](https://www.runoob.com/cprogramming/c-program-structure.html)
++ [c条件控制](https://www.runoob.com/cprogramming/c-decision.html)
++ [c循环](https://www.runoob.com/cprogramming/c-loops.html)
++ [py基础语法](https://www.runoob.com/python3/python3-basic-syntax.html)
++ [py数字](https://www.runoob.com/python3/python3-number.html)
++ [py字符串](https://www.runoob.com/python3/python3-string.html)
++ [py基本数据类型](https://www.runoob.com/python3/python3-data-type.html)
++ [py条件控制](https://www.runoob.com/python3/python3-conditional-statements.html)
++ [py循环](https://www.runoob.com/python3/python3-loop.html)
 
 ### 变量(variable)
 
@@ -340,6 +356,16 @@ a = 4;
 
 1. 表达式/语句/副作用, 组成程序的基本要素
 2. 函数, 组成程序的基本要素, 递归是函数的一个大用处
+
+相关菜鸟教程章节:
+
++ [c基本语法](https://www.runoob.com/cprogramming/c-basic-syntax.html)
++ [c条件控制](https://www.runoob.com/cprogramming/c-decision.html)
++ [c循环](https://www.runoob.com/cprogramming/c-loops.html)
++ [c递归](https://www.runoob.com/cprogramming/c-recursion.html)
++ [py基础语法](https://www.runoob.com/python3/python3-basic-syntax.html)
++ [py条件控制](https://www.runoob.com/python3/python3-conditional-statements.html)
++ [py循环](https://www.runoob.com/python3/python3-loop.html)
 
 ### 表达式(expression)/语句(statement)
 
@@ -822,3 +848,4 @@ int sum(int a) {
 + 第二节内容完成, 已添加
 + 更改练习难度为easy, normal, hard, 调整一二节练习
 + 第二节答案放出
++ 标注需要阅读的菜鸟教程章节
