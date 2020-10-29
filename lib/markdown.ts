@@ -1,58 +1,60 @@
+import toMDXAST from '@mdx-js/mdx/md-ast-to-mdx-ast'
+import mdxAstToMdxHast from '@mdx-js/mdx/mdx-ast-to-mdx-hast'
+import mdxHastToJsx from '@mdx-js/mdx/mdx-hast-to-jsx'
+import {Service, startService} from 'esbuild'
 import {format as dateFormat} from 'fecha'
 import fs from 'fs'
-import parse from 'gray-matter'
-import {get, set} from 'lodash'
-import hash from 'object-hash'
-import path from 'path'
 import katex from 'rehype-katex'
-import collapse from 'remark-collapse'
 import embeded from 'remark-embed-images'
 import toc_extract from 'remark-extract-toc'
 import footnotes from 'remark-footnotes'
+import frontmatter from 'remark-frontmatter'
 import gfm from 'remark-gfm'
 import highlight from 'remark-highlight.js'
 import math from 'remark-math'
+import remarkMdx from 'remark-mdx'
 import footnotes_numberd from 'remark-numbered-footnote-labels'
 import markdown from 'remark-parse'
-import remark2rehype from 'remark-rehype'
 import sectionize from 'remark-sectionize'
 import slug from 'remark-slug'
 import {Item} from 'src/components/nested-menu';
+import vfile from 'to-vfile'
 import toml from 'toml'
 import unified from 'unified'
+import remove from 'unist-util-remove'
 import visit from 'unist-util-visit'
 import {Transform} from 'vite'
 
 import footnotes_mulref from './mulref'
 
-declare interface TocEntry {
-	depth: number;
-	data?: Record<string, unknown>;
-	value: string;
-	children: TocEntry[];
+let esbuild: Promise<Service> | undefined
+
+const ensureService = async () => {
+	if (!esbuild) {
+		esbuild = startService()
+	}
+	return esbuild
+}
+
+export const stopService = async () => {
+	if (esbuild) {
+		const service = await esbuild
+		service.stop()
+		esbuild = undefined
+	}
 }
 
 const test = (path: string) => path.endsWith('.md');
 
-const render = async (code: string, file: string) => {
-	const fm = parse(code, {
-		language: 'toml',
-		engines: {
-			toml: toml.parse.bind(toml)
-		},
-	})
-	const descs = fm.data['descs']
-	for (const desc of descs) {
-		if (desc.label == 'last_modified') {
-			const stats = fs.statSync(file)
-			desc.value = dateFormat(stats.mtime, 'YYYY-MM-DD hh:mm:ss A')
-		}
-	}
-
+const render = async (file: string) => {
+	let attributes: Record<string, unknown> = {}
+	let tableOfContents: Record<string, unknown> = {}
 	const remark = unified()
+		.use(frontmatter)
 		.use(markdown, {})
+		.use(remarkMdx)
+		.use(toMDXAST)
 		.use(gfm, {})
-		.use(collapse, {test: 'tango'})
 		.use(slug)
 		.use(footnotes, {inlineNotes: true})
 		.use(footnotes_numberd)
@@ -61,42 +63,57 @@ const render = async (code: string, file: string) => {
 		.use(embeded)
 		.use(math)
 		.use(highlight)
+		.use(() => {
+			return (tree) => {
+				// extract frontmatter
+				visit(tree, ['yaml', 'toml'], (node) => {
+					attributes = toml.parse(node.value as string)
+				})
+				remove(tree, ['yaml', 'toml'])
 
-	const vf = {
-		cwd: path.dirname(file),
-		path: file,
-		contents: fm.content,
-	}
+				const descs = attributes.descs
+				if (descs && descs instanceof Array) {
+					for (const desc of descs) {
+						if (desc.label == 'last_modified') {
+							const stats = fs.statSync(file)
+							desc.value = dateFormat(stats.mtime, 'YYYY-MM-DD hh:mm:ss A')
+						}
+					}
+				}
 
-	const mast = await remark.run(remark.parse(vf), vf)
+				// extract toc
+				let toc1: unknown = toc_extract({keys: ['data']})(tree)
 
-	let tocs: unknown = await unified().use(toc_extract, {keys: ['data']}).run(mast)
+				if (toc1 instanceof Array) {
+					toc1 = {depth: 0, children: toc1}
+				}
 
-	if (tocs instanceof Array) {
-		tocs = {depth: 0, value: fm.data.title, children: tocs}
-	}
+				interface TocEntry {
+					depth: number;
+					data?: Record<string, unknown>;
+					value: string;
+					children: TocEntry[];
+				}
 
-	const tocTrans = (p: TocEntry): Item => {
-		const children: Record<string, Item> = {}
-		for (const v of p.children) {
-			children[v.value] = tocTrans(v)
-		}
-		return {
-			href: `#${p.data?.id || p.value}`,
-			label: p.value,
-			children: children,
-			type: p.children.length ? 'sub' : undefined,
-		}
-	}
+				const tocTrans = (p: TocEntry): Item => {
+					const children: Record<string, Item> = {}
+					for (const v of p.children) {
+						children[v.value] = tocTrans(v)
+					}
+					return {
+						href: `#${p.data?.id || p.value}`,
+						label: p.value,
+						children: children,
+						type: p.children.length ? 'sub' : undefined,
+					}
+				}
 
-	tocs = tocTrans(tocs as TocEntry).children
-
-	const hast = await unified()
-		.use(remark2rehype, {
-			allowDangerousHtml: true,
-			handlers: {
-			},
-		})
+				const toc2 = tocTrans(toc1 as TocEntry)
+				if (toc2.children) {
+					tableOfContents = toc2.children
+				}
+			}
+		}).use(mdxAstToMdxHast)
 		.use(katex, {
 			output: 'html',
 			macros: {
@@ -105,54 +122,61 @@ const render = async (code: string, file: string) => {
 				'\\bb': '\\mathbb{#1}',
 				'\\bf': '\\mathbf{#1}',
 			},
-		}).run(mast)
+		})
+		.use(mdxHastToJsx)
 
-	visit(hast, 'element', (node) => {
-		if (node.tagName !== 'code') return
-		set(node, 'properties.id', hash(node))
-		const lang = get(node, 'properties.className') as string[]
-		if (!lang || !lang.length || lang.length < 1) return
-		set(node, 'properties.language', lang[0].replace('language-', ''))
+	const jsx = await remark.process(vfile.readSync(file))
+	const result = await (await ensureService()).transform(`${jsx.contents}`, {
+		loader: 'jsx',
+		sourcemap: true,
+		sourcefile: jsx.path,
+		target: 'es2020',
+		jsxFactory: 'vnode',
 	})
+	result.js = result.js.replace('export default function MDXContent', 'const MDXContent = function')
+	result.js = `
+import { defineComponent, inject, isVNode, createVNode, h } from 'vue'
+import { useRouter } from 'vue-router'
 
-	return {attributes: fm.data, tocs, hast}
+const defaults = {inlineCode: 'code', wrapper: 'div'}
+const slice = Array.prototype.slice
+
+export default defineComponent({
+	setup(props) {
+		const router = useRouter()
+		const page = inject('page') || {}
+		const registerComponent = inject('components') || {}
+		const vnode = function (tag, props, children) {
+			if (registerComponent[tag]) {
+				tag = registerComponent[tag]
+			}
+			if (defaults[tag]) {
+				tag = defaults[tag]
+			}
+			if (arguments.length > 3 || isVNode(children)) {
+				children = slice.call(arguments, 2)
+			}
+			return createVNode(tag, props, children)
+		}
+		${result.js}
+		return () => {
+			page.toc = ${JSON.stringify(tableOfContents)}
+			page.attributes = ${JSON.stringify(attributes)}
+			return MDXContent({})
+		}
+	},
+})
+`
+	return result;
 }
 
 export const transform = (): Transform => {
 	return {
 		test: ({path: file}) => test(file),
-		transform: async ({code, path: file}) => {
-			const {attributes, tocs, hast} = await render(code, file)
+		transform: async ({path: file}) => {
+			const result = await render(file)
 			return {
-				code: `
-import { defineComponent, reactive, h, withModifiers, inject } from 'vue'
-import { useRouter } from 'vue-router'
-import toH from 'hast-to-hyperscript'
-
-export default defineComponent({
-	setup(props, {emit}) {
-		const router = useRouter()
-		const hast = ${JSON.stringify(hast)}
-
-		const page = inject('page') || {}
-		return () => {
-			page.toc = ${JSON.stringify(tocs)}
-			page.attributes = ${JSON.stringify(attributes)}
-			const ret = toH((e, p, c) => {
-				if (p && p.class) {
-					if (p.class.includes('footnote-ref')) {
-						p.onClick = withModifiers(() => router.push(p.href), ['stop', 'prevent'])
-					} else if (p.class.includes('footnote-backref')) {
-						p.onClick = withModifiers(() => router.back(), ['stop', 'prevent'])
-					}
-				}
-				return h(e, p, c)
-			}, hast)
-			return ret
-		}
-	},
-})
-`,
+				code: result.js,
 			}
 		}
 	}

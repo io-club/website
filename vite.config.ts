@@ -1,6 +1,5 @@
 import path from 'path'
 import {UserConfig} from 'vite'
-//import legacyPlugin from 'vite-plugin-legacy'
 import svg from 'vite-plugin-svg'
 import voie from 'vite-plugin-voie'
 
@@ -14,9 +13,6 @@ export default {
 	mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 	alias,
 	sourcemap: true,
-	optimizeDeps: {
-		include: ['hast-to-hyperscript'],
-	},
 	cssPreprocessOptions: {
 		less: {
 			paths: ['src'],
@@ -42,15 +38,5 @@ export default {
 				}],
 			},
 		}),
-		/*
-		legacyPlugin({
-			targets: [
-				'since 2015',
-			],
-			polyfills: [],
-			ignoreBrowserslistConfig: true,
-			corejs: false,
-		})
-		*/
 	],
 } as UserConfig
