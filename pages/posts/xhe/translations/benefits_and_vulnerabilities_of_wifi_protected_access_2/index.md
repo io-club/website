@@ -1,7 +1,11 @@
 ---
-title: "[汉化] 论WPA2的优点和缺陷"
-desc: "Paul Arana, INFS 612, Fall 2006"
-license: by-nc-sa
+title="[汉化] 论WPA2的优点和缺陷"
+subtitle="Paul Arana, INFS 612, Fall 2006"
+descs=[
+	{label="author", value="xhe"},
+	{label="last_modified"},
+]
+license="by-nc-sa"
 ---
 
 原文: [Benefits and Vulnerabilities of Wi-Fi Protected Access 2 (WPA2)](https://cs.gmu.edu/~yhwang1/INFS612/Sample_Projects/Fall_06_GPN_6_Final_Report.pdf)

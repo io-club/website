@@ -1,4 +1,20 @@
 {
 	"version": 2,
-	"rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+	"headers": [
+		{
+			"source": "/rustpython_wasm_bg.wasm",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=31536000"
+				}
+			]
+		}
+	],
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": "/index.html"
+		}
+	]
 }

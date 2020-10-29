@@ -1,7 +1,7 @@
+import Antd from 'ant-design-vue';
 import routes from 'voie-pages'
 import {createApp} from 'vue'
 import {createRouter, createWebHistory} from 'vue-router'
-import WaveUI from 'wave-ui/src/wave-ui/index.js'
 
 import Main from './main.vue'
 
@@ -12,6 +12,8 @@ app.use(createRouter({
 	routes,
 }))
 
+app.use(Antd);
+/*
 new WaveUI(app, {
 	breakpoints: {
 		xs: 600,
@@ -61,5 +63,6 @@ new WaveUI(app, {
 		lwhite: '#fcfcfc',
 	},
 })
+*/
 
 app.mount('#app')

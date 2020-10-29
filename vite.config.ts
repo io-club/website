@@ -1,5 +1,6 @@
 import path from 'path'
 import {UserConfig} from 'vite'
+//import legacyPlugin from 'vite-plugin-legacy'
 import svg from 'vite-plugin-svg'
 import voie from 'vite-plugin-voie'
 
@@ -12,17 +13,18 @@ const alias = {
 export default {
 	mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 	alias,
-	vueCustomBlockTransforms: {
-	},
+	sourcemap: true,
 	optimizeDeps: {
 		include: ['hast-to-hyperscript'],
 	},
 	cssPreprocessOptions: {
-		scss: {
-			includePaths: ['src', 'node_modules'],
-			additionalData: '@import "variables.scss";'
+		less: {
+			paths: ['src'],
+			javascriptEnabled: true,
 		},
 	},
+	esbuildTarget: 'es2018',
+	minify: 'esbuild',
 	transforms: [
 		markdown(),
 	],
@@ -40,5 +42,15 @@ export default {
 				}],
 			},
 		}),
+		/*
+		legacyPlugin({
+			targets: [
+				'since 2015',
+			],
+			polyfills: [],
+			ignoreBrowserslistConfig: true,
+			corejs: false,
+		})
+		*/
 	],
 } as UserConfig

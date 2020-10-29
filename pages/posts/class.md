@@ -1,7 +1,11 @@
 ---
-title: 程序结构导论
-desc: how to program?
-license: by-nc-sa
+title="程序结构导论"
+descs=[
+	{label="description", value="how to program?"},
+	{label="author", value="xhe"},
+	{label="last_modified"},
+]
+license="by-nc-sa"
 ---
 
 ## 简介

@@ -1,3 +1,5 @@
+import {format as dateFormat} from 'fecha'
+import fs from 'fs'
 import parse from 'gray-matter'
 import {get, set} from 'lodash'
 import hash from 'object-hash'
@@ -15,17 +17,37 @@ import markdown from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import sectionize from 'remark-sectionize'
 import slug from 'remark-slug'
-import {TocEntry} from 'src/components/toc'
+import {Item} from 'src/components/nested-menu';
+import toml from 'toml'
 import unified from 'unified'
 import visit from 'unist-util-visit'
 import {Transform} from 'vite'
 
 import footnotes_mulref from './mulref'
 
+declare interface TocEntry {
+	depth: number;
+	data?: Record<string, unknown>;
+	value: string;
+	children: TocEntry[];
+}
+
 const test = (path: string) => path.endsWith('.md');
 
 const render = async (code: string, file: string) => {
-	const fm = parse(code)
+	const fm = parse(code, {
+		language: 'toml',
+		engines: {
+			toml: toml.parse.bind(toml)
+		},
+	})
+	const descs = fm.data['descs']
+	for (const desc of descs) {
+		if (desc.label == 'last_modified') {
+			const stats = fs.statSync(file)
+			desc.value = dateFormat(stats.mtime, 'YYYY-MM-DD hh:mm:ss A')
+		}
+	}
 
 	const remark = unified()
 		.use(markdown, {})
@@ -40,7 +62,36 @@ const render = async (code: string, file: string) => {
 		.use(math)
 		.use(highlight)
 
-	const rehype = unified()
+	const vf = {
+		cwd: path.dirname(file),
+		path: file,
+		contents: fm.content,
+	}
+
+	const mast = await remark.run(remark.parse(vf), vf)
+
+	let tocs: unknown = await unified().use(toc_extract, {keys: ['data']}).run(mast)
+
+	if (tocs instanceof Array) {
+		tocs = {depth: 0, value: fm.data.title, children: tocs}
+	}
+
+	const tocTrans = (p: TocEntry): Item => {
+		const children: Record<string, Item> = {}
+		for (const v of p.children) {
+			children[v.value] = tocTrans(v)
+		}
+		return {
+			href: `#${p.data?.id || p.value}`,
+			label: p.value,
+			children: children,
+			type: p.children.length ? 'sub' : undefined,
+		}
+	}
+
+	tocs = tocTrans(tocs as TocEntry).children
+
+	const hast = await unified()
 		.use(remark2rehype, {
 			allowDangerousHtml: true,
 			handlers: {
@@ -54,23 +105,7 @@ const render = async (code: string, file: string) => {
 				'\\bb': '\\mathbb{#1}',
 				'\\bf': '\\mathbf{#1}',
 			},
-		})
-
-	const vf = {
-		cwd: path.dirname(file),
-		path: file,
-		contents: fm.content,
-	}
-
-	const mast = await remark.run(remark.parse(vf), vf)
-
-	let tocs: unknown = await unified().use(toc_extract).run(mast)
-
-	if (tocs instanceof Array) {
-		tocs = {depth: 0, value: fm.data.title, children: tocs}
-	}
-
-	const hast = await rehype.run(mast)
+		}).run(mast)
 
 	visit(hast, 'element', (node) => {
 		if (node.tagName !== 'code') return
@@ -79,15 +114,6 @@ const render = async (code: string, file: string) => {
 		if (!lang || !lang.length || lang.length < 1) return
 		set(node, 'properties.language', lang[0].replace('language-', ''))
 	})
-
-	const uuid = (p: TocEntry) => {
-		p.uuid = hash(p)
-		if (p.children) {
-			p.children.forEach(v => uuid(v))
-		}
-		return p
-	}
-	uuid(tocs as TocEntry)
 
 	return {attributes: fm.data, tocs, hast}
 }
@@ -99,25 +125,19 @@ export const transform = (): Transform => {
 			const {attributes, tocs, hast} = await render(code, file)
 			return {
 				code: `
-import { defineComponent, reactive, h, withModifiers, onMounted } from 'vue'
+import { defineComponent, reactive, h, withModifiers, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import toH from 'hast-to-hyperscript'
 
 export default defineComponent({
-	props: [
-		'onUpdate:toc',
-		'onUpdate:attributes',
-		'onUpdate:mounted',
-	],
-	setup(props) {
+	setup(props, {emit}) {
 		const router = useRouter()
 		const hast = ${JSON.stringify(hast)}
-		props['onUpdate:toc'](${JSON.stringify(tocs)})
-		props['onUpdate:attributes'](${JSON.stringify(attributes)})
-		onMounted(() => {
-			props['onUpdate:mounted'](true)
-		})
+
+		const page = inject('page') || {}
 		return () => {
+			page.toc = ${JSON.stringify(tocs)}
+			page.attributes = ${JSON.stringify(attributes)}
 			const ret = toH((e, p, c) => {
 				if (p && p.class) {
 					if (p.class.includes('footnote-ref')) {

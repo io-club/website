@@ -1,4 +1,6 @@
 ---
-title: 关于
-desc: 还没写
+title="关于"
+descs=[
+	{label="description", value="还没写"},
+]
 ---
