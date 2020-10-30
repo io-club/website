@@ -1,17 +1,26 @@
 <template>
-	<router-view v-slot="{Component}">
-		<transition @before-enter="before" :css="false">
-			<component :is="Component" />
-		</transition>
-	</router-view>
+	<a-spin :spinning="loading" :wrapperClassName="classes" size="large">
+		<router-view v-slot="{Component}">
+			<transition @before-enter="before" @after-enter="after" :css="false">
+				<component :is="Component" />
+			</transition>
+		</router-view>
+	</a-spin>
 </template>
 
 <script setup="props" lang="ts">
-import { message } from "ant-design-vue";
-import { inject } from "vue";
+import { ref } from "vue";
 
-const { $ts: t } = inject("i18n") || {};
+declare const props: {
+	class?: string;
+};
+
+export const classes = props.class;
+export const loading = ref(false);
 export const before = () => {
-	message.loading(t("loading_tip"), 1);
+	loading.value = true;
+};
+export const after = () => {
+	setTimeout(() => (loading.value = false), 200);
 };
 </script>
