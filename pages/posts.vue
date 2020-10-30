@@ -1,6 +1,6 @@
 <template>
-	<a-row class="relative p6">
-		<a-col :span="19">
+	<a-row type="flex" justify="center">
+		<a-col :xs="22" :sm="19">
 			<a-page-header
 				:title="page.attributes.title"
 				:sub-title="page.attributes.subtitle"
@@ -17,12 +17,12 @@
 					>{{desc.value}}</a-descriptions-item>
 				</a-descriptions>
 			</a-page-header>
-			<div class="py1 markdown">
+			<div class="px4 py1 markdown">
 				<router-view />
 			</div>
 		</a-col>
-		<a-col :span="5" class="sticky px2 t0">
-			<NestedMenu :items="page.toc" mode="inline" :i18n="false" />
+		<a-col :xs="0" :sm="5" class="relative px2">
+			<NestedMenu :items="page.toc" mode="inline" :i18n="false" class="sticky t0" />
 		</a-col>
 	</a-row>
 </template>
@@ -30,18 +30,33 @@
 <script setup lang="ts">
 export { default as License } from "/@/components/license.vue";
 export { default as NestedMenu } from "/@/components/nested-menu";
-import { inject, provide, reactive } from "vue";
+import { inject, provide, reactive, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 
 export const router = useRouter();
 
 export const page = reactive({
 	attributes: {},
-	toc: [],
+	toc: {},
 });
 provide("page", page);
 
 export const { $ts: t } = inject("i18n") || {};
+
+import { Item } from "/@/components/nested-menu";
+const navItems: Record<string, Item> = inject("navItems") || {};
+const br = inject("breakpoints") || {};
+watchEffect(() => {
+	if (br.sm) {
+		delete navItems.toc;
+	} else {
+		navItems.toc = {
+			type: "group",
+			label: t("toc"),
+			children: page.toc,
+		};
+	}
+});
 </script>
 
 <style>
@@ -93,5 +108,11 @@ export const { $ts: t } = inject("i18n") || {};
 	.hb(3, "###");
 	.hb(4, "####");
 	.hb(5, "#####");
+
+	.katex-display .katex {
+		.max-w100();
+		overflow-x: auto;
+		overflow-y: hidden;
+	}
 }
 </style>

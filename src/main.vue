@@ -1,6 +1,15 @@
 <template>
 	<a-back-top />
 	<main class="flex-col bg-lwhite fc-front min-h100">
+		<a-drawer
+			:title="t('IO LAB')"
+			placement="left"
+			v-model:visible="open"
+			getContainer="body"
+			width="80%"
+		>
+			<NestedMenu :items="items" mode="inline" />
+		</a-drawer>
 		<header class="flex-row align-center py0 px3 bg-back">
 			<router-link class="flex-row align-center" to="/#">
 				<logo class="h5" />
@@ -9,13 +18,10 @@
 
 			<span class="flex-grow" />
 
-			<NestedMenu v-if="br.sm" :items="items" class="bg-back"/>
+			<NestedMenu v-if="br.sm" :items="items" />
 			<a-button v-else type="link" @click="open = !open">
 				<MenuOutlined v-if="!open" />
 				<CloseOutlined v-else />
-				<a-drawer :title="t('IO LAB')" placement="right" v-model:visible="open">
-					<NestedMenu :items="items" mode="inline" class="bg-back"/>
-				</a-drawer>
 			</a-button>
 		</header>
 		<SubView class="flex-grow" />
@@ -36,6 +42,8 @@
 
 <script setup lang="ts">
 import { provide, reactive, readonly, ref } from "vue";
+
+// for logo
 export { default as logo } from "/@/components/logo.vue";
 
 // for loading
@@ -48,7 +56,6 @@ export const open = ref(false);
 // global breakpoints
 import breakpoints from "/@/breakpoints.json";
 import { useBreakpoint, useFetch } from "vue-composable";
-
 export const br = readonly(reactive(useBreakpoint(breakpoints)));
 provide("breakpoints", br);
 
@@ -97,6 +104,7 @@ export const items: Record<string, Item> = {
 		callback: (t) => (locale.value = t as typeof locale.value),
 	},
 };
+provide("navItems", reactive(items));
 
 // for footer
 declare interface Hitokoto {
@@ -132,6 +140,11 @@ a {
 
 .ant-menu {
 	border: none;
+	.bg-transparent();
+}
+
+img {
+	.max-w100();
 }
 
 code {

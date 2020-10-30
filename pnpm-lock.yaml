@@ -513,7 +513,7 @@ packages:
     dev: true
     resolution:
       integrity: sha1-BoWzxH6zAG/+0RfN1VFkth+AU48=
-      tarball: '@types/body-parser/download/@types/body-parser-1.19.0.tgz'
+      tarball: '@types/body-parser/download/@types/body-parser-1.19.0.tgz?cache=0&sync_timestamp=1602678008819&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fbody-parser%2Fdownload%2F%40types%2Fbody-parser-1.19.0.tgz'
   /@types/connect/3.4.33:
     dependencies:
       '@types/node': 14.14.6
@@ -1094,7 +1094,7 @@ packages:
   /autoprefixer/9.8.6:
     dependencies:
       browserslist: 4.14.5
-      caniuse-lite: 1.0.30001153
+      caniuse-lite: 1.0.30001154
       colorette: 1.2.1
       normalize-range: 0.1.2
       num2fraction: 1.2.2
@@ -1154,7 +1154,7 @@ packages:
     dev: true
     resolution:
       integrity: sha1-nyKcFb4nJFT/qXOs4NvueaGww28=
-      tarball: bluebird/download/bluebird-3.7.2.tgz
+      tarball: bluebird/download/bluebird-3.7.2.tgz?cache=0&sync_timestamp=1602665314449&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbluebird%2Fdownload%2Fbluebird-3.7.2.tgz
   /boolbase/1.0.0:
     dev: true
     resolution:
@@ -1203,10 +1203,10 @@ packages:
       tarball: brotli-size/download/brotli-size-4.0.0.tgz
   /browserslist/4.14.5:
     dependencies:
-      caniuse-lite: 1.0.30001153
+      caniuse-lite: 1.0.30001154
       electron-to-chromium: 1.3.584
       escalade: 3.1.1
-      node-releases: 1.1.64
+      node-releases: 1.1.65
     dev: true
     engines:
       node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7
@@ -1271,16 +1271,16 @@ packages:
     resolution:
       integrity: sha1-1UVjW+HjPFQmScaRc+Xeas+uNN0=
       tarball: camelcase/download/camelcase-4.1.0.tgz
-  /caniuse-lite/1.0.30001153:
+  /caniuse-lite/1.0.30001154:
     dev: true
     resolution:
-      integrity: sha1-mglC/nd81xePsIRpO3lBX/dH7Nk=
-      tarball: caniuse-lite/download/caniuse-lite-1.0.30001153.tgz
+      integrity: sha1-87vCRc5V5MHNIPpzGwl4gBgafxc=
+      tarball: caniuse-lite/download/caniuse-lite-1.0.30001154.tgz
   /ccount/1.1.0:
     dev: true
     resolution:
       integrity: sha1-JGaH3rtgFHNRMb6KurLZOJj40EM=
-      tarball: ccount/download/ccount-1.1.0.tgz
+      tarball: ccount/download/ccount-1.1.0.tgz?cache=0&sync_timestamp=1603899233292&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fccount%2Fdownload%2Fccount-1.1.0.tgz
   /chalk/2.4.1:
     dependencies:
       ansi-styles: 3.2.1
@@ -2181,7 +2181,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-vZqB+memz9UWVs24iBLOSczsWAE=
-      tarball: eslint/download/eslint-7.12.1.tgz
+      tarball: eslint/download/eslint-7.12.1.tgz?cache=0&sync_timestamp=1603872332434&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint%2Fdownload%2Feslint-7.12.1.tgz
   /espree/6.2.1:
     dependencies:
       acorn: 7.4.1
@@ -2279,7 +2279,7 @@ packages:
     dev: true
     resolution:
       integrity: sha1-34xp7vFkeSPHFXuc6DhAYQsCzDk=
-      tarball: event-emitter/download/event-emitter-0.3.5.tgz?cache=0&sync_timestamp=1602731093095&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fevent-emitter%2Fdownload%2Fevent-emitter-0.3.5.tgz
+      tarball: event-emitter/download/event-emitter-0.3.5.tgz
   /eventemitter3/4.0.7:
     dev: true
     resolution:
@@ -2621,7 +2621,7 @@ packages:
     dev: true
     resolution:
       integrity: sha1-gdAbtd6OpKIUrV1urRtSNGCwtFo=
-      tarball: hash-sum/download/hash-sum-2.0.0.tgz?cache=0&sync_timestamp=1597896036605&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhash-sum%2Fdownload%2Fhash-sum-2.0.0.tgz
+      tarball: hash-sum/download/hash-sum-2.0.0.tgz
   /hast-to-hyperscript/9.0.0:
     dependencies:
       '@types/unist': 2.0.3
@@ -3861,12 +3861,12 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-PrXtYmInVteaXw4qIh3+utdcL34=
-      tarball: mkdirp/download/mkdirp-1.0.4.tgz?cache=0&sync_timestamp=1589726597462&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmkdirp%2Fdownload%2Fmkdirp-1.0.4.tgz
+      tarball: mkdirp/download/mkdirp-1.0.4.tgz
   /moment/2.29.1:
     dev: false
     resolution:
       integrity: sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
-      tarball: moment/download/moment-2.29.1.tgz
+      tarball: moment/download/moment-2.29.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmoment%2Fdownload%2Fmoment-2.29.1.tgz
   /ms/2.0.0:
     dev: true
     resolution:
@@ -3924,11 +3924,11 @@ packages:
     resolution:
       integrity: sha1-Mt6ir7Ppkm8C7lzoeUkCaRpna/M=
       tarball: node-forge/download/node-forge-0.10.0.tgz
-  /node-releases/1.1.64:
+  /node-releases/1.1.65:
     dev: true
     resolution:
-      integrity: sha1-cbSumI6bHdfB/85Y3Z5WF1Lf68U=
-      tarball: node-releases/download/node-releases-1.1.64.tgz
+      integrity: sha1-UtlXkXa9YPI+ugXEQ4WD80GUS4E=
+      tarball: node-releases/download/node-releases-1.1.65.tgz
   /normalize-path/3.0.0:
     dev: true
     engines:
@@ -4082,7 +4082,7 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha1-RUYf3uRkRPNkW24U6zypS4Lhvmk=
-      tarball: open/download/open-7.3.0.tgz?cache=0&sync_timestamp=1602227399703&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fopen%2Fdownload%2Fopen-7.3.0.tgz
+      tarball: open/download/open-7.3.0.tgz
   /optionator/0.9.1:
     dependencies:
       deep-is: 0.1.3
@@ -4249,7 +4249,7 @@ packages:
     optional: true
     resolution:
       integrity: sha1-SyzSXFDVmHNcUCkiJP2MbfQeMjE=
-      tarball: pify/download/pify-4.0.1.tgz?cache=0&sync_timestamp=1600654200907&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpify%2Fdownload%2Fpify-4.0.1.tgz
+      tarball: pify/download/pify-4.0.1.tgz
   /postcss-discard-comments/4.0.2:
     dependencies:
       postcss: 7.0.35
@@ -4289,7 +4289,7 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha1-gYcZoa4doyX5gyRGsBE27rSTzX4=
-      tarball: postcss-modules-extract-imports/download/postcss-modules-extract-imports-2.0.0.tgz?cache=0&sync_timestamp=1600776154890&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpostcss-modules-extract-imports%2Fdownload%2Fpostcss-modules-extract-imports-2.0.0.tgz
+      tarball: postcss-modules-extract-imports/download/postcss-modules-extract-imports-2.0.0.tgz
   /postcss-modules-local-by-default/3.0.3:
     dependencies:
       icss-utils: 4.1.1
@@ -4786,7 +4786,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-stEE/g2Psnz54KHNqCYt04M8bKs=
-      tarball: rimraf/download/rimraf-2.6.3.tgz?cache=0&sync_timestamp=1589726570537&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frimraf%2Fdownload%2Frimraf-2.6.3.tgz
+      tarball: rimraf/download/rimraf-2.6.3.tgz
   /rollup-plugin-dynamic-import-variables/1.1.0_rollup@2.32.1:
     dependencies:
       '@rollup/pluginutils': 3.1.0_rollup@2.32.1
@@ -4889,7 +4889,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-qVT5Ma66UI0we78Gnv8MAclhFvc=
-      tarball: semver/download/semver-5.7.1.tgz?cache=0&sync_timestamp=1589726599161&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-5.7.1.tgz
+      tarball: semver/download/semver-5.7.1.tgz
   /semver/7.3.2:
     dev: true
     engines:
@@ -4897,7 +4897,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-YElisFK4HtB4aq6EOJ/7pw/9OTg=
-      tarball: semver/download/semver-7.3.2.tgz?cache=0&sync_timestamp=1589726599161&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-7.3.2.tgz
+      tarball: semver/download/semver-7.3.2.tgz
   /serialize-javascript/4.0.0:
     dependencies:
       randombytes: 2.1.0
@@ -4934,7 +4934,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-uQXpgGFv7s0XDlHI+XmnsjdAmPU=
-      tarball: serve/download/serve-11.3.2.tgz?cache=0&sync_timestamp=1591319713174&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fserve%2Fdownload%2Fserve-11.3.2.tgz
+      tarball: serve/download/serve-11.3.2.tgz
   /setprototypeof/1.1.0:
     dev: true
     resolution:
@@ -5885,7 +5885,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^4.6.0
   '@typescript-eslint/parser': ^4.6.0
   '@vue/compiler-sfc': ^3.0.2
-  ant-design-vue: ^2.0.0-beta.10
+  ant-design-vue: 2.0.0-beta.10
   autoprefixer: ^9.8.6
   esbuild: ^0.7.22
   eslint: ^7.12.1
