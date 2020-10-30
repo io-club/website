@@ -27,7 +27,7 @@ export default {
 	plugins: [
 		voie({
 			pagesDir: 'pages',
-			extensions: ['vue', 'tsx', 'md'],
+			extensions: ['vue', 'md'],
 		}),
 		svg({
 			svgoConfig: {

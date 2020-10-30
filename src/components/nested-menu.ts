@@ -83,10 +83,8 @@ export default defineComponent({
 					let cur = props.items
 					while ((k = keyPath.pop())) {
 						const item = cur[k]
-						if (keyPath.length == 0) {
-							if (item.callback) {
-								item.callback(key)
-							}
+						if (item.callback) {
+							item.callback(key)
 						}
 						cur = item.children || {}
 					}
