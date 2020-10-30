@@ -40,6 +40,7 @@ devDependencies:
   remark-math: 4.0.0
   remark-mdx: 1.6.19
   remark-numbered-footnote-labels: 1.1.0
+  remark-pangu: 2.2.0
   remark-parse: 9.0.0
   remark-sectionize: 1.1.1
   remark-slug: 6.0.0
@@ -4120,6 +4121,12 @@ packages:
     resolution:
       integrity: sha1-P7z7FbiZpEEjs0ttzBi3JDNqLK4=
       tarball: p-finally/download/p-finally-1.0.0.tgz
+  /pangu/4.0.7:
+    dev: true
+    hasBin: true
+    resolution:
+      integrity: sha1-KkA0dzOwBKBA0BHeRgzDE8EDkck=
+      tarball: pangu/download/pangu-4.0.7.tgz
   /parent-module/1.0.1:
     dependencies:
       callsites: 3.1.0
@@ -4652,6 +4659,17 @@ packages:
     resolution:
       integrity: sha1-HOBq8LuqCc6WzyWM1TO5p6GFa28=
       tarball: remark-numbered-footnote-labels/download/remark-numbered-footnote-labels-1.1.0.tgz
+  /remark-pangu/2.2.0:
+    dependencies:
+      pangu: 4.0.7
+      unist-util-is: 4.0.3
+      unist-util-visit: 2.0.3
+    dev: true
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha1-byjYs3MIvwqI35uAN5bDjkaSeSQ=
+      tarball: remark-pangu/download/remark-pangu-2.2.0.tgz
   /remark-parse/8.0.3:
     dependencies:
       ccount: 1.1.0
@@ -5475,6 +5493,11 @@ packages:
     resolution:
       integrity: sha1-x9E0EYiqnOWzz/U4lY3piV8Upd4=
       tarball: unist-util-is/download/unist-util-is-4.0.2.tgz
+  /unist-util-is/4.0.3:
+    dev: true
+    resolution:
+      integrity: sha1-6LRNtV/CDEN1KzNGwRY0TUXXyR0=
+      tarball: unist-util-is/download/unist-util-is-4.0.3.tgz
   /unist-util-position/3.1.0:
     dev: true
     resolution:
@@ -5913,6 +5936,7 @@ specifiers:
   remark-math: ^4.0.0
   remark-mdx: ^1.6.19
   remark-numbered-footnote-labels: ^1.1.0
+  remark-pangu: ^2.2.0
   remark-parse: ^9.0.0
   remark-sectionize: ^1.1.1
   remark-slug: ^6.0.0

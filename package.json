@@ -43,6 +43,7 @@
 		"remark-math": "^4.0.0",
 		"remark-mdx": "^1.6.19",
 		"remark-numbered-footnote-labels": "^1.1.0",
+		"remark-pangu": "^2.2.0",
 		"remark-parse": "^9.0.0",
 		"remark-sectionize": "^1.1.1",
 		"remark-slug": "^6.0.0",

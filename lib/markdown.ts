@@ -14,6 +14,7 @@ import highlight from 'remark-highlight.js'
 import math from 'remark-math'
 import remarkMdx from 'remark-mdx'
 import footnotes_numberd from 'remark-numbered-footnote-labels'
+import pangu from 'remark-pangu'
 import markdown from 'remark-parse'
 import sectionize from 'remark-sectionize'
 import slug from 'remark-slug'
@@ -60,6 +61,7 @@ const render = async (file: string) => {
 		.use(footnotes_numberd)
 		.use(footnotes_mulref)
 		.use(sectionize)
+		.use(pangu)
 		.use(embeded)
 		.use(math)
 		.use(highlight)
