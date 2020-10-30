@@ -125,6 +125,12 @@
 	.min-h@{i} {
 		min-height: @sz;
 	}
+	.max-vh@{i} {
+		max-height: unit(@i, vh);
+	}
+	.min-vh@{i} {
+		min-height: unit(@i, vh);
+	}
 	.heightperc(@i - 10);
 }
 .heightperc(100);
@@ -154,6 +160,12 @@
 	}
 	.min-w@{i} {
 		min-width: @sz;
+	}
+	.max-vw@{i} {
+		max-height: unit(@i, vw);
+	}
+	.min-vw@{i} {
+		min-height: unit(@i, vw);
 	}
 	.widthperc(@i - 10);
 }
@@ -360,4 +372,16 @@
 }
 .text-end {
 	text-align: end;
+}
+.overflow-y-auto {
+	overflow-y: auto;
+}
+.overflow-x-auto {
+	overflow-x: auto;
+}
+.overflow-y-always {
+	overflow-y: always;
+}
+.overflow-x-always {
+	overflow-x: always;
 }

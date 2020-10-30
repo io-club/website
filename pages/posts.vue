@@ -22,7 +22,7 @@
 			</div>
 		</a-col>
 		<a-col :xs="0" :sm="5" class="relative px2">
-			<NestedMenu :items="page.toc" mode="inline" :i18n="false" class="sticky t0" />
+			<NestedMenu :items="page.toc" mode="inline" :i18n="false" class="sticky overflow-x-auto overflow-y-auto t0 max-vh100" />
 		</a-col>
 	</a-row>
 </template>

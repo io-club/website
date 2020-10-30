@@ -10,13 +10,9 @@ license="by-nc-sa"
 
 ## 简介
 
-这门课将会介绍各类程序结构和组成. 目的是理解程序执行逻辑, 增长视野, 而不是专注于具体哪门语言的语法. 因此, 你应该多思考, 总结, 掌握方法, 举一反三, 这才是这门课预期的学习效果.
+这门课将会介绍各类程序结构和组成. 目的是理解程序执行逻辑, 增长视野, 主要使用python教授. 因此, 你应该多思考, 总结, 掌握方法, 举一反三, 这才是这门课预期的学习效果.
 
 同时, 课程的推进决定于个人的练习/实验进度, 作业并非强制性的, 可根据自己的时间自由调节, 不过建议一周内完成一节内容.
-
-1 . [第一节: 变量/类型, 数据流/控制流](#第一节)
-
-2 . [第二节: 表达式/语句/副作用, 函数和递归](#第二节)
 
 ## FAQ
 
@@ -24,137 +20,507 @@ license="by-nc-sa"
 
 1 . 画图工具?
 
-本文中所有流图都是使用graphviz的dot语言写成的, 比如第一张框图的源码在[这里](https://github.com/xhebox/ioclub/blob/master/src/pages/posts/class/flow_1.dot). 可以自行百度graphviz教程, 或使用其他流程图生成工具. 这里有一个在线查看graphviz代码对应的图片的网站: [webgraphviz](http://www.webgraphviz.com/). 还有很多其他在线查看graphviz代码图片的工具.
+本文中所有流图都是使用graphviz的dot语言写成的, 比如第一张框图的源码在[这里](//github.com/xhebox/ioclub/blob/master/src/pages/posts/class/flow_1.dot). 可以自行百度graphviz教程, 或使用其他流程图生成工具. 这里有一个在线查看graphviz代码对应的图片的网站: [webgraphviz](http://www.webgraphviz.com/). 还有很多其他在线查看graphviz代码图片的工具.
 
-2 . python/c语言教学?
+2 . c语言教学?
 
-这门课不再教授具体的语法, 转而交给学生自学. python/c入门建议阅读[菜鸟教程](https://www.runoob.com/). c语言额外推荐c和指针, c专家编程, c的陷阱和缺陷, krc等书.
+这门课不再教授c语言语法, 转而交给学生自学. c入门建议阅读[菜鸟教程](//www.runoob.com/). c语言额外推荐c和指针, c专家编程, c的陷阱和缺陷, krc等书.
 
-编程离不开实践, 不管是python自己的REPL[^REPL], 还是本站浏览器提供的[pyterm](/pyterm)都是绝佳的实验场地. 务必多多实验. 环境搭建可参考[菜鸟教程](https://www.runoob.com/python3/python3-install.html)
+编程离不开实践, 不管是python自己的REPL[^REPL], 还是本站浏览器提供的[pyterm](/pyterm)都是绝佳的实验场地. 务必多多实验. 环境搭建可参考[菜鸟教程](//www.runoob.com/python3/python3-install.html)
 
-[^REPL]: REPL, 即Read Eval Print Loop, 读取-执行-打印循环. 一个可以和你实时交互的编程环境. [python3REPL - 菜鸟教程](https://www.runoob.com/python3/python3-interpreter.html)
+[^REPL]: REPL, 即Read Eval Print Loop, 读取-执行-打印循环. 一个可以和你实时交互的编程环境. [python3REPL - 菜鸟教程](//www.runoob.com/python3/python3-interpreter.html)
 
 3 . 宣讲会上说过的在线运行python?
 
-~~我确实有做, 但线上还有点问题, 一周内修复.~~ 已修复, 请点击导航栏的py3终端.
+~~我确实有做, 但线上还有点问题, 一周内修复.~~ 已修复, 请点击导航栏的py3终端, 需要下载20M数据包, 请注意.
 
 4 . 课程内容改变?
 
-本页内容是在不断更新的, 具体的改变我会写在[changelog](#changelog)这一节.
+本页内容是在不断更新的, 具体的改变我会写在[变更日志](#变更日志)这一节.
 
 5 . 我有问题...?
 
-直接在IO CLUB内部群中询问, 或者发在本站[源码](https://github.com/xhebox/ioclub)的issue上.
+直接在IO CLUB内部群中询问, 或者发在本站[源码](//github.com/xhebox/ioclub)的issue上.
 
-## 第一节
+## 变更日志
 
-这一节分两小节:
+1. 第一节润色完成, 新增变量小节
+2. 第二节内容完成, 已添加
+3. 更改练习难度为easy, normal, hard, 调整一二节练习
+4. 第二节答案放出
+5. 标注需要阅读的菜鸟教程章节
+6. 考虑到新生基础过于薄弱, 对本文结构大改, 变更为第一节python语法, 第二节数据流/控制流/内存管理, 第三节递归/树.
 
-1. 变量, 组成程序的基本要素, 类型是变量最重要的部分
-2. 数据流和控制流的概念可以帮你进行基本的代码逻辑分析
-
-相关菜鸟教程章节:
-
-+ [c基本语法](https://www.runoob.com/cprogramming/c-basic-syntax.html)
-+ [c变量](https://www.runoob.com/cprogramming/c-variables.html)
-+ [c常量](https://www.runoob.com/cprogramming/c-constants.html)
-+ [c数据类型](https://www.runoob.com/cprogramming/c-data-types.html)
-+ [c程序结构](https://www.runoob.com/cprogramming/c-program-structure.html)
-+ [c条件控制](https://www.runoob.com/cprogramming/c-decision.html)
-+ [c循环](https://www.runoob.com/cprogramming/c-loops.html)
-+ [py基础语法](https://www.runoob.com/python3/python3-basic-syntax.html)
-+ [py数字](https://www.runoob.com/python3/python3-number.html)
-+ [py字符串](https://www.runoob.com/python3/python3-string.html)
-+ [py基本数据类型](https://www.runoob.com/python3/python3-data-type.html)
-+ [py条件控制](https://www.runoob.com/python3/python3-conditional-statements.html)
-+ [py循环](https://www.runoob.com/python3/python3-loop.html)
-
-### 变量(variable)
+## 第一节: 编程入门
 
 提问, 你是怎么做心算的? 比如, 你有三个数字$1, 2, 4, \dots$, 求和. 首先你$1 + 2 = 3$, 接着你$3 + 4 = 7$, 以此类推. 仔细反省一下你的计算过程, 这整个过程中你做了三件事情:
 
 1. 把两个数字加起来, 拿到一个结果
-2. 把结果暂时记起来, 比如$1 + 2 = 3$的$3$, 以便和后面数字相加
+2. 把结果暂时记住, 比如$1 + 2 = 3$的$3$, 以便和后面数字相加
 3. 循环往复的进行步骤1-2, 直到所有数字穷尽
 
 你可以通过反省自己的思考过程找到更多类似的例子, 你的思考不外乎以下的步骤:
 
 1. 把某些事物暂时记住
-2. 通过某些事物进行一些推断和计算, 可能改变了对现有事物的认识, 还可能记住了一些新的事物
+2. 通过某些事物进行一些推断和计算, 记住一些新事物
 3. 循环往复的进行步骤1-2, 直到你满意为止
 
-对应到程序里, 推断/计算/循环就是各种表达式/语句/操作, 而暂时记起来就对应着变量. 所以程序总的来说, 就是通过变量存储各种**状态**, 并通过其他结构, 如表达式/语句, 对变量进行操作, **改变状态**直到满意为止.
+对应到程序里, **推断/计算/循环就是各种表达式/语句**, 而**暂时记住就对应着变量**. 所以程序总的来说, 就是通过变量存储各种**状态**, 并通过其他结构(如表达式/语句), 对变量进行操作, **改变状态**直到满意为止. 状态可以是整数, 字符串, 或者任何可能的数据.
 
 算盘, 也可以算是一种"计算机". 算盘的珠子位置对应着现在计算好的数字, 也就是**状态**, 一个变量, 打算盘就是在加减这个变量, **改变状态**. 而打算盘的这个人就是"程序".
 
-当然, 实际写程序的时候, 程序要是很机械性的: 变量必须有个名字, `int a = 3`, `b = "ggg"`; 这个名字对应这个变量, 或者说这个变量存储的数据/值.
+以上是对程序的一个比喻, 下面介绍具体的python语法. 如果遇到陌生的词, 不要紧, 在别的地方还会见到. 这一大节的内容就是需要来回的看, 因为很多东西都是相互关联的.
 
-根据编程语言不同, 也有很多其他不同的问题:
+### 变量
 
-+ 变量可能有类型信息, 也可能没有, 详细见下一节. (c语言有类型, py没有类型)
+`b = 3`这条语句声明了一个变量(variable), 名字叫做`b`, 存储着一个整数: $3$.
+
+变量必须有个名字, 这个操作叫做**声明变量**. 下面的语句, 声明了一个变量`b`, 且用`=`运算符, 让变量存储一个整数$3$. `print(b)`会把`b`的值, 那个整数, 输出在屏幕上.
+
+```python
+b = 3
+print(b) # py
+```
+
+不声明变量, 变量就没有名字, 那么你后续就无法指代它. 下面有一个变量$4$, 但他没有名字, 你后续无法对他进行操作, 改变他的值, 所以也叫做**常量(constant)**.
+
+```python
+print(4)
+```
+
+在声明变量时必须**定义/初始化**, 否则会报错:
+
+```python
+b # Error: name 'b' is not defined
+```
+
+所以python中, 声明变量和定义变量是一回事, 而且更习惯叫定义变量.
+
+变量都是数据, 数据就有各式各类, 也就是有各种数据类型. 数据类型很复杂, 之后才详细介绍, 不要太纠结.
+
+### 表达式
+
+表达式(expression)是由变量和运算符(`+/-/*/%`之类的)组成的, 类似`(a+b) * 4`.
+
+#### 运算符
+
+运算符(operator)按作用数可以分为:
+
+1. `a++`, `--a`, 一元运算符, 也就是只作用于一个变量, 可进一步根据运算符和变量之间的位置细分为前缀`++a`/后缀`a--`
+2. `a + b`, 二元运算符, 作用于两个变量, 最常用的一些
+3. `a ? b : c`, 三元运算符, 作用于三个变量
+
+运算符按功能可以分为:
+
+1. 算术运算符, 如`a + b`
+2. 比较运算符, 如`a < b`
+3. 赋值运算符, 如`a = 3`
+4. 逻辑运算符, 如`a and 3`
+5. 位运算符, 如`a & 3`
+6. 其余运算符, 如`a is b`
+
+具体可以参考[菜鸟教程 - python3运算符](//www.runoob.com/python3/python3-basic-operators.html).
+
+#### 运算符优先级
+
+表达式有**结合顺序**的问题: `i+++2` 到底是`(i++)+2`还是`i+(++2)`? 或者说它是从左往右结合, 还是从右往左结合? 先结合`++`运算符, 还是先结合`+`运算符?
+
+这得具体语言具体分析, 各种语言的**运算符优先级(operator precendence)**[^coperator]可能不一样.
+
+[^coperator]: [c运算符优先级](//en.cppreference.com/w/c/language/operator_precedence)
+
+对于c来说, 这是`(i++)+2`. 结合顺序可以通过`()`来解决, 这也是推荐的方法: 干脆就不要写让人迷惑的表达式, 直接写`(i++) + 2`.
+
+python的结合顺序和c类似.
+
+#### 求值顺序
+
+表达式也有**求值顺序(order of evaluation)**[^csequence]的问题:
+
+[^csequence]: [c求值顺序规则](//en.cppreference.com/w/c/language/eval_order)
 
 ```c
-int a = 3; // c
+i = 3;
+i = i++ + 1;
 ```
 
-```py
-a = 3 // python
+最后i的值, 到底是`i++`之后的3, 还是多加1之后的4? 答案是**未定义**[^cundefined]. c语言通过**序列点(sequence point)**来规范求值顺序和结果. c++也继承了c的规范, 不过c++17标准之后大有改动, `i = i++ + 1`在c++17之后并不是未定义行为.
+
+[^cundefined]: [c未定义行为](//en.cppreference.com/w/c/language/behavior)
+
+python的表达式的求值顺序和结合顺序是一致的, 不存在这种c语言这种求值顺序, 结合顺序不同的情况.
+
+#### 副作用
+
+c语言典型的语句是`c = 3;`赋值语句. 但赋值在c语言中其实是一个表达式: `(c = 3) == 3`. `c = 3;`被判定成语句的原因是末尾的`;`. 很多语言, 表达式加一个终止符`;`, 或者换行后, 就变成了一条语句.
+
+`(c = 3) == 3`这样的表达式, 目的是计算并返回一个值, 但是本例中, 它也完成了一个变量的赋值, 这次赋值是表达式的**副作用(side effect)**. 还有一类常见副作用是IO操作, `printf("xx")`有返回值, 但你甚至可能从来都没用过. 它的主要作用, 打印到屏幕上, 其实是它的副作用.
+
+**但是, 副作用并非必要**. 副作用几乎可以说是 **命令式编程(imperative programming)** 的特产. 有很多不同的方法可以抽象计算外的其他操作: 虽然大家都用语句抽象, 但可以用不同的方式去抽象. 比如, Haskell这个 **函数式编程(functional programming)** 语言中的**Monad**[^monad]. 或者SQL这种典型的 **声明式编程(declarative programming)** .
+
+[^monad]: [haskell IO](//www.jianshu.com/p/7f715d4695ee)
+
+### 语句
+
+python是一门基于**缩进(indention)**的编程语言: python没有花括号, 不需要写分号. 作为替代, python需要保持正确的缩进, 来保证程序可以正常被解析. 你马上会见到例子.
+
+#### 条件控制
+
+```python
+a = 1
+if a == 2:
+	print('a')
+	print('c')
+
+print('b')
 ```
 
-+ **可能**在使用变量之前必须**声明**变量的存在, 没有声明的变量是**不存在**的, 也就是不可使用的. (c语言需要声明, js若使用`var`不需要)
+以上代码输出`b`, 以下代码也输出`b`:
 
-```c
-int a; // c
-printf("%d\n", a)
+```python
+a = 1
+if a == 1:
+	print('b')
+else
+	print('a')
 ```
 
-```js
-console.log(a) // js
+`if`是条件判断语句, 后面跟着的是表达式, 如果表达式求值为**真(true)**, 就执行下面的代码. 这里下面的代码指的是, `if a == 1:`这一行下面比本行多一个tab或几个空格的行(直到不满足条件为止).
+
+如果条件为**假(false)**, 就执行`else`下面的代码(如第二个例子), 或者接着执行后面的代码(如第一个例子). 但是条件判断可以级联:
+
+```python
+a = 1
+if a == 2:
+	print('c')
+elif a == 3:
+	print('b')
+else
+	print('a')
 ```
 
-+ **可能**在**声明**变量时必须**定义/初始化**: `int a`声明了变量a的存在, 却没有**定义/初始化**a的值. (c语言声明和定义/初始化是可以分开的, rust要求在声明时必须定义变量的值)
+以上代码输出`a`, 首先判断`a == 2`得到假, 随后执行`a == 3`又得到假, 所以只好执行`else`下面的代码.
 
-```rust
-let a: i32; // rust
-println(a) // error: use of possibly unintialized variable: 'a'
+具体可以参考[菜鸟教程 - python3控制](//www.runoob.com/python3/python3-conditional-statements.html).
+
+#### 循环
+
+以下代码输出4个a.
+
+```python
+a = 3
+while a >= 0:
+	print('a')
+	a -= 1
 ```
 
-我列举了一些常见的区别. 你需要自己学习更多的语言来掌握这些常见差别.
+while循环的执行, 直到条件为假才结束, 但可以提前使用break结束. 下面代码只输出2个a:
 
-### 类型(type)
+```python
+a = 3
+while a >= 0:
+	print('a')
+	a -= 1
+	if a == 2:
+		break
+```
+
+还可以使用continue跳过执行, 下面代码什么都不输出:
+
+```python
+a = 3
+while a >= 0:
+	a -= 1
+	continue
+	print('a')
+```
+
+还有另一for循环, 也可以使用break和continue, 以下代码输出3个a:
+
+```python
+for a in range(3):
+	print('a')
+```
+
+和别的语言不太一样的是, 循环语句后面可以跟`else`, 下面代码输出3个a, 1个b:
+
+```python
+for a in range(3):
+	print('a')
+else:
+	print('b')
+```
+
+具体可以参考[菜鸟教程 - python3循环](//www.runoob.com/python3/python3-loop.html).
+
+#### 函数
+
+函数和变量一样都有一个名字, 只不过函数存储的是代码本身: 它就像数学的函数一样接受输入, 处理后返回输出, 而处理的代码是由你来定义的. 下面定义了一个叫做`sum`的函数, 接受两个叫做`a`, `b`的变量, 或者说**参数(argument)**, 返回两个参数的和:
+
+```python
+def sum(a, b):
+	return a + b
+
+sum(3, 4) # 7
+```
+
+`def sum(a, b):`下面的是函数体, 需要比`def`多缩进一个tab, 或几个空格. 而形如`sum(3, 4)`这样的语句被叫做函数调用, 通过名字执行预先定义好的过程, 进行代码的重复利用.
+
+`return`是一个关键字, 标志着函数执行到这里就结束了, 下面的函数中`a = 3`不会被执行:
+
+```python
+def sum(a, b):
+	return a + b
+	a = 3 # not executed
+```
+
+当然, 函数也可以没有返回值.
+
+具体可以参考[菜鸟教程 - python3函数](//www.runoob.com/python3/python3-function.html).
+
+### 数据类型
 
 给出数据34, 求它对应的十进制数字. 答案可以是34, 但也可以是52, 还可以是28. 这三个答案分别对应34是十进制, 十六进制, 八进制时, 对应的十进制大小. 因此一个数据可以有不同解释, 如果附加条件不同的话.
 
-在编程语言中也有类似情况, 根据类型不同, 数据可以有两种解释. 编程语言按类型可以分为两种: 强类型, 弱类型.
+在编程语言中也有类似情况, 根据**类型(type)**不同, 数据可以有两种解释. 你对不同类型的变量, 能进行的操作也是不同的.
+
+#### 类型声明
+
+编程语言按是否需要显式声明变量的类型分为强类型, 弱类型两种编程语言.
+
+下面是c语言中的变量定义, 每个变量都有具体的类型, 比如c的类型是`int`, `string`的类型是`char*`, 所以是强类型语言.
 
 ```c
 int c = 1;
 char string[] = "hello";
 ```
 
-这是c语言中的变量定义, 每个变量都有具体的类型, 比如c的类型是`int`, `string`的类型是`char*`, 所以是强类型语言. 强类型语言不存储变量信息, 即c语言并不关心底层存储的是什么数据. 恰恰相反, c语言会把底层的数据解释成你给予的类型. 举个例子:
+强类型语言不存储变量信息, 即c语言并不关心底层存储的是什么数据. 恰恰相反, c语言会根据你给予的类型进行解释. 举个例子:
 
 ```c
 int c = 1;
 char *string = (char*)(&c);
 ```
 
-通过强制类型转换`char*`, `string`这个字符串变量指向了变量c, 也就是指向了1. 但是打印[`printf("%s", string)`]结果并不是1, 因为`string`是个字符串变量. 所以它会把1对应的二进制数据`0x00000001`解释为一个字符串. 按字符串解释方法, 每两个十六进制数, 即每byte对应一个字符, `0x00`是字符串的终止符, `0x01`是不可打印的控制字符. 所以不管怎么样, 结果中都不可能出现1.
+通过强制类型转换整数为字符串, `string`这个字符串变量指向了变量c, 也就是指向了1. 但是打印[`printf("%s", string)`]结果并不是1, 因为`string`是个字符串变量. 所以它会把1对应的二进制数据`0x00000001`解释为一个字符串. 按字符串解释方法, 每两个十六进制数, 即每byte对应一个字符, `0x00`是字符串的终止符, `0x01`是不可打印的控制字符. 所以不管怎么样, 结果中都不可能出现1.
+
+下面是py语言中的变量定义, 除了名字初始值什么都没有, 所以是弱类型语言. 弱类型语言并非没有类型, 而是把类型信息通过某种方式隐藏, 你看不到, 也不需要看到. 程序自动检查类型信息, 遇到数字就输出数字, 遇到字符串就输出字符串. 一般来说, 类型信息是紧跟这变量存储的.
 
 ```py
 c = 1
 string = 'hello'
 ```
 
-这是py语言中的变量定义, 除了名字初始值什么都没有, 所以是弱类型语言. 弱类型语言并非没有类型, 而是把类型信息通过某种方式隐藏, 你看不到, 也不需要看到. 程序自动检查类型信息, 遇到数字就输出数字, 遇到字符串就输出字符串. 一般来说, 类型信息是紧跟这变量存储的.
+这两类语言共同点是, 不管是哪种语言, 都是通过类型信息来解释底层的二进制数据, 进行不同的操作. 区别只在于需不需要声明变量类型; 运行时还是编译时推断类型; 类型信息是怎么存储的.
 
-这两类语言共同点是, 不管是哪种语言, 都是通过类型信息来解释底层的二进制数据. 区别只在于什么时候获取类型, 怎么获取类型.
+#### 数字
 
-### 数据流(data flow)/控制流(control flow)
+python中的数字分三种: 整数(int), 浮点数(float), 复数(complex).
 
-注意: **本节假定你有基本编程基础, 若不了解, 可跳过本节, 继续阅读下一节, 学会基本的编程语句后, 再重新阅读本节**
+整数可以用八进制(octal), 十进制(decimal), 十六进制(hexadecimal)表示:
 
-程序结构只关心两点: 数据/变量怎样变动, 控制/步骤怎么进行. 接下来会展示数据流和控制流的图例, 目的是真正明白程序的执行逻辑. 数据流和控制流是两个抽象概念, 和具体的程序执行环境无关, 是分析的工具.
+```python
+37 # decimal
+0o37 # octal
+0x37 # hex
+```
+
+由于计算机内存有限, 一个变量能表示的数字有上下限, 只能表示区间$[a, b]$之内的数.
+
+浮点数, 即实数, 遵循IEEE 754实现, 同样由于现实原因, 浮点数有上下限, 且计算时容易丢失精度, 造成结果不正确:
+
+```python
+3.2
+.3
+3e2
+3e-2
+```
+
+复数由两个浮点数组成, 通过`complex`函数构建, 可以通过`.real/.imag`获取实部/虚部:
+
+```python
+c = complex(1, 2) # 1.0 + 2.0j
+c.real # 1.0
+c.imag # 2.0
+```
+
+复数例子中, $1$和$2$都是整数, 但被**隐式(implicit)**转换为浮点数, 或者说自动转换. 你也可以**显式(explicit)**, 或者说手动转换:
+
+```python
+a = int(1.0) # 1
+b = float(1) # 1.0
+```
+
+具体可以参考[菜鸟教程 - python3数字](//www.runoob.com/python3/python3-number.html).
+
+#### 字符串
+
+python没有char类型, 所有字符相关的都是字符串, 既可以使用单引号, 可以用双引号:
+
+```python
+"hello"
+'hello'
+```
+
+因为**解析(parse)**代码时, 技术上的一些原因, 在定义字符串时, 其中某些字符需要**转移(escape)**, 比如双引号需要写成`\"`:
+
+```python
+"f\"ee\"" # 'f"ee"'
+```
+
+字符串, 顾名思义, 是一串字符, 所以自然可以通过数字可以获取其中某个, 或某些字符:
+
+```python
+a = "hello"
+a[0] # 'e'
+a[3] # 'l'
+a[1:3] # 'el'
+a[:4] # 'hell'
+a[3:] # 'lo'
+a[-3:] # 'llo'
+```
+
+字符串虽然不是数字, 但作为变量, 也可以对它使用运算符, `a[3]`, `a[3:]`本质上是一元运算符. 二元的有`+`拼接运算符:
+
+```python
+a = 'h' + 'e'
+print(a) # 'he'
+```
+
+比较特别的是`%`这个二元运算符, 它可以用来做**格式化(formatting)**:
+
+```python
+print("%d + %d = %d" % (1, 2, 3)) # 1 + 2 = 3
+```
+
+其中`"%d + %d = %d"`是格式化字符串, `%d`叫做**格式符(format specifier)**. 右侧是一个元组, 其中每一个变量都对应一个格式符. 最终输出的字符串中, 每个格式符都会被替换成, 元组中对应的变量的字符串形式.
+
+具体可以参考[菜鸟教程 - python3字符串](//www.runoob.com/python3/python3-string.html)
+
+#### 列表
+
+**列表(list)**是一串有序的变量, 可以插入新的变量, 删除旧的变量, 改变现有变量:
+
+```python
+a = [1, 2, 'str']
+del a[0] # delete 1 from the list a
+a # [2, 'str']
+```
+
+和字符串一样可以使用`[]`和`[:]`运算符:
+
+```python
+a = [1, 2, 'str']
+a[0] # 1
+a[1:] # [2, 'str']
+a[-3:] # [1, 2, 'str']
+```
+
+列表其实是一个**对象(object)**, 他有很多**方法(methods)**用来做很多事情, 这是面向对象编程的概念. 比如列表的方法`count`, 会返回列表中变量的个数:
+
+```python
+a = [1, 2, 2, 'str']
+a.count(2) # 2
+```
+
+简单来说, 方法可以理解为一个函数, 但是自动的多接受一个输入, 也就是对象这个变量本身作为输入. 举个例子, 如果先忽略怎么实现`count`方法的问题, 上面的可以重写为:
+
+```python
+def count_us(list, elem):
+	# count code here
+
+a.count(2) == count_us(a, 2) # True
+```
+
+具体可以参考[菜鸟教程 - python3列表](//www.runoob.com/python3/python3-list.html)
+
+#### 元组
+
+**元组(tuple)**是一串有序的变量, 和列表类似. 但是元组本身不允许被修改, 一经定义, 存储的变量就已经固定, 但是变量本身可以被修改:
+
+```python
+a = (1, 2, 'str')
+a = 1, 2, 3
+>>> del a[0]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'tuple' object doesn't support item deletion
+```
+
+和字符串一样可以使用`[]`和`[:]`运算符:
+
+```python
+a = (1, 2, 'str')
+a[0] # 1
+a[1:] # [2, 'str']
+a[-3:] # [1, 2, 'str']
+```
+
+元组也是一个对象, 也有很多方法.
+
+具体可以参考[菜鸟教程 - python3元组](//www.runoob.com/python3/python3-tuple.html)
+
+#### 集合
+
+**集合(set)**和数学里的类似, 无序, 不重复:
+
+```python
+{1, 2}
+set((1, 2))
+set() # empty set
+```
+
+注意, 空集合定义不能使用`{}`, 因为这定义了一个字典. 集合是一个对象, 有很多方法.
+
+具体可以参考[菜鸟教程 - python3集合](//www.runoob.com/python3/python3-set.html)
+
+#### 字典
+
+**字典(dictionary)**可以看成是存储了一堆元组的集合, 判断重不重复以元组的第一个变量为依据:
+
+```python
+{} # empty dict
+{'first': 1, 'second': 2}
+{'first': 1, 'second': 2, 'first': 3} # {'first': 1, 'second': 2}
+```
+
+只可以使用`[]`运算符:
+
+```python
+a = {'first': 1, 'second': 2}
+a['first'] # 1
+a['second'] # 2
+```
+
+字典是一个对象, 有很多方法.
+
+具体可以参考[菜鸟教程 - python3字典](//www.runoob.com/python3/python3-dictionary.html)
+
+### python vs 其他语言
+
+下面列举一些python和其余语言的差别.
+
+c语言可以只声明变量, 却不定义, 下面声明了变量a存在, 但没有指定它最开始的值是什么.
+
+```c
+int a;
+```
+
+javascript语言非严格模式下, 不需要提前声明变量, 未声明的变量有一个默认值`undefined`:
+
+```js
+console.log(a) // output: undefined
+```
+
+## 第二节: 执行分析
+
+程序执行只关心两点: 数据/变量怎样变动, 控制/步骤怎么进行.
+
+数据流和控制流是两个适用于所有编程语言的抽象概念, 描述了程序怎样执行, 一般用图来展示, 是分析程序执行逻辑的工具.
+
+之后再简单介绍内存管理.
+
+### 数据流/控制流
 
 下图以一个简单c语言程序展示:
 
@@ -178,7 +544,7 @@ else
 
 最后两个分支都通过红色箭头, 传递控制到`a_3 = phi(a_1, a_2)`. 这是属于SSA[^ssa]形式的`phi()`函数. 通俗的讲, 当程序的控制从`a_1 = a_0 + 1`传递到`a_3 = phi(a_1, a_2)`时, `a_3 = a_1`; 当程序的控制从`a_2 = a_0 - 1`传递到`a_3 = phi(a_1, a_2)`时, `a_3 = a_2`.
 
-[^ssa]: [静态单一赋值](https://zhuanlan.zhihu.com/p/57787118), [SSA - wikipedia](https://en.wikipedia.org/wiki/Static_single_assignment_form), 两个参考
+[^ssa]: [静态单一赋值](//zhuanlan.zhihu.com/p/57787118), [SSA - wikipedia](//en.wikipedia.org/wiki/Static_single_assignment_form), 两个参考
 
 下面拆分本图, 分开介绍不同的组成元素.
 
@@ -268,9 +634,9 @@ b = 4;
 
 用图例表示一个while循环, `b=3`是程序开始执行起点, `entry`是循环区块的起点. 只要`a > 4`, 此分支就跳转到`a--`, 否则跳转到`b=4`. 你可能注意到, 这张图中我并没有写类似`a_0`, `a_1`这样的变量名称, 这也是SSA[^ssa]形式的一部分. 但SSA难以快速理解, 所以只留一道hard的思考/练习题. 现实中SSA的图例可以参照libfirm[^libfirm].
 
-[^libfirm]: [libfirm](https://pp.ipd.kit.edu/firm/GraphSnippets.html)
+[^libfirm]: [libfirm](//pp.ipd.kit.edu/firm/GraphSnippets.html)
 
-### 练习
+#### 练习
 
 1 . (easy) 画出下列程序的框图:
 
@@ -354,72 +720,13 @@ while (a > 0)
 a = 4;
 ```
 
-## 第二节
+### 内存管理
 
-这一节分两小节:
+正在写...
 
-1. 表达式/语句/副作用, 组成程序的基本要素
-2. 函数, 组成程序的基本要素, 递归是函数的一个大用处
+## 第三节: 递归和树
 
-相关菜鸟教程章节:
-
-+ [c基本语法](https://www.runoob.com/cprogramming/c-basic-syntax.html)
-+ [c条件控制](https://www.runoob.com/cprogramming/c-decision.html)
-+ [c循环](https://www.runoob.com/cprogramming/c-loops.html)
-+ [c递归](https://www.runoob.com/cprogramming/c-recursion.html)
-+ [py基础语法](https://www.runoob.com/python3/python3-basic-syntax.html)
-+ [py条件控制](https://www.runoob.com/python3/python3-conditional-statements.html)
-+ [py循环](https://www.runoob.com/python3/python3-loop.html)
-
-### 表达式(expression)/语句(statement)
-
-编程语言一般会把操作分为两类: 表达式, 语句. 写法都类似于数学公式. 区别在于:
-
-1. 表达式会给出一个值, **可能有副作用**, 它的目的是结合/计算多个变量
-2. 语句主要处理除计算外的一些操作, **可能会运算成值/有副作用**, 末尾可能跟有`;`这种终止符
-
-还有一些两者都是的东西: 函数调用既可以是表达式, 也能作语句. 这两者大多时候是高度交叉的, 不需要纠结二选其一这样的问题. 我们更关心的是他们在程序执行时候的差别.
-
-一般来说, 表达式是由变量和运算符(`+/-/*/%`之类的)组成的, 类似`(a+b) * 4`. 运算符可以分为:
-
-1. `a++`, `--a`, 一元运算符, 也就是只作用于一个变量, 可进一步根据运算符和变量之间的位置细分为前缀`++a`/后缀`a--`
-2. `a + b`, 二元运算符, 作用于两个变量, 最常用的一些
-3. `a ? b : c`, 三元运算符, 作用于三个变量
-
-表达式有**结合顺序**[^coperator]的问题: `i+++2` 到底是`(i++)+2`还是`i+(++2)`? 或者说它是从左往右结合, 还是从右往左结合? 先结合`++`运算符, 还是先结合`+`运算符?
-
-[^coperator]: [c运算符优先级](https://en.cppreference.com/w/c/language/operator_precedence)
-
-这得具体语言具体分析, 对于c来说, 这是`(i++)+2`. 结合顺序可以通过`()`来解决, 这也是推荐的方法: 干脆就不要写让人迷惑的表达式, 直接写`(i++) + 2`不就好了.
-
-但同时, 表达式也有**求值顺序**[^csequence]的问题:
-
-[^csequence]: [c求值顺序规则](https://en.cppreference.com/w/c/language/eval_order)
-
-```c
-i = 3;
-i = i++ + 1;
-```
-
-最后i的值, 到底是`i++`之后的3, 还是多加1之后的4? 答案是**未定义**[^cundefined]. c语言通过**序列点(sequence point)**来规范求值顺序和结果. c++也继承了c的规范, 不过c++17标准之后大有改动, `i = i++ + 1`在c++17之后并不是未定义行为.
-
-[^cundefined]: [c未定义行为](https://en.cppreference.com/w/c/language/behavior)
-
-而**语句**, 本质上是对"过程"的一种抽象. 第一节讲变量时说过, 你做的操作就是: 计算结果, 并判断, 直到满意. 语句实际上就是除加减乘除, 这些有代数特色的运算以外, 其他所有操作的抽象.
-
-所以, `if`不属于表达式, `while`也不属于, `for`也不属于, 这些都是不同于"计算"的其他操作, 这基本上对应着控制流, 而表达式基本上对应着数据流.
-
-### 副作用(side effect)
-
-c语言典型的语句是`c = 3;`赋值语句. 但赋值在c语言中其实是一个表达式: `(c = 3) == 3`. `c = 3;`被判定成语句的原因是末尾的`;`. 很多语言, 表达式加一个终止符`;`, 或者换行后, 就变成了一条语句.
-
-上一节说过`(c = 3) == 3`这样的表达式, 目的是计算并返回一个值, 但是本例中, 它也完成了一个变量的赋值, 这次赋值是表达式的**副作用(side effect)**. 还有一类常见副作用是IO操作, `printf("xx")`有返回值, 但你甚至可能从来都没用过. 它的主要作用, 打印到屏幕上, 其实是它的副作用.
-
-**但是, 副作用并非必要**. 副作用几乎可以说是 **命令式编程(imperative programming)** 的特产. 有很多不同的方法可以抽象计算外的其他操作: 虽然大家都用语句抽象, 但可以用不同的方式去抽象. 比如, Haskell这个 **函数式编程(functional programming)** 语言中的**Monad**[^monad]. 或者SQL这种典型的 **声明式编程(declarative programming)** .
-
-[^monad]: [haskell IO](https://www.jianshu.com/p/7f715d4695ee)
-
-### 函数(function)/递归(recursion)
+### 递归
 
 函数是接受输入, 给定输出的一个过程:
 
@@ -505,7 +812,7 @@ $$
 
 你可能会说n-2到n级, 还可以迈两次两个一级, 那种情况迈一级之后就变成n-1到n级的情况, 已经重叠了, 所以不需要重复考虑.
 
-### 练习
+#### 练习
 
 1 . (easy) 本节中的爬楼梯, 写出代码, 画出程序框图
 
@@ -513,7 +820,7 @@ $$
 
 **答案**:
 
-此处有[leetcode 原题](https://leetcode-cn.com/problems/climbing-stairs/)
+此处有[leetcode 原题](//leetcode-cn.com/problems/climbing-stairs/)
 
 c写法:
 
@@ -846,10 +1153,6 @@ int sum(int a) {
 }
 ```
 
-## changelog
+### 树
 
-+ 第一节润色完成, 新增变量小节
-+ 第二节内容完成, 已添加
-+ 更改练习难度为easy, normal, hard, 调整一二节练习
-+ 第二节答案放出
-+ 标注需要阅读的菜鸟教程章节
+正在写...
