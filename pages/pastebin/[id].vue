@@ -1,7 +1,7 @@
 <template>
 	<a-spin :spinning="loading" :wrapperClassName="`flex-col ${classes}`" size="large">
 		<div class="flex-col flex-grow flex-center p4">
-			<a-textarea v-model:value="value" :placeholder="t('paste_tip')" class="flex-grow w60 my2" />
+			<a-textarea v-model:value="value" :placeholder="t('paste_tip')" :class="`flex-grow my2 ${width()}`" />
 			<a-button-group>
 				<a-button type="default" @click="submit">{{t('submit')}}</a-button>
 				<a-popconfirm
@@ -29,10 +29,21 @@ declare const props: {
 
 export const classes = props.class;
 export const { $ts: t } = inject("i18n") || {};
-const { exec, status, text, json, error, cancel } = useFetch();
+const br = inject("breakpoints") || {};
+export const width = () => {
+	if (!br.sm) {
+		return 'w90'
+	} else if (!br.md) {
+		return 'w80'
+	} else {
+		return 'w60'
+	}
+}
 
 export const value = ref("");
 export const loading = ref(true);
+
+const { exec, status, text, json, error, cancel } = useFetch();
 
 if (props.id && props.id !== "") {
 	exec(`/api/pastebin/${props.id}`).then(() => {
