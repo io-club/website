@@ -176,9 +176,14 @@ export const transform = (): Transform => {
 	return {
 		test: ({path: file}) => test(file),
 		transform: async ({path: file}) => {
-			const result = await render(file)
+			let result
+			try {
+				result = await render(file)
+			} catch (err) {
+				console.error(err)
+			}
 			return {
-				code: result.js,
+				code: result?.js || '',
 			}
 		}
 	}
