@@ -93,7 +93,7 @@ import { Item } from "/@/components/nested-menu";
 const languages: Record<string, Item> = {};
 i18n.locales.value.forEach((t) => (languages[t] = {}));
 
-export const items: Record<string, Item> = {
+export const items: Record<string, Item> = reactive({
 	home: { link: "/" },
 	class: { link: "/posts/class/" },
 	tools: {
@@ -109,8 +109,8 @@ export const items: Record<string, Item> = {
 		children: languages,
 		callback: (t) => (locale.value = t as typeof locale.value),
 	},
-};
-provide("navItems", reactive(items));
+});
+provide("navItems", items);
 
 // for footer
 declare interface Hitokoto {
