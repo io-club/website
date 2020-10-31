@@ -2,7 +2,8 @@ dependencies:
   '@ant-design/icons-vue': 5.1.5_vue@3.0.2
   '@fikrikarim/local-echo': 0.4.1
   ant-design-vue: 2.0.0-beta.10_ee65f174ceb1bf388099f80b340265c5
-  highlight.js: 10.3.1
+  copy-to-clipboard: 3.3.1
+  highlight.js: 10.3.2
   katex: 0.12.0
   normalize.css: 8.0.1
   vue: 3.0.2
@@ -13,18 +14,23 @@ dependencies:
 devDependencies:
   '@mdi/svg': 5.8.55
   '@mdx-js/mdx': 1.6.19
+  '@types/deta': 0.0.0
   '@typescript-eslint/eslint-plugin': 4.6.0_5b45abdb13fea4fae68d9888b9d8cc1b
   '@typescript-eslint/parser': 4.6.0_eslint@7.12.1+typescript@4.0.5
+  '@vercel/node': 1.8.4
   '@vue/compiler-sfc': 3.0.2_vue@3.0.2
   autoprefixer: 9.8.6
+  deta: 0.0.8
   esbuild: 0.7.22
   eslint: 7.12.1
   eslint-plugin-simple-import-sort: 5.0.3_eslint@7.12.1
   eslint-plugin-vue: 7.1.0_eslint@7.12.1
   fecha: 4.2.0
+  http-status-code: 2.1.0
+  http-status-codes: 2.1.4
   less: 3.12.2
   mdast-util-to-hast: 10.0.0
-  mdast-util-toc: 5.0.3
+  mdast-util-toc: 5.0.4
   mkdirp: 1.0.4
   postcss-nesting: 7.0.1
   postcss-pseudo-class-enter: 5.0.0
@@ -537,6 +543,11 @@ packages:
     resolution:
       integrity: sha1-qkLJqYNHJL/+5ZcCjaUxmzjoXoQ=
       tarball: '@types/cookies/download/@types/cookies-0.7.5.tgz'
+  /@types/deta/0.0.0:
+    dev: true
+    resolution:
+      integrity: sha1-P6+prpA2+RSd2t3aOwusOmaNDz0=
+      tarball: '@types/deta/download/@types/deta-0.0.0.tgz'
   /@types/estree/0.0.39:
     dev: true
     resolution:
@@ -798,6 +809,15 @@ packages:
     resolution:
       integrity: sha1-+wXWOTiRsKCJskP8j5+4A5OD1do=
       tarball: '@typescript-eslint/visitor-keys/download/@typescript-eslint/visitor-keys-4.6.0.tgz'
+  /@vercel/node/1.8.4:
+    dependencies:
+      '@types/node': 14.14.6
+      ts-node: 8.9.1_typescript@3.9.3
+      typescript: 3.9.3
+    dev: true
+    resolution:
+      integrity: sha1-Q7vC45+Xl5OQ4PlolSu6Tr/csi4=
+      tarball: '@vercel/node/download/@vercel/node-1.8.4.tgz'
   /@vue/compiler-core/3.0.2:
     dependencies:
       '@babel/parser': 7.12.3
@@ -1054,6 +1074,11 @@ packages:
     resolution:
       integrity: sha1-wG5/9pqwWzpKA+vgQH+sTLpldUU=
       tarball: arg/download/arg-2.0.0.tgz
+  /arg/4.1.3:
+    dev: true
+    resolution:
+      integrity: sha1-Jp/HrVuOQstjyJbVZmAXJhwUQIk=
+      tarball: arg/download/arg-4.1.3.tgz
   /argparse/1.0.10:
     dependencies:
       sprintf-js: 1.0.3
@@ -1205,7 +1230,7 @@ packages:
   /browserslist/4.14.5:
     dependencies:
       caniuse-lite: 1.0.30001154
-      electron-to-chromium: 1.3.584
+      electron-to-chromium: 1.3.585
       escalade: 3.1.1
       node-releases: 1.1.65
     dev: true
@@ -1251,6 +1276,14 @@ packages:
     resolution:
       integrity: sha1-A1zeKwjuISn0qDFeqPAKANuhRTw=
       tarball: cache-content-type/download/cache-content-type-1.0.1.tgz
+  /call-bind/1.0.0:
+    dependencies:
+      function-bind: 1.1.1
+      get-intrinsic: 1.0.1
+    dev: true
+    resolution:
+      integrity: sha1-JBJwVLs/m9y0sfuCQYGGBy93uM4=
+      tarball: call-bind/download/call-bind-1.0.0.tgz
   /callsites/3.1.0:
     dev: true
     engines:
@@ -1564,6 +1597,13 @@ packages:
     resolution:
       integrity: sha1-EpPOSzkXQKhAbjyYcOgoxLVPP5A=
       tarball: cookies/download/cookies-0.8.0.tgz
+  /copy-to-clipboard/3.3.1:
+    dependencies:
+      toggle-selection: 1.0.6
+    dev: false
+    resolution:
+      integrity: sha1-EVqhqZmP+rYZb5MHatbaO5E2Yq4=
+      tarball: copy-to-clipboard/download/copy-to-clipboard-3.3.1.tgz
   /core-js/3.6.5:
     dev: false
     requiresBuild: true
@@ -1781,6 +1821,13 @@ packages:
     resolution:
       integrity: sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
       tarball: destroy/download/destroy-1.0.4.tgz
+  /deta/0.0.8:
+    dependencies:
+      node-fetch: 2.6.1
+    dev: true
+    resolution:
+      integrity: sha1-kZWxPTS5K6ZJL/4148EzHUVDShk=
+      tarball: deta/download/deta-0.0.8.tgz
   /detab/2.0.3:
     dependencies:
       repeat-string: 1.6.1
@@ -1788,6 +1835,13 @@ packages:
     resolution:
       integrity: sha1-M+XddNIwUBvWmYWg0rmjOCaZoTA=
       tarball: detab/download/detab-2.0.3.tgz
+  /diff/4.0.2:
+    dev: true
+    engines:
+      node: '>=0.3.1'
+    resolution:
+      integrity: sha1-YPOuy4nV+uUgwRqhnvwruYKq3n0=
+      tarball: diff/download/diff-4.0.2.tgz
   /dir-glob/3.0.1:
     dependencies:
       path-type: 4.0.0
@@ -1876,11 +1930,11 @@ packages:
     resolution:
       integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
       tarball: ee-first/download/ee-first-1.1.1.tgz
-  /electron-to-chromium/1.3.584:
+  /electron-to-chromium/1.3.585:
     dev: true
     resolution:
-      integrity: sha1-UGz3uliVqvqCQYdqsChlS2H9nOs=
-      tarball: electron-to-chromium/download/electron-to-chromium-1.3.584.tgz?cache=0&sync_timestamp=1603797141131&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.584.tgz
+      integrity: sha1-cc23Isc0iLlHWtHFcs9Dp2PvkIE=
+      tarball: electron-to-chromium/download/electron-to-chromium-1.3.585.tgz
   /emoji-regex/6.1.1:
     dev: true
     resolution:
@@ -1952,7 +2006,7 @@ packages:
       is-regex: 1.1.1
       object-inspect: 1.8.0
       object-keys: 1.1.1
-      object.assign: 4.1.1
+      object.assign: 4.1.2
       string.prototype.trimend: 1.0.2
       string.prototype.trimstart: 1.0.2
     dev: true
@@ -1972,7 +2026,7 @@ packages:
       is-regex: 1.1.1
       object-inspect: 1.8.0
       object-keys: 1.1.1
-      object.assign: 4.1.1
+      object.assign: 4.1.2
       string.prototype.trimend: 1.0.2
       string.prototype.trimstart: 1.0.2
     dev: true
@@ -1981,11 +2035,11 @@ packages:
     resolution:
       integrity: sha1-bjoKS9pxflAjqzuOkL7DYQjSLGg=
       tarball: es-abstract/download/es-abstract-1.18.0-next.1.tgz
-  /es-module-lexer/0.3.25:
+  /es-module-lexer/0.3.26:
     dev: true
     resolution:
-      integrity: sha1-JKGry5xdyWkjqOQr4DO4AfeI3gY=
-      tarball: es-module-lexer/download/es-module-lexer-0.3.25.tgz
+      integrity: sha1-e1BwROl9WwOwHUOSx0/+ucF3qDs=
+      tarball: es-module-lexer/download/es-module-lexer-0.3.26.tgz
   /es-to-primitive/1.2.1:
     dependencies:
       is-callable: 1.2.2
@@ -2509,6 +2563,15 @@ packages:
     resolution:
       integrity: sha1-MqbudsPX9S1GsrGuXZP+qFgKJeA=
       tarball: gensync/download/gensync-1.0.0-beta.2.tgz
+  /get-intrinsic/1.0.1:
+    dependencies:
+      function-bind: 1.1.1
+      has: 1.0.3
+      has-symbols: 1.0.1
+    dev: true
+    resolution:
+      integrity: sha1-lKl2j8vdBZWhySc6rPTInQdWMb4=
+      tarball: get-intrinsic/download/get-intrinsic-1.0.1.tgz
   /get-stream/3.0.0:
     dev: true
     engines:
@@ -2623,19 +2686,19 @@ packages:
     resolution:
       integrity: sha1-gdAbtd6OpKIUrV1urRtSNGCwtFo=
       tarball: hash-sum/download/hash-sum-2.0.0.tgz
-  /hast-to-hyperscript/9.0.0:
+  /hast-to-hyperscript/9.0.1:
     dependencies:
       '@types/unist': 2.0.3
       comma-separated-tokens: 1.0.8
       property-information: 5.6.0
       space-separated-tokens: 1.1.5
       style-to-object: 0.3.0
-      unist-util-is: 4.0.2
+      unist-util-is: 4.0.3
       web-namespaces: 1.1.4
     dev: true
     resolution:
-      integrity: sha1-do+1V3Zf4odJFpyIUFZBc0LXHoM=
-      tarball: hast-to-hyperscript/download/hast-to-hyperscript-9.0.0.tgz
+      integrity: sha1-m2f9GI5MgeitZvgDhVM0FzkgIY0=
+      tarball: hast-to-hyperscript/download/hast-to-hyperscript-9.0.1.tgz
   /hast-util-from-parse5/6.0.0:
     dependencies:
       '@types/parse5': 5.0.3
@@ -2674,7 +2737,7 @@ packages:
     resolution:
       integrity: sha1-lzsVkwt1Kae2aYTJgUi0ZSaIWXc=
       tarball: hast-util-raw/download/hast-util-raw-6.0.1.tgz
-  /hast-util-to-html/7.1.1:
+  /hast-util-to-html/7.1.2:
     dependencies:
       ccount: 1.1.0
       comma-separated-tokens: 1.0.8
@@ -2684,15 +2747,15 @@ packages:
       property-information: 5.6.0
       space-separated-tokens: 1.1.5
       stringify-entities: 3.1.0
-      unist-util-is: 4.0.2
+      unist-util-is: 4.0.3
       xtend: 4.0.2
     dev: true
     resolution:
-      integrity: sha1-OYGLi7/LjqqHhGoSCzh1SHsn0JQ=
-      tarball: hast-util-to-html/download/hast-util-to-html-7.1.1.tgz
+      integrity: sha1-22d/DuSDZYzqDuzJ3sMKukK2cRE=
+      tarball: hast-util-to-html/download/hast-util-to-html-7.1.2.tgz
   /hast-util-to-parse5/6.0.0:
     dependencies:
-      hast-to-hyperscript: 9.0.0
+      hast-to-hyperscript: 9.0.1
       property-information: 5.6.0
       web-namespaces: 1.1.4
       xtend: 4.0.2
@@ -2725,10 +2788,10 @@ packages:
     resolution:
       integrity: sha1-veLC5W0Exi3SToxd8ojQUKNV+4o=
       tarball: hastscript/download/hastscript-5.1.2.tgz
-  /highlight.js/10.3.1:
+  /highlight.js/10.3.2:
     resolution:
-      integrity: sha1-PKa/AHN3+q40foE1/yWQCqxzS5o=
-      tarball: highlight.js/download/highlight.js-10.3.1.tgz
+      integrity: sha1-E1/TYZoAw8u4tM1tvHjVa/y8RvE=
+      tarball: highlight.js/download/highlight.js-10.3.2.tgz
   /html-void-elements/1.0.5:
     dev: true
     resolution:
@@ -2803,6 +2866,18 @@ packages:
     resolution:
       integrity: sha1-QBVB8FNIhLv5UmAzTnL4juOXZUk=
       tarball: http-proxy/download/http-proxy-1.18.1.tgz
+  /http-status-code/2.1.0:
+    dependencies:
+      strip-json-comments: 1.0.4
+    dev: true
+    resolution:
+      integrity: sha1-Pg3IXqQ2nPTL2xvERH0rQRS9TTo=
+      tarball: http-status-code/download/http-status-code-2.1.0.tgz
+  /http-status-codes/2.1.4:
+    dev: true
+    resolution:
+      integrity: sha1-RT2ZtL2UJCVMT2qaOgNxWSMFJ5g=
+      tarball: http-status-codes/download/http-status-codes-2.1.4.tgz
   /human-signals/1.1.1:
     dev: true
     engines:
@@ -3439,7 +3514,7 @@ packages:
   /lowlight/1.16.0:
     dependencies:
       fault: 1.0.4
-      highlight.js: 10.3.1
+      highlight.js: 10.3.2
     dev: true
     resolution:
       integrity: sha1-nZBDcNCyC8oIk9c1Wc8nQo/sv34=
@@ -3486,6 +3561,11 @@ packages:
     resolution:
       integrity: sha1-XwMQ4YuL6JjMBwCSlaMK5B6R5vU=
       tarball: make-dir/download/make-dir-2.1.0.tgz
+  /make-error/1.3.6:
+    dev: true
+    resolution:
+      integrity: sha1-LrLjfqm2fEiR9oShOUeZr0hM96I=
+      tarball: make-error/download/make-error-1.3.6.tgz
   /markdown-escapes/1.0.4:
     dev: true
     resolution:
@@ -3635,19 +3715,19 @@ packages:
     resolution:
       integrity: sha1-JwVVABA/UWN70H0B2gHrGWekNSc=
       tarball: mdast-util-to-string/download/mdast-util-to-string-1.1.0.tgz
-  /mdast-util-toc/5.0.3:
+  /mdast-util-toc/5.0.4:
     dependencies:
       '@types/mdast': 3.0.3
       '@types/unist': 2.0.3
       extend: 3.0.2
       github-slugger: 1.3.0
       mdast-util-to-string: 1.1.0
-      unist-util-is: 4.0.2
+      unist-util-is: 4.0.3
       unist-util-visit: 2.0.3
     dev: true
     resolution:
-      integrity: sha1-X7FQPjZVaIkp1ZZ5mmkQzGVI5CA=
-      tarball: mdast-util-toc/download/mdast-util-toc-5.0.3.tgz
+      integrity: sha1-XHvI/2SRRUY4TYHqFVR4ujSALBI=
+      tarball: mdast-util-toc/download/mdast-util-toc-5.0.4.tgz
   /mdn-data/2.0.12:
     dev: true
     resolution:
@@ -3918,6 +3998,13 @@ packages:
     resolution:
       integrity: sha1-iIar0l2ce7YYAqZYUj0fjSqJsto=
       tarball: node-emoji/download/node-emoji-1.10.0.tgz
+  /node-fetch/2.6.1:
+    dev: true
+    engines:
+      node: 4.x || >=6.0.0
+    resolution:
+      integrity: sha1-BFvTI2Mfdu0uK1VXM5RBa2OaAFI=
+      tarball: node-fetch/download/node-fetch-2.6.1.tgz
   /node-forge/0.10.0:
     dev: true
     engines:
@@ -3998,18 +4085,18 @@ packages:
     resolution:
       integrity: sha1-HEfyct8nfzsdrwYWd9nILiMixg4=
       tarball: object-keys/download/object-keys-1.1.1.tgz
-  /object.assign/4.1.1:
+  /object.assign/4.1.2:
     dependencies:
+      call-bind: 1.0.0
       define-properties: 1.1.3
-      es-abstract: 1.18.0-next.1
       has-symbols: 1.0.1
       object-keys: 1.1.1
     dev: true
     engines:
       node: '>= 0.4'
     resolution:
-      integrity: sha1-MDhnpmbN1Bk27N7fsfjz4ypHjN0=
-      tarball: object.assign/download/object.assign-4.1.1.tgz
+      integrity: sha1-DtVKNC7Os3s4/3brgxoOeIy2OUA=
+      tarball: object.assign/download/object.assign-4.1.2.tgz
   /object.getownpropertydescriptors/2.1.0:
     dependencies:
       define-properties: 1.1.3
@@ -4564,7 +4651,7 @@ packages:
       tarball: rehype-parse/download/rehype-parse-7.0.1.tgz
   /rehype-stringify/8.0.0:
     dependencies:
-      hast-util-to-html: 7.1.1
+      hast-util-to-html: 7.1.2
     dev: true
     resolution:
       integrity: sha1-m2r7WZvPMWXxD5P8hUj5oD0uwro=
@@ -5195,6 +5282,14 @@ packages:
     resolution:
       integrity: sha1-ibhS+y/L6Tb29LMYevsKEsGrWK0=
       tarball: strip-final-newline/download/strip-final-newline-2.0.0.tgz
+  /strip-json-comments/1.0.4:
+    dev: true
+    engines:
+      node: '>=0.8.0'
+    hasBin: true
+    resolution:
+      integrity: sha1-HhX7ysl9Pumb8tc7TGVrCCu6+5E=
+      tarball: strip-json-comments/download/strip-json-comments-1.0.4.tgz
   /strip-json-comments/2.0.1:
     dev: true
     engines:
@@ -5331,6 +5426,11 @@ packages:
     resolution:
       integrity: sha1-X3o/ZYE8LE407h92Q6VkY0Ridpk=
       tarball: to-vfile/download/to-vfile-6.1.0.tgz
+  /toggle-selection/1.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-bkWxJj8gF/oKzH2J14sVuL932jI=
+      tarball: toggle-selection/download/toggle-selection-1.0.6.tgz
   /toidentifier/1.0.0:
     dev: true
     engines:
@@ -5358,6 +5458,23 @@ packages:
     resolution:
       integrity: sha1-uLY5zvrX0LsqvTfUM/+Ck++l9AY=
       tarball: trough/download/trough-1.0.5.tgz
+  /ts-node/8.9.1_typescript@3.9.3:
+    dependencies:
+      arg: 4.1.3
+      diff: 4.0.2
+      make-error: 1.3.6
+      source-map-support: 0.5.19
+      typescript: 3.9.3
+      yn: 3.1.1
+    dev: true
+    engines:
+      node: '>=6.0.0'
+    hasBin: true
+    peerDependencies:
+      typescript: '>=2.7'
+    resolution:
+      integrity: sha1-L4V/RsR+kdzSihTgUkgusUz9ZaU=
+      tarball: ts-node/download/ts-node-8.9.1.tgz
   /tslib/1.14.1:
     dev: true
     resolution:
@@ -5418,6 +5535,14 @@ packages:
     resolution:
       integrity: sha1-m9wixkjPjPht0j0yM2pBz7ZHXj8=
       tarball: type/download/type-2.1.0.tgz
+  /typescript/3.9.3:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha1-06yIg6l8JhOeQt9ek+7s4z1hC4o=
+      tarball: typescript/download/typescript-3.9.3.tgz
   /typescript/4.0.5:
     dev: true
     engines:
@@ -5465,7 +5590,7 @@ packages:
       tarball: unist-util-find-after/download/unist-util-find-after-2.0.4.tgz
   /unist-util-find-after/3.0.0:
     dependencies:
-      unist-util-is: 4.0.2
+      unist-util-is: 4.0.3
     dev: true
     resolution:
       integrity: sha1-XGX86/ZNT49JbbRvqP0PvzVLQ+Y=
@@ -5488,11 +5613,6 @@ packages:
     resolution:
       integrity: sha1-2ehDgcJGjoJinkpb6dfQWi3TJM0=
       tarball: unist-util-is/download/unist-util-is-3.0.0.tgz
-  /unist-util-is/4.0.2:
-    dev: true
-    resolution:
-      integrity: sha1-x9E0EYiqnOWzz/U4lY3piV8Upd4=
-      tarball: unist-util-is/download/unist-util-is-4.0.2.tgz
   /unist-util-is/4.0.3:
     dev: true
     resolution:
@@ -5512,7 +5632,7 @@ packages:
       tarball: unist-util-remove-position/download/unist-util-remove-position-2.0.1.tgz
   /unist-util-remove/2.0.0:
     dependencies:
-      unist-util-is: 4.0.2
+      unist-util-is: 4.0.3
     dev: true
     resolution:
       integrity: sha1-MsKtVXiALyymKrgIFz1QWyyJhIg=
@@ -5534,7 +5654,7 @@ packages:
   /unist-util-visit-parents/3.1.1:
     dependencies:
       '@types/unist': 2.0.3
-      unist-util-is: 4.0.2
+      unist-util-is: 4.0.3
     dev: true
     resolution:
       integrity: sha1-ZabOaY94prD1aqDojxOAGIbNrvY=
@@ -5542,7 +5662,7 @@ packages:
   /unist-util-visit/2.0.3:
     dependencies:
       '@types/unist': 2.0.3
-      unist-util-is: 4.0.2
+      unist-util-is: 4.0.3
       unist-util-visit-parents: 3.1.1
     dev: true
     resolution:
@@ -5671,7 +5791,7 @@ packages:
       debug: 4.2.0
       dotenv: 8.2.0
       dotenv-expand: 5.1.0
-      es-module-lexer: 0.3.25
+      es-module-lexer: 0.3.26
       esbuild: 0.7.22
       etag: 1.8.1
       execa: 4.1.0
@@ -5895,6 +6015,13 @@ packages:
     resolution:
       integrity: sha1-9Xa2M0FUeYnB3nuiiHYJI7J/6E8=
       tarball: ylru/download/ylru-1.2.1.tgz
+  /yn/3.1.1:
+    dev: true
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha1-HodAGgnXZ8HV6rJqbkwYUYLS61A=
+      tarball: yn/download/yn-3.1.1.tgz
   /zwitch/1.0.5:
     dev: true
     resolution:
@@ -5905,21 +6032,27 @@ specifiers:
   '@fikrikarim/local-echo': ^0.4.1
   '@mdi/svg': ^5.8.55
   '@mdx-js/mdx': ^1.6.19
+  '@types/deta': ^0.0.0
   '@typescript-eslint/eslint-plugin': ^4.6.0
   '@typescript-eslint/parser': ^4.6.0
+  '@vercel/node': ^1.8.4
   '@vue/compiler-sfc': ^3.0.2
   ant-design-vue: 2.0.0-beta.10
   autoprefixer: ^9.8.6
+  copy-to-clipboard: ^3.3.1
+  deta: ^0.0.8
   esbuild: ^0.7.22
   eslint: ^7.12.1
   eslint-plugin-simple-import-sort: ^5.0.3
   eslint-plugin-vue: ^7.1.0
   fecha: ^4.2.0
-  highlight.js: ^10.3.1
+  highlight.js: ^10.3.2
+  http-status-code: ^2.1.0
+  http-status-codes: ^2.1.4
   katex: ^0.12.0
   less: ^3.12.2
   mdast-util-to-hast: ^10.0.0
-  mdast-util-toc: ^5.0.3
+  mdast-util-toc: ^5.0.4
   mkdirp: ^1.0.4
   normalize.css: ^8.0.1
   postcss-nesting: ^7.0.1

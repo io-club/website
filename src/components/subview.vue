@@ -1,6 +1,6 @@
 <template>
-	<a-spin :spinning="loading" :wrapperClassName="classes" size="large">
-		<router-view v-slot="{Component}">
+	<a-spin :spinning="loading" :wrapperClassName="`flex-col ${classes}`" size="large">
+		<router-view v-slot="{Component}" class="flex-grow">
 			<transition @before-enter="before" @after-enter="after" :css="false">
 				<component :is="Component" />
 			</transition>
@@ -24,3 +24,7 @@ export const after = () => {
 	setTimeout(() => (loading.value = false), 200);
 };
 </script>
+
+<style lang="less">
+@import "main";
+</style>

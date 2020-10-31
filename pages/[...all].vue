@@ -6,10 +6,18 @@
 	</a-result>
 </template>
 
-<script setup lang="ts">
+<script setup="props" lang="ts">
 import { useRouter } from "vue-router";
 import { inject } from "vue";
 
+declare const props: {
+	all?: string;
+};
+
 export const router = useRouter();
 export const { $ts: t } = inject("i18n") || {};
+
+if (props.all === 'pastebin') {
+	router.push('/pastebin/')
+}
 </script>

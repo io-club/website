@@ -95,9 +95,15 @@ i18n.locales.value.forEach((t) => (languages[t] = {}));
 
 export const items: Record<string, Item> = {
 	home: { link: "/" },
-	class: { link: "/posts/class" },
-	pyterm: { link: "/pyterm" },
-	about: { link: "/posts/about" },
+	class: { link: "/posts/class/" },
+	tools: {
+		type: "sub",
+		children: {
+			pastebin: { link: "/pastebin/" },
+			pyterm: { link: "/pyterm/" },
+		},
+	},
+	about: { link: "/posts/about/" },
 	languages: {
 		type: "sub",
 		children: languages,
@@ -141,6 +147,11 @@ a {
 .ant-menu {
 	border: none;
 	.bg-transparent();
+}
+
+.ant-spin-container {
+	.flex-col();
+	.flex-grow();
 }
 
 img {

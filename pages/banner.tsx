@@ -11,38 +11,6 @@ export default defineComponent({
 		const br = inject('breakpoints') || {}
 		const {$ts: t} = inject('i18n') || {}
 		const carousel = ref(null)
-		const items = [
-			{
-				img: <Beer />,
-				hero: [t('home_sli1_hero'), <span class='animate-blink'>_</span>],
-				sub: t('home_sli1_sub'),
-				extra: <Button.Group>
-					{() => [
-						<Button type='primary' disabled>
-							{() => t('join_us')}
-						</Button>,
-						<Button type='primary'>
-							{() =>
-								<RouterLink to='/posts/about'>
-									{() => t('learn_more')}
-								</RouterLink>}
-						</Button>
-					]}
-				</Button.Group>
-			},
-			{
-				img: <Web />,
-				hero: t('home_sli2_hero'),
-				sub: t('home_sli2_sub'),
-				extra:
-					<Button type='primary'>
-						{() =>
-							<a href='//github.com/xhebox/ioclub'>
-								<GithubOutlined />xhebox/ioclub
-							</a>}
-					</Button>
-			},
-		];
 		let next = 0;
 		onMounted(() => {
 			let start: DOMHighResTimeStamp | undefined;
@@ -65,6 +33,39 @@ export default defineComponent({
 			requestAnimationFrame(step);
 		})
 		return () => {
+			const items = [
+				{
+					img: <Beer />,
+					hero: [t('home_sli1_hero'), <span class='animate-blink'>_</span>],
+					sub: t('home_sli1_sub'),
+					extra: <Button.Group>
+						{() => [
+							<Button type='primary' disabled>
+								{() => t('join_us')}
+							</Button>,
+							<Button type='primary'>
+								{() =>
+									<RouterLink to='/posts/about'>
+										{() => t('learn_more')}
+									</RouterLink>}
+							</Button>
+						]}
+					</Button.Group>
+				},
+				{
+					img: <Web />,
+					hero: t('home_sli2_hero'),
+					sub: t('home_sli2_sub'),
+					extra:
+						<Button type='primary'>
+							{() =>
+								<a href='//github.com/xhebox/ioclub'>
+									<GithubOutlined />xhebox/ioclub
+							</a>}
+						</Button>
+				},
+			];
+
 			const ret: JSX.Element[] = [];
 			for (const v of items) {
 				ret.push(<div class="py4">
