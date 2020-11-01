@@ -1,10 +1,11 @@
 ---
 title="[汉化] 论WPA2的优点和缺陷"
 subtitle="Paul Arana, INFS 612, Fall 2006"
-descs=[
-	{label="author", value="xhe"},
-	{label="last_modified"},
-]
+description="物联网通信工程的作业, 随手翻译.."
+author="xhe"
+avatar="/avatar/xhe.png"
+publish=true
+last_modified="2020-10-22 20:13:44"
 license="by-nc-sa"
 ---
 

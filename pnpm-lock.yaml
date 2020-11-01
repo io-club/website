@@ -7,6 +7,7 @@ dependencies:
   katex: 0.12.0
   normalize.css: 8.0.1
   vue: 3.0.2
+  vue-avatar: 2.3.1
   vue-composable: 1.0.0-beta.11
   vue-router: 4.0.0-rc.1_vue@3.0.2
   xterm: 4.9.0
@@ -26,6 +27,7 @@ devDependencies:
   eslint-plugin-simple-import-sort: 5.0.3_eslint@7.12.1
   eslint-plugin-vue: 7.1.0_eslint@7.12.1
   fecha: 4.2.0
+  globby: 11.0.1
   http-status-code: 2.1.0
   http-status-codes: 2.1.4
   less: 3.12.2
@@ -5841,6 +5843,14 @@ packages:
     resolution:
       integrity: sha1-d8AbDRTjLCkFnI1oMTT1dDctln4=
       tarball: voie-pages/download/voie-pages-0.4.0.tgz
+  /vue-avatar/2.3.1:
+    dev: false
+    engines:
+      node: '>= 4.0.0'
+      npm: '>= 3.0.0'
+    resolution:
+      integrity: sha1-AfVS+OGrhmI0TB5ijgOgKCLJalM=
+      tarball: vue-avatar/download/vue-avatar-2.3.1.tgz
   /vue-composable/1.0.0-beta.11:
     dependencies:
       '@vue/devtools-api': 6.0.0-beta.2
@@ -6046,6 +6056,7 @@ specifiers:
   eslint-plugin-simple-import-sort: ^5.0.3
   eslint-plugin-vue: ^7.1.0
   fecha: ^4.2.0
+  globby: ^11.0.1
   highlight.js: ^10.3.2
   http-status-code: ^2.1.0
   http-status-codes: ^2.1.4
@@ -6086,6 +6097,7 @@ specifiers:
   vite-plugin-voie: ^0.4.0
   voie-pages: ^0.4.0
   vue: ^3.0.2
+  vue-avatar: ^2.3.1
   vue-composable: ^1.0.0-beta.11
   vue-router: ^4.0.0-rc.1
   xterm: ^4.9.0

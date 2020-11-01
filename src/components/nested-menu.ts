@@ -36,45 +36,45 @@ export default defineComponent({
 			t = (e) => e;
 		}
 
-		return () => {
-			const generateMenu = (k: string, i: Item): VNode => {
-				switch (i.type) {
-					case 'sub':
-						return h(Menu.SubMenu,
-							{
-								key: k,
-							},
-							{
-								title: () => [
-									i.href ?
-										h('a', {href: i.href || '#', class: 'inline-block w100'}, t(i.label || k)) :
-										h(RouterLink, {to: i.link || '#', class: 'inline-block w100'}, () => t(i.label || k)),
-								],
-								default: () =>
-									Object.entries(i.children || {}).map(([k, v]) => generateMenu(k, v)),
-							})
-					case 'group':
-						return h(
-							Menu.ItemGroup,
-							{
-								title: t(i.label || k),
-							},
-							() => Object.entries(i.children || {}).map(([k, v]) => generateMenu(k, v))
-						);
-					default:
-						return h(
-							Menu.Item,
-							{
-								key: k,
-							},
-							() => [
+		const generateMenu = (k: string, i: Item): VNode => {
+			switch (i.type) {
+				case 'sub':
+					return h(Menu.SubMenu,
+						{
+							key: k,
+						},
+						{
+							title: () => [
 								i.href ?
-									h('a', {href: i.href || '#'}, t(i.label || k)) :
-									h(RouterLink, {to: i.link || '#'}, () => t(i.label || k)),
-							]);
-				}
-			};
+									h('a', {href: i.href || '#', class: 'inline-block w100'}, t(i.label || k)) :
+									h(RouterLink, {to: i.link || '#', class: 'inline-block w100'}, () => t(i.label || k)),
+							],
+							default: () =>
+								Object.entries(i.children || {}).map(([k, v]) => generateMenu(k, v)),
+						})
+				case 'group':
+					return h(
+						Menu.ItemGroup,
+						{
+							title: t(i.label || k),
+						},
+						() => Object.entries(i.children || {}).map(([k, v]) => generateMenu(k, v))
+					);
+				default:
+					return h(
+						Menu.Item,
+						{
+							key: k,
+						},
+						() => [
+							i.href ?
+								h('a', {href: i.href || '#'}, t(i.label || k)) :
+								h(RouterLink, {to: i.link || '#'}, () => t(i.label || k)),
+						]);
+			}
+		};
 
+		return () => {
 			return h(Menu, {
 				onClick: ({key, keyPath}) => {
 					let k

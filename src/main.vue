@@ -94,16 +94,21 @@ const languages: Record<string, Item> = {};
 i18n.locales.value.forEach((t) => (languages[t] = {}));
 
 export const items: Record<string, Item> = reactive({
-	home: { link: "/" },
-	class: { link: "/posts/class/" },
+	notice: { link: "/posts/notice" },
+	class: {
+		type: "sub",
+		children: {
+			prog_intro: { link: "/posts/prog_intro" },
+		},
+	},
 	tools: {
 		type: "sub",
 		children: {
 			pastebin: { link: "/pastebin/" },
-			pyterm: { link: "/pyterm/" },
+			pyterm: { link: "/pyterm" },
 		},
 	},
-	about: { link: "/posts/about/" },
+	about: { link: "/posts/about" },
 	languages: {
 		type: "sub",
 		children: languages,

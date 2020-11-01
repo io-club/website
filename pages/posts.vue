@@ -1,28 +1,31 @@
 <template>
 	<a-row type="flex" justify="center">
 		<a-col :xs="22" :sm="19">
-			<a-page-header
-				:title="page.attributes.title"
-				:sub-title="page.attributes.subtitle"
-				@back="router.back()"
-			>
-				<template #extra>
-					<License :license="page.attributes.license" />
-				</template>
-				<a-descriptions>
+			<a-page-header :title="p.attr.title" :sub-title="p.attr.subtitle" @back="router.back()">
+				<a-descriptions layout="vertical">
+					<a-descriptions-item key="author" :label="t('author')">{{p.attr.author || t('noname')}}</a-descriptions-item>
+					<a-descriptions-item key="license" :label="t('license')">
+						<License :license="p.attr.license" />
+					</a-descriptions-item>
+					<a-descriptions-item key="last_modified" :label="t('last_modified')">{{p.attr.last_modified}}</a-descriptions-item>
 					<a-descriptions-item
-						v-for="desc in page.attributes.descs"
-						:key="desc.label"
-						:label="t(desc.label)"
-					>{{desc.value}}</a-descriptions-item>
+						key="description"
+						:label="t('description')"
+					>{{p.attr.description || t('default_desc')}}</a-descriptions-item>
 				</a-descriptions>
+				<template #footer></template>
 			</a-page-header>
 			<div class="px4 py1 markdown">
-				<SubView />
+				<router-view />
 			</div>
 		</a-col>
 		<a-col :xs="0" :sm="5" class="relative px2">
-			<NestedMenu :items="page.toc" mode="inline" :i18n="false" class="sticky overflow-x-auto overflow-y-auto t0 max-vh100" />
+			<NestedMenu
+				:items="p.toc"
+				mode="inline"
+				:i18n="false"
+				class="sticky overflow-x-auto overflow-y-auto t0 max-vh100"
+			/>
 		</a-col>
 	</a-row>
 </template>
@@ -30,17 +33,16 @@
 <script setup lang="ts">
 export { default as NestedMenu } from "/@/components/nested-menu";
 export { default as License } from "/@/components/license.vue";
-export { default as SubView } from "/@/components/subview.vue";
 import { inject, onBeforeUnmount, provide, reactive, watchEffect } from "vue";
-import { onBeforeRouteLeave, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 export const router = useRouter();
 
-export const page = reactive({
-	attributes: {},
+export const p = reactive({
+	attr: {},
 	toc: {},
 });
-provide("page", page);
+provide("page", p);
 
 export const { $ts: t } = inject("i18n") || {};
 
@@ -54,14 +56,14 @@ watchEffect(() => {
 		navItems.toc = {
 			type: "group",
 			label: t("toc"),
-			children: page.toc,
+			children: p.toc,
 		};
 	}
 });
 
 onBeforeUnmount(() => {
 	delete navItems.toc;
-})
+});
 </script>
 
 <style>

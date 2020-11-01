@@ -3,7 +3,7 @@ import mdxAstToMdxHast from '@mdx-js/mdx/mdx-ast-to-mdx-hast'
 import mdxHastToJsx from '@mdx-js/mdx/mdx-hast-to-jsx'
 import {Service, startService} from 'esbuild'
 import {format as dateFormat} from 'fecha'
-import fs from 'fs'
+import globby from 'globby'
 import katex from 'rehype-katex'
 import embeded from 'remark-embed-images'
 import toc_extract from 'remark-extract-toc'
@@ -37,17 +37,16 @@ const ensureService = async () => {
 	return esbuild
 }
 
-export const stopService = async () => {
-	if (esbuild) {
-		const service = await esbuild
-		service.stop()
-		esbuild = undefined
+const Attributes = (value: string): Record<string, unknown> => {
+	const attributes = toml.parse(value)
+	if (attributes.last_modified) {
+		attributes.last_modified = dateFormat(new Date(attributes.last_modified), 'YYYY-MM-DD hh:mm:ss')
 	}
+	if (!attributes.license) attributes.license = 'by-nc-nd'
+	return attributes
 }
 
-const test = (path: string) => path.endsWith('.md');
-
-const render = async (file: string) => {
+export const Render = async (file: string): Promise<string> => {
 	let attributes: Record<string, unknown> = {}
 	let tableOfContents: Record<string, unknown> = {}
 	const remark = unified()
@@ -69,19 +68,9 @@ const render = async (file: string) => {
 			return (tree) => {
 				// extract frontmatter
 				visit(tree, ['yaml', 'toml'], (node) => {
-					attributes = toml.parse(node.value as string)
+					attributes = Attributes(node.value as string)
 				})
 				remove(tree, ['yaml', 'toml'])
-
-				const descs = attributes.descs
-				if (descs && descs instanceof Array) {
-					for (const desc of descs) {
-						if (desc.label == 'last_modified') {
-							const stats = fs.statSync(file)
-							desc.value = dateFormat(stats.mtime, 'YYYY-MM-DD hh:mm:ss A')
-						}
-					}
-				}
 
 				// extract toc
 				let toc1: unknown = toc_extract({keys: ['data']})(tree)
@@ -144,7 +133,7 @@ const defaults = {inlineCode: 'code', wrapper: 'div'}
 const slice = Array.prototype.slice
 
 export default defineComponent({
-	setup(props) {
+	setup() {
 		const router = useRouter()
 		const page = inject('page') || {}
 		const registerComponent = inject('components') || {}
@@ -163,27 +152,82 @@ export default defineComponent({
 		${result.js}
 		return () => {
 			page.toc = ${JSON.stringify(tableOfContents)}
-			page.attributes = ${JSON.stringify(attributes)}
+			page.attr = ${JSON.stringify(attributes)}
 			return MDXContent({})
 		}
 	},
 })
 `
-	return result;
+	return result.js;
 }
 
-export const transform = (): Transform => {
+export interface Meta {
+	path: string;
+	data: Record<string, unknown>;
+}
+
+export const Pagination = async (posts: string): Promise<string> => {
+	const meta: Meta[] = []
+	const files = await globby('**/*.md', {cwd: posts})
+	for (const file of files) {
+		const path = `${posts}/${file}`
+		let attributes: Record<string, unknown> = {}
+		const remark = unified()
+			.use(frontmatter)
+			.use(markdown, {})
+			.use(() => {
+				return (tree) => {
+					// extract frontmatter
+					visit(tree, ['yaml', 'toml'], (node) => {
+						attributes = Attributes(node.value as string)
+					})
+				}
+			})
+		await remark.run(remark.parse(vfile.readSync(path)))
+		if (attributes.publish) {
+			meta.push({
+				path: file.replace(/.md$/, '').replace(/index$/, ''),
+				data: attributes,
+			})
+		}
+	}
+	meta.sort((a, b) => {
+		const ta = new Date(a.data.last_modified as string)
+		const tb = new Date(b.data.last_modified as string)
+		if (ta > tb) return -1
+		else if (ta == tb) return 0
+		else return 1
+	})
+	return `
+import { defineComponent, inject, h } from 'vue'
+export default defineComponent({
+	setup(props) {
+		const posts = inject('posts') || {}
+		return () => {
+			posts.meta = ${JSON.stringify(meta)}
+			return h('div')
+		}
+	}
+})
+`
+}
+
+export const transform = ({posts = 'posts'}): Transform => {
 	return {
-		test: ({path: file}) => test(file),
+		test: ({path}) => path.endsWith('.md'),
 		transform: async ({path: file}) => {
 			let result
 			try {
-				result = await render(file)
+				if (file.endsWith('pagination.md')) {
+					result = await Pagination(posts)
+				} else {
+					result = await Render(file)
+				}
 			} catch (err) {
 				console.error(err)
 			}
 			return {
-				code: result?.js || '',
+				code: result || '',
 			}
 		}
 	}

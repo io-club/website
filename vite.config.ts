@@ -22,7 +22,7 @@ export default {
 	esbuildTarget: 'es2018',
 	minify: 'esbuild',
 	transforms: [
-		markdown(),
+		markdown({posts: 'pages/posts'}),
 	],
 	plugins: [
 		voie({
