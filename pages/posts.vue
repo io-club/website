@@ -31,8 +31,8 @@
 export { default as NestedMenu } from "/@/components/nested-menu";
 export { default as License } from "/@/components/license.vue";
 export { default as SubView } from "/@/components/subview.vue";
-import { inject, provide, reactive, watchEffect } from "vue";
-import { useRouter } from "vue-router";
+import { inject, onBeforeUnmount, provide, reactive, watchEffect } from "vue";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
 
 export const router = useRouter();
 
@@ -58,6 +58,10 @@ watchEffect(() => {
 		};
 	}
 });
+
+onBeforeUnmount(() => {
+	delete navItems.toc;
+})
 </script>
 
 <style>
