@@ -67,8 +67,12 @@ export const items: Item[] = reactive([
 	{
 		type: "sub",
 		label: "blog",
-		link: "/",
+		link: "/posts",
 		children: [
+			{
+				label: "blog_guide",
+				link: "/posts",
+			},
 			{
 				label: "prog_intro",
 				link: "/posts/prog_intro",

@@ -1,0 +1,10 @@
+digraph abc {
+	l4 [ label = "4" ];
+	l3 [ label = "3" ];
+	l2 [ label = "2" ];
+	l1 [ label = "1" ];
+
+	l4  -> l3;
+	l3  -> l2;
+	l2  -> l1;
+}

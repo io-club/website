@@ -1,0 +1,23 @@
+digraph a {
+	graph [
+		rankdir = "LR"
+	];
+
+	"stack1" [
+		label = "... | f() | int: a | int: ? | ..."
+		shape = "record"
+	];
+
+	"stack2" [
+		label = "... | f() | int: a | int: ? | g() | int: b | ..." 
+		shape = "record"
+	];
+
+	"stack3" [
+		label = "... | f() | int: a | int: g(a) | ..."
+		shape = "record"
+	];
+
+	"stack1" -> "stack2"
+	"stack2" -> "stack3"
+}

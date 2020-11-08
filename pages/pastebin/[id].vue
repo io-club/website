@@ -1,14 +1,7 @@
 <template>
-	<div class="flex-col flex-center p4">
-		<a-input-group>
-			<a-textarea
-				v-model:value="value"
-				:placeholder="t('paste_tip')"
-				:autosize="{minRows: 16, maxRows: 32}"
-				class="flex-grow"
-				allowClear
-				showCount
-			/>
+	<div class="flex-grow flex-center p4">
+		<a-input-group class="flex-grow">
+			<a-textarea v-model:value="value" :placeholder="t('paste_tip')" autoSize allowClear showCount />
 		</a-input-group>
 		<a-button-group>
 			<a-button type="default" @click="submit">{{t('submit')}}</a-button>
@@ -74,7 +67,7 @@ export const submit = async () => {
 		console.error(err);
 	}
 
-	await exec("/api/pastebin", {
+	await exec("/api/pastebin/upload", {
 		method: "POST",
 		mode: "cors",
 		headers: {

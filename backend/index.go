@@ -36,7 +36,7 @@ func init() {
 		log.Fatalf("jwt error: %v", err)
 	}
 
-	if err := SetupPastebin(router, auth); err != nil {
+	if err := SetupPastebin(Router, auth); err != nil {
 		log.Fatalf("pastebin error: %v", err)
 	}
 }

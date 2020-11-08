@@ -1,0 +1,13 @@
+digraph abc {
+	l1  [ label = "30" ];
+	l21 [ label = "20" ];
+	l22 [ label = "45" ];
+	l31 [ label = "10" ];
+	l32 [ label = "25" ];
+	l33 [ label = "40" ];
+	l34 [ label = "50" ];
+
+	l1  -> { l21 l22 };
+	l21 -> { l31 l32 };
+	l22 -> { l33 l34 };
+}

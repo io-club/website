@@ -1,58 +1,65 @@
 ---
-title="程序结构导论(3): 递归和树"
+title="程序结构导论(3): 递归"
 subtitle="从前有座山, 山里有座庙, 庙里有个老和尚给小和尚讲故事, 讲的什么故事呢？从前有座山..."
 description="递归函数是函数最强大的功能, 没有之一.
 许多数据结构也都需递归的定义, 图灵机/可计算理论也依赖于递归的概念.
 所以到底什么是递归?"
-last_modified="2020-11-01 20:14:33"
+last_modified="2020-11-13 09:50:43"
 avatar="/avatar/xhe.png"
 publish=true
 author="xhe"
 license="by-nc-sa"
 ---
 
-## 递归
+当一件事物的定义, 是由定义本身组成的, 我们就说这是递归. 一个常见的例子是[自相似](//baike.baidu.com/item/%E8%87%AA%E7%9B%B8%E4%BC%BC):
 
-函数是接受输入, 给定输出的一个过程:
+![wikipedia](//upload.wikimedia.org/wikipedia/commons/f/fd/Von_Koch_curve.gif)
 
-```py
-def add(x, y):
-	return x + y
-```
+上图来自维基百科. 当然这是一个空而大的概念, 举些实际的例子:
 
-最初的目的是提取经常重复写的代码, 为它起个名字, 这样不用一遍一遍写. 第一节控制流小节说的代码块可以看成函数, 就是这个意思. 如果你把一个代码块提出来, 起个名字, 那其实就和函数一样了. 函数后来进一步拓展出**作用域**, **形参/实参**, **递归**等衍生话题.
+1. 上图中的自相似, 常见于 **分形(fractal)** 图形
+2. **递归函数(recursive function)**, 重复利用代码的典范
+3. 递归数据结构, 包括但不限于链表, 树等
+4. **递归可枚举语言(recursive enumerable language)**, 计算理论中图灵机可运行的语言, 和语言学/计算理论/类型论紧密相关.
+5. 递推数列, 递推级数, $f(a) = f(a-1) + f(a-2)$
 
-大多语言只允许返回一个返回值, 有些语言(go语言)允许返回多个返回值. 到这里, 函数已经完全不像原本的数学中的函数的定义了, 务必不要拿数学的函数来理解程序的函数.
+递归的终极目标是用很少的定义, 描述一个可能有无限情况的事物.
 
-这一节主要讲递归:
+数学归纳法中就隐藏着递归: 证明$N > 1$的情况假设了$N-1$的情况成立. 所以要证明$N = 12$成立, 就要证明$N = 11$成立, 所以需要$N = 10$成立, 以此类推, 直到已经证明过的$N = 1$. 本来有12个证明, 可你用数学归纳法, 只证明了$N = 1$和$N > 1$.
 
-```py
-def sum(x):
-	if x == 1:
-		return 1
-	return sum(x - 1) + x
-```
+## 递归函数
 
-你不要知道栈, 就能理解递归. 假设函数:
+你可能经常听说 **算法(algorithm)** 这个词, 它是指解决一个问题需要的步骤, 这节就来介绍一下如何用递归写算法. 下图是一个求和数学函数:
 
 $$
 sum(x) = \sum _ {i=1}^x i
 $$
 
-可得
+经过恒等变换, 可得递推式:
 
 $$
 sum(x) = \sum _ {i=1}^{x-1} i + x
 = sum(x-1) + x \quad x > 1
 $$
 
-这是对应的数学表示, 第二个递推式只在$x > 1$时成立. 现在来看看它对应的程序框图:
+递推式只在$x > 1$时成立. 我们可以用递归函数来表示这个递归式, 完成求和功能:
+
+```py
+def sum(x):
+	if x == 1:
+		return 1
+	return sum(x - 1) + x
+
+sum(3) # 3 + 2 + 1 = 6
+```
+
+现在来看看它对应的程序框图:
 
 ![flow8](./flow_8.svg)
 
 这个框图$x \neq 1$的时候, 完美的反应了递推式. 递推式只有在$x > 1$时成立, 因此, 我们在x减少到$x = 1$时, 不再使用递推关系, 而是直接返回$1$. 因为$sum(1) = 1$.
 
-可以说递归的核心就是:
+可以说递归函数的核心就是:
 
 1. 大问题化小问题
 2. 通过递归调用解决小问题
@@ -60,7 +67,7 @@ $$
 
 而递推就是一个典型的可以这么做的情况. 动态规划这类算法问题就常写出递推公式, 所以动态规划的问题可以用递归解决.
 
-至于为什么可以这样写, 递归的时候数据是怎么流动的, 之后几节再说. 现在来看看斐波那契的例子:
+### 斐波那契
 
 ```py
 def fib(x):
@@ -78,6 +85,8 @@ f(2) = 1
 \\
 f(x) = f(x-1) + f(x-2) \quad x > 2
 $$
+
+### 爬楼梯
 
 有n级楼梯, 可以1次跨一级台阶, 或1次二级台阶, 有多少种爬法? 对应的递推公式:
 
@@ -438,6 +447,181 @@ int sum(int a) {
 }
 ```
 
-## 树
+## 递归数据结构
 
-正在写...
+这里说的树是指一种**数据结构(data structrue)**, 树是一类数据结构的总称, 因结构图形似树而得名. 下图展示一个**二叉树(binary search tree)**.
+
+![BST](./sec3_2.svg)
+
+二叉树从最顶部的根节点(上图的30)出发, 每个节点至多两个子节点, 最少零个; 且含有一个值, 本例中是一个数字. 而**二叉搜索树(binary search tree)**的节点, 还要满足, 左子节点的值 < 父节点的值 < 右子节点的值 (20 < 30 < 45). 这个性质使得可以通过二分的方法查找树中存不存在某个值.
+
+上图的树有7个节点, 但每个节点除了它的数字不同, 定义都是类似的.
+
+### 构建, 插入, 删除
+
+```python
+class Node:
+	def __init__(self, data):
+		self.left = None
+		self.right = None
+		self.data = data
+
+	def Print(self)
+		print(self.data)
+
+a = Node(3)
+a.Print() # 3
+```
+
+上面的程序定义了一个二叉树节点 **类(class)**, 这属于面向对象编程. 一个类有自己的成员: 一些变量, 还有一些方法. `self`是指类本身, 用`self.xxx`就可以访问/修改一个类的成员. 类本身也是一个变量, 可以赋给它一个名字, 这时新名字`a`和`self`等价.
+
+通过`def xxx(self, xxx)``的形式, 即第一个参数为self的函数, 就定义一个类的方法. 之后可以通过`self.xxx()`来调用这个函数, 第一个参数, 也就是类本身被自动传入.
+
+你不需要太深入, 能照猫画虎就好. 下面来定义一个简单的二叉树, 首先是根节点:
+
+```python
+root = Node(3)
+```
+
+根节点右侧指向5:
+
+```python
+root.right = Node(5)
+```
+
+删除5, 也就是根节点右侧没有指向:
+
+```python
+root.right = None
+```
+
+### 遍历
+
+```python
+root = Node(4)
+root.left = Node(2)
+root.left.left = Node(1)
+root.left.right = Node(3)
+root.right = Node(10)
+```
+
+构建如上二叉树, 我要进行遍历, 也就是访问树上每一个节点:
+
+```python
+class Node:
+	# ...
+
+	def Traversal(self):
+		if self.left is not None:
+			self.left.Traversal()
+		self.Print()
+		if self.right is not None:
+			self.right.Traversal()
+
+root.Traversal() # 1 2 3 4 10
+```
+
+这是一个递归方法/递归函数. 它首先检查当前节点是不是指向一个节点, 如果是, 就对左节点和它下面所有的节点, 或者说左子树进行遍历. 接着是打印当前节点的值, 最后再检查右节点. 如果对上面的二叉树调用, 就是打印出左子树1/2/3后, 打印4, 最后是右子树10. 因为当前节点在左子树和右子树中间被打印, 所以叫 **中序遍历(in-order traversal)**.
+
+实际上还有 **前序遍历(pre-order traversal)**:
+
+```python
+class Node:
+	# ...
+
+	def Traversal(self):
+		self.Print()
+		if self.left is not None:
+			self.left.Traversal()
+		if self.right is not None:
+			self.right.Traversal()
+
+root.Traversal() # 4 1 2 3 10
+```
+
+以及 **后序遍历(post-order traversal)**:
+
+```python
+class Node:
+	# ...
+
+	def Traversal(self):
+		if self.left is not None:
+			self.left.Traversal()
+		if self.right is not None:
+			self.right.Traversal()
+		self.Print()
+
+root.Traversal() # 1 2 3 10 4
+```
+
+### 二分搜索
+
+上一节我们构建的二叉树, 符合二叉搜索树的定义.你可以看到以中序遍历的时候, 输出的数字都是顺序的, 这样我们就能做二分了.
+
+比如你有一个有序数组, 而你要查找数组中存不存在1: 假设你拿到的数组是`[1 2 3 4 5]`, 你可以先拿出来数组的中位数3, 发现它比1大, 所以结果必定在前两个`[1 2]`中, 这样我们就把问题规模一步缩小了一半. 所以由于二叉搜索树也是有序的, 你也可以做类似的事情:
+
+```python
+class Node:
+	# ...
+
+	def Search(self, data):
+		if data < self.data:
+			if self.left is None:
+				print("not found")
+				return
+			return self.left.Search(data)
+		elif data == self.data:
+			return self
+		else:
+			if self.right is None:
+				print("not found")
+				return
+			return self.right.Traversal()
+
+root.Search(2) # Node(2)
+```
+
+如果搜索值小于当前节点值, 那他一定在左子树中; 等于当前值, 那就是当前节点; 大于当前值, 就是右子树. 如果在寻找过程中, 发现要进入的左子树, 右子树是None, 那就说明树中没有这个值.
+
+### 平衡
+
+虽然二叉搜索树是有序的, 但不一定是平衡的:
+
+```python
+root = Node(4)
+root.left = Node(3)
+root.left.left = Node(2)
+root.left.left.left = Node(1)
+```
+
+![no-balance](./sec3_nobtree.svg)
+
+上面的二叉树有四层, 四层总共可以存 $1 + 2 + 4 + 8 = 15$ 个节点, 但只存了4个节点. 这样如果要查找1, 就需要从第一层, 走到第四层. 如果是下面这样的树:
+
+```python
+root = Node(3)
+root.left = Node(2)
+root.left.left = Node(1)
+root.right = Node(4)
+```
+
+![balance](./sec3_btree.svg)
+
+就只需要从第一层走到第三层. 所以二叉树的 **平衡(balance)** 也很重要: 左右子树的树高不应该相差超过一层. 我们有自动化平衡的方法, AVL和红黑树. 这些树叫做 **自平衡树(self-balance tree)**.
+
+### 练习
+
+1 . (easy) 定义一个二叉树节点对象
+
+2 . (normal) 添加前序遍历的方法.
+
+3 . (normal) 添加中序遍历的方法.
+
+4 . (normal) 添加后序遍历的方法.
+
+5 . (normal) 添加二分搜索方法.
+
+6 . (hard) 非递归前序遍历
+
+7 . (hard) AVL树的插入和删除

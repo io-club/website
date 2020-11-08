@@ -1,0 +1,30 @@
+digraph a {
+	graph [
+		rankdir = "LR"
+	];
+
+	"mm_struct" [
+		label = "mm_struct | Linux Memory Descriptor Struct | | <f1> stack | <f2> mmap | <f3> brk | <f4> data | <f5> code"
+		shape = "record"
+	];
+
+	"stack" [
+		label = "<f0> call_frame_1 | ... | <f2> call_frame_current"
+		shape = "record"
+	];
+
+	"heap" [
+		label = "<f0> uint8[8] | <f1> MyStruct[128] | ..."
+		shape = "record"
+	];
+
+	"ELF" [
+		label = "Excutatble File | | <f0> bss/data segment | <f1> text segment"
+		shape = "record"
+	];
+
+	"mm_struct":f1 -> "stack"
+	"mm_struct":f3 -> "heap"
+	"mm_struct":f4 -> "ELF":f0
+	"mm_struct":f5 -> "ELF":f1
+}

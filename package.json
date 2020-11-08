@@ -8,8 +8,10 @@
 	},
 	"repository": "https://github.com/xhebox/ioclub/ioclub",
 	"scripts": {
-		"dev": "vite serve",
-		"build": "rm -rf dist && vite build"
+		"dev": "concurrently -k 'npm run dev-vue' 'npm run dev-api'",
+		"dev-vue": "env-cmd vite serve",
+		"dev-api": "env-cmd go run backend/dev/main.go",
+		"build": "rm -rf dist && env-cmd vite build"
 	},
 	"license": "MIT",
 	"devDependencies": {
@@ -19,6 +21,8 @@
 		"@typescript-eslint/parser": "^4.6.1",
 		"@vue/compiler-sfc": "^3.0.2",
 		"autoprefixer": "^9.8.6",
+		"concurrently": "^5.3.0",
+		"env-cmd": "^10.1.0",
 		"esbuild": "^0.7.22",
 		"eslint": "^7.13.0",
 		"eslint-plugin-simple-import-sort": "^5.0.3",

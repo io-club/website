@@ -1,0 +1,12 @@
+digraph a {
+	graph [
+		rankdir = "LR"
+	];
+
+	"heap" [
+		label = "... | 4bytes allocated | 2bytes free | 4bytes allocated | 32bytes free | ..."
+		shape = "record"
+	];
+
+	"heap"
+}

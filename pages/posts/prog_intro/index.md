@@ -17,9 +17,9 @@ license="by-nc-sa"
 
 ## 课程目录
 
-[程序结构导论(1): 编程入门](/)
-[程序结构导论(2): 执行分析](/)
-[程序结构导论(3): 递归和树](/)
+[程序结构导论(1): 编程入门](/posts/prog_intro/section1)
+[程序结构导论(2): 执行分析](/posts/prog_intro/section2)
+[程序结构导论(3): 递归和树](/posts/prog_intro/section3)
 
 ## FAQ
 
