@@ -34,8 +34,8 @@
 	],
 	"rewrites": [
 		{
-			"source": "/api/pastebin/:pastebin",
-			"destination": "/api/pastebin"
+			"source": "/api/(.*)",
+			"destination": "/api"
 		},
 		{
 			"source": "/(.*)",

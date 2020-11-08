@@ -1,6 +1,6 @@
 <template>
 	<a-row type="flex" justify="center">
-		<a-col :xs="22" :sm="19">
+		<a-col :xs="22" :md="19">
 			<a-page-header :title="p.attr.title" :sub-title="p.attr.subtitle" @back="router.back()">
 				<a-descriptions layout="vertical">
 					<a-descriptions-item key="author" :label="t('author')">{{p.attr.author || t('noname')}}</a-descriptions-item>
@@ -19,7 +19,7 @@
 				<router-view />
 			</div>
 		</a-col>
-		<a-col :xs="0" :sm="5" class="relative px2">
+		<a-col :xs="0" :md="5" class="relative px2">
 			<NestedMenu
 				:items="p.toc"
 				mode="inline"
@@ -36,34 +36,48 @@ export { default as License } from "/@/components/license.vue";
 import { inject, onBeforeUnmount, provide, reactive, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 
+provide("components", {});
+
 export const router = useRouter();
 
 export const p = reactive({
 	attr: {},
-	toc: {},
+	toc: [],
 });
 provide("page", p);
 
-export const { $ts: t } = inject("i18n") || {};
+import { I18nType } from "/@/composables/i18n";
+export const { $ts: t } = inject("i18n") as I18nType;
+
+import { BreakpointType } from "/@/composables/breakpoints";
+const br = inject("breakpoints") as BreakpointType;
 
 import { Item } from "/@/components/nested-menu";
-const navItems: Record<string, Item> = inject("navItems") || {};
-const br = inject("breakpoints") || {};
+const navItems = inject("navItems") as Item[];
+
+const removeToc = () => {
+	const idx = navItems.findIndex((v) => v.label === "toc");
+	if (idx !== -1) {
+		navItems.splice(idx, 1);
+	}
+};
+const addToc = () => {
+	navItems.push({
+		label: "toc",
+		type: "group",
+		children: p.toc,
+	});
+};
+
 watchEffect(() => {
 	if (br.sm) {
-		delete navItems.toc;
+		removeToc();
 	} else {
-		navItems.toc = {
-			type: "group",
-			label: t("toc"),
-			children: p.toc,
-		};
+		addToc();
 	}
 });
 
-onBeforeUnmount(() => {
-	delete navItems.toc;
-});
+onBeforeUnmount(removeToc);
 </script>
 
 <style>

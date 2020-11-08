@@ -15,9 +15,11 @@ declare const props: {
 };
 
 export const router = useRouter();
-export const { $ts: t } = inject("i18n") || {};
 
 if (props.all === 'pastebin') {
 	router.push('/pastebin/')
 }
+
+import { I18nType } from "/@/composables/i18n";
+export const { $ts: t } = inject("i18n") as I18nType;
 </script>

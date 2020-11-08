@@ -1,17 +1,8 @@
 <template>
 	<a-back-top />
 	<main class="flex-col bg-lwhite fc-front min-h100">
-		<a-drawer
-			:title="t('IO LAB')"
-			placement="left"
-			v-model:visible="open"
-			getContainer="body"
-			width="80%"
-		>
-			<NestedMenu :items="items" mode="inline" />
-		</a-drawer>
 		<header class="flex-row align-center py0 px3 bg-back">
-			<router-link class="flex-row align-center" to="/#">
+			<router-link class="flex-row align-center" to="/">
 				<logo class="h5" />
 				<span v-if="br.sm" class="f2 ml0">{{ t('IO LAB') }}</span>
 			</router-link>
@@ -20,16 +11,25 @@
 
 			<NestedMenu v-if="br.sm" :items="items" />
 			<a-button v-else type="link" @click="open = !open">
+				<a-drawer
+					:title="t('IO LAB')"
+					placement="left"
+					v-model:visible="open"
+					getContainer="body"
+					width="80%"
+				>
+					<NestedMenu :items="items" mode="inline" />
+				</a-drawer>
 				<MenuOutlined v-if="!open" />
 				<CloseOutlined v-else />
 			</a-button>
 		</header>
-		<SubView class="flex-grow" />
+		<router-view class="flex-grow" />
 		<footer class="flex-row flex-center py2 px3 bg-front fc-back">
-			<span v-if="br.sm">{{ t('language: {0}', [t(locale)]) }}</span>
+			<span v-if="br.sm">{{ t('language: {0}', [t(i18n.locale)]) }}</span>
 			<a
 				v-if="br.sm"
-				:href="hitokoto.uuid ? `//hitokoto.cn?uuid=${hitokoto.uuid}` : '/#'"
+				:href="hitokoto.uuid ? `//hitokoto.cn?uuid=${hitokoto.uuid}` : '/'"
 				class="flex-grow text-center"
 			>{{ hitokoto.word }} {{hitokoto.uuid ? '-' : ''}} {{hitokoto.from}}</a>
 			<div class="flex-col flex-center">
@@ -41,81 +41,101 @@
 </template>
 
 <script setup lang="ts">
-import { provide, reactive, readonly, ref } from "vue";
-
-// for logo
+import { provide, reactive, ref } from "vue";
+import { useFetch } from "vue-composable";
 export { default as logo } from "/@/components/logo.vue";
-
-// for loading
-export { default as SubView } from "/@/components/subview.vue";
-
-// for burger
 export { MenuOutlined, CloseOutlined } from "@ant-design/icons-vue";
-export const open = ref(false);
 
 // global breakpoints
-import breakpoints from "/@/breakpoints.json";
-import { useBreakpoint, useFetch } from "vue-composable";
-export const br = readonly(reactive(useBreakpoint(breakpoints)));
+import { useBreakpoint } from "/@/composables/breakpoints";
+export const br = useBreakpoint();
 provide("breakpoints", br);
 
 // global i18n
-import { buildI18n, useLanguage } from "vue-composable";
-
-const i18n = buildI18n({
-	locale: "zh-CN",
-	fallback: "en",
-	messages: {
-		en: async () => {
-			const m = await import("/@/locales/en.json");
-			return m.default;
-		},
-		"zh-CN": async () => {
-			const m = await import("/@/locales/zh_CN.json");
-			return m.default;
-		},
-	},
-});
-const userlocale = (i18n.locales.value as readonly string[]).indexOf(
-	useLanguage().language.value
-);
-if (userlocale != -1) {
-	i18n.locale.value = i18n.locales.value[userlocale];
-}
+import { useI18n } from "/@/composables/i18n";
+export const i18n = useI18n();
 provide("i18n", i18n);
-
-export const { $ts: t, locale } = i18n;
+export const { $ts: t } = i18n;
 
 // for header
 export { default as NestedMenu } from "/@/components/nested-menu";
 import { Item } from "/@/components/nested-menu";
 
-const languages: Record<string, Item> = {};
-i18n.locales.value.forEach((t) => (languages[t] = {}));
+export const open = ref(false);
 
-export const items: Record<string, Item> = reactive({
-	notice: { link: "/posts/notice" },
-	class: {
+export const items: Item[] = reactive([
+	{
 		type: "sub",
-		children: {
-			prog_intro: { link: "/posts/prog_intro" },
-		},
+		label: "blog",
+		link: "/",
+		children: [
+			{
+				label: "prog_intro",
+				link: "/posts/prog_intro",
+			},
+		],
 	},
-	tools: {
+	{
+		label: "about",
+		link: "/posts/about",
+	},
+	{
 		type: "sub",
-		children: {
-			pastebin: { link: "/pastebin/" },
-			pyterm: { link: "/pyterm" },
-		},
+		label: "more",
+		children: [
+			{
+				label: "pastebin",
+				link: "/pastebin/",
+			},
+			{
+				label: "pyterm",
+				link: "/pyterm",
+			},
+			{
+				type: "sub",
+				label: "languages",
+				children: i18n.locales.value.reduce((e, j) => {
+					e.push({
+						label: j,
+						callback: () => (i18n.locale.value = j),
+					});
+					return e;
+				}, [] as Item[]),
+			},
+		],
 	},
-	about: { link: "/posts/about" },
-	languages: {
-		type: "sub",
-		children: languages,
-		callback: (t) => (locale.value = t as typeof locale.value),
-	},
-});
+]);
 provide("navItems", items);
+
+// for auth
+const auth = reactive({
+	label: "login",
+	link: "/login",
+	disabled: true,
+	callback: async (e) => {
+		if (e !== "") {
+			return 
+		}
+
+		auth.disabled = true;
+
+		const { exec: authFetch } = useFetch();
+		const res = await authFetch("/api/auth/info", {
+			credentials: "same-origin",
+		});
+
+		if (res?.status === 200) {
+			auth.type = "sub";
+			auth.label = "user";
+		}
+
+		auth.disabled = false;
+	},
+} as Item);
+items.push(auth);
+provide("auth", auth);
+if (auth.callback)
+	auth.callback("")
 
 // for footer
 declare interface Hitokoto {
@@ -126,8 +146,8 @@ declare interface Hitokoto {
 
 export const hitokoto: Hitokoto = reactive({});
 
-const { exec } = useFetch();
-exec("//v1.hitokoto.cn?encode=json&charset=utf-8&max_length=16")
+const { exec: hitokotoFetch } = useFetch();
+hitokotoFetch("//v1.hitokoto.cn?encode=json&charset=utf-8&max_length=16")
 	.then((res) => res?.json())
 	.then((data) => {
 		hitokoto.word = data?.hitokoto?.replace("。", "").replace(".", "");

@@ -27,33 +27,26 @@
 				</a-list-item>
 			</template>
 		</a-list>
-		<Pagination />
 	</section>
 </template>
 
 <script setup lang="ts">
-import { provide, reactive, watchEffect } from "vue";
+import { reactive } from "vue";
 import { Meta } from "../lib/markdown";
 export { default as Banner } from "./banner";
 export { UserOutlined } from "@ant-design/icons-vue";
-export { default as Pagination } from "./pagination.md";
-
-const info = reactive({
-	meta: [],
-});
-provide("posts", info);
+import { default as Pagination } from "./pagination";
 
 export const listData = reactive([] as Record<string, unknown>[]);
 
-watchEffect(() => {
-	const posts = info.meta as Meta[];
-	for (const m of posts) {
-		listData.push({
-			href: `/posts/${m.path}`,
-			...m.data,
-		});
-	}
-});
+const posts = Pagination as Meta[];
+listData.splice(0);
+for (const m of posts) {
+	listData.push({
+		href: `/posts/${m.path}`,
+		...m.data,
+	});
+}
 
 export const pagination = { pageSize: 5 };
 </script>

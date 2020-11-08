@@ -13,6 +13,7 @@ module.exports = {
 	rules: {
 		'simple-import-sort/sort': 'error',
 		'vue/require-prop-types': 'off',
+		'@typescript-eslint/explicit-module-boundary-types': 'off',
 		quotes: ['error', 'single'],
 	},
 }

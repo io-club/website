@@ -48,7 +48,7 @@ const Attributes = (value: string): Record<string, unknown> => {
 
 export const Render = async (file: string): Promise<string> => {
 	let attributes: Record<string, unknown> = {}
-	let tableOfContents: Record<string, unknown> = {}
+	let tableOfContents: Item[] = []
 	const remark = unified()
 		.use(frontmatter)
 		.use(markdown, {})
@@ -87,9 +87,9 @@ export const Render = async (file: string): Promise<string> => {
 				}
 
 				const tocTrans = (p: TocEntry): Item => {
-					const children: Record<string, Item> = {}
+					const children: Item[] = []
 					for (const v of p.children) {
-						children[v.value] = tocTrans(v)
+						children.push(tocTrans(v))
 					}
 					return {
 						href: `#${p.data?.id || p.value}`,
@@ -198,27 +198,16 @@ export const Pagination = async (posts: string): Promise<string> => {
 		else if (ta == tb) return 0
 		else return 1
 	})
-	return `
-import { defineComponent, inject, h } from 'vue'
-export default defineComponent({
-	setup(props) {
-		const posts = inject('posts') || {}
-		return () => {
-			posts.meta = ${JSON.stringify(meta)}
-			return h('div')
-		}
-	}
-})
-`
+	return `export default ${JSON.stringify(meta)}`
 }
 
 export const transform = ({posts = 'posts'}): Transform => {
 	return {
-		test: ({path}) => path.endsWith('.md'),
+		test: ({path}) => path.endsWith('.md') || path.endsWith('pagination.ts'),
 		transform: async ({path: file}) => {
 			let result
 			try {
-				if (file.endsWith('pagination.md')) {
+				if (file.endsWith('pagination.ts')) {
 					result = await Pagination(posts)
 				} else {
 					result = await Render(file)

@@ -1,20 +1,27 @@
 <template>
-	<a-spin :spinning="loading" :wrapperClassName="`flex-col ${classes}`" size="large">
-		<div class="flex-col flex-grow flex-center p4">
-			<a-textarea v-model:value="value" :placeholder="t('paste_tip')" :class="`flex-grow my2 ${width()}`" />
-			<a-button-group>
-				<a-button type="default" @click="submit">{{t('submit')}}</a-button>
-				<a-popconfirm
-					:title="t('are_you_sure')"
-					:ok-text="t('yes')"
-					:cancel-text="t('no')"
-					@confirm="reset"
-				>
-					<a-button type="danger">{{t('reset')}}</a-button>
-				</a-popconfirm>
-			</a-button-group>
-		</div>
-	</a-spin>
+	<div class="flex-col flex-center p4">
+		<a-input-group>
+			<a-textarea
+				v-model:value="value"
+				:placeholder="t('paste_tip')"
+				:autosize="{minRows: 16, maxRows: 32}"
+				class="flex-grow"
+				allowClear
+				showCount
+			/>
+		</a-input-group>
+		<a-button-group>
+			<a-button type="default" @click="submit">{{t('submit')}}</a-button>
+			<a-popconfirm
+				:title="t('are_you_sure')"
+				:ok-text="t('yes')"
+				:cancel-text="t('no')"
+				@confirm="reset"
+			>
+				<a-button type="danger">{{t('reset')}}</a-button>
+			</a-popconfirm>
+		</a-button-group>
+	</div>
 </template>
 
 <script setup="props" lang="ts">
@@ -28,17 +35,21 @@ declare const props: {
 };
 
 export const classes = props.class;
-export const { $ts: t } = inject("i18n") || {};
-const br = inject("breakpoints") || {};
+
+import { I18nType } from "/@/composables/i18n";
+export const { $ts: t } = inject("i18n") as I18nType;
+
+import { BreakpointType } from "/@/composables/breakpoints";
+const br = inject("breakpoints") as BreakpointType;
 export const width = () => {
 	if (!br.sm) {
-		return 'w90'
+		return "w90";
 	} else if (!br.md) {
-		return 'w80'
+		return "w80";
 	} else {
-		return 'w60'
+		return "w60";
 	}
-}
+};
 
 export const value = ref("");
 export const loading = ref(true);
