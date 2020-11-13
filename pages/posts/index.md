@@ -34,3 +34,8 @@ git push
 ## IOer分享
 
 **等你来写!**
+
+### xhe
+
+1. [论WPA2的优点和缺陷](/posts/xhe/translations/benefits_and_vulnerabilities_of_wifi_protected_access_2), 汉化.
+2. MIT 6.172课程翻译: 项目[链接](//github.com/xhebox/mit6172_cn), B站视频[连接](//space.bilibili.com/691795/channel/detail?cid=132043).

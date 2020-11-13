@@ -62,6 +62,7 @@ const removeToc = () => {
 	}
 };
 const addToc = () => {
+	removeToc()
 	navItems.push({
 		label: "toc",
 		type: "group",
