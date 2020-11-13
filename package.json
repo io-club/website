@@ -11,7 +11,7 @@
 		"dev": "concurrently -k 'npm run dev-vue' 'npm run dev-api'",
 		"dev-vue": "env-cmd vite serve",
 		"dev-api": "env-cmd go run backend/dev/main.go",
-		"build": "rm -rf dist && env-cmd vite build"
+		"build": "rm -rf dist && vite build"
 	},
 	"license": "MIT",
 	"devDependencies": {

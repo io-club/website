@@ -19,7 +19,7 @@ license="by-nc-sa"
 
 [程序结构导论(1): 编程入门](/posts/prog_intro/section1)
 [程序结构导论(2): 执行分析](/posts/prog_intro/section2)
-[程序结构导论(3): 递归和树](/posts/prog_intro/section3)
+[程序结构导论(3): 递归](/posts/prog_intro/section3)
 
 ## FAQ
 
@@ -58,3 +58,4 @@ license="by-nc-sa"
 5. 标注需要阅读的菜鸟教程章节
 6. 考虑到新生基础过于薄弱, 对本文结构大改, 变更为第一节python语法, 第二节数据流/控制流/内存管理, 第三节递归/树.
 7. 每一节独立, 这里只做总集
+8. 添加内存管理/二叉树树
