@@ -55,10 +55,10 @@ export default defineComponent({
 	props: ["name"],
 	async setup() {
 		const { i18n } = setI18n({
-			locale: "zh_CN",
-			fallback: "zh_CN",
+			locale: "zh-cn",
+			fallback: "zh-cn",
 			messages: {
-				zh_CN,
+				'zh-cn': zh_CN,
 				//en,
 			},
 		})

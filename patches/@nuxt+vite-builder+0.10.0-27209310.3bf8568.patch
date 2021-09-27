@@ -1,5 +1,5 @@
 diff --git a/node_modules/@nuxt/vite-builder/dist/index.cjs b/node_modules/@nuxt/vite-builder/dist/index.cjs
-index ec6b038..6858b79 100644
+index ec6b038..77949a4 100644
 --- a/node_modules/@nuxt/vite-builder/dist/index.cjs
 +++ b/node_modules/@nuxt/vite-builder/dist/index.cjs
 @@ -6,6 +6,7 @@ const vite = require('vite');
@@ -29,3 +29,12 @@ index ec6b038..6858b79 100644
        replace({ "process.env": "import.meta.env" }),
        cacheDirPlugin(ctx.nuxt.options.rootDir, "client"),
        vitePlugin__default(ctx.config.vue),
+@@ -201,7 +214,7 @@ async function buildServer(ctx) {
+       vitePlugin__default({
+         template: {
+           compilerOptions: {
+-            ssrRuntimeModuleName: "vue/server-renderer/index.mjs"
++            ssrRuntimeModuleName: "vue/server-renderer"
+           }
+         }
+       }),

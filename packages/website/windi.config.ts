@@ -5,29 +5,6 @@ import plugin from 'windicss/plugin'
 import ratio from 'windicss/plugin/aspect-ratio'
 import typography from 'windicss/plugin/typography'
 
-function generateRainbow() {
-	const r: Record<string, unknown> = {}
-	const c = 4
-
-	function calcColor(perc: number)
-	{
-		const minHue = 360, maxHue=0;
-		return `hsl(${perc * (maxHue-minHue) + minHue},100%,50%)`
-	}
-
-	let v = 100
-	const v_step = v / c
-
-	for (; v>=0;) {
-		r[`${v}%`] = {
-			background: `linear-gradient(to bottom right, ${calcColor(v / 100)}, ${calcColor( (v + 40) / 100 )})`,
-		}
-		v -= v_step
-	}
-
-	return r
-}
-
 function generate360() {
 	const r: Record<string, unknown> = {}
 	const c = 4

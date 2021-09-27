@@ -1,0 +1,38 @@
+{
+	"name": "@ioclub/vite-mdvue",
+	"version": "0.1.0",
+	"exports": {
+		"require": "./dist/index.js",
+		"import": "./dist/index.mjs"
+	},
+	"types": "./dist/index.d.ts",
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"src"
+	],
+	"scripts": {
+		"build": "unbuild"
+	},
+	"repository": "xhebox/iolab",
+	"author": "xhe",
+	"license": "MIT",
+	"dependencies": {
+		"rehype-parse": "^8.0.3",
+		"rehype-stringify": "^9.0.2",
+		"remark-parse": "^10.0.0",
+		"remark-rehype": "^9.1.0",
+		"unified": "^10.1.0",
+		"unist-util-visit": "4.1.0",
+		"upath": "^2.0.1"
+	},
+	"devDependencies": {
+		"hast": "^1.0.0",
+		"hast-util-to-html": "^8.0.2",
+		"hastscript": "^7.0.2",
+		"mdast-util-to-hast": "^11.3.0"
+	},
+	"engines": {
+		"node": ">=14"
+	}
+}

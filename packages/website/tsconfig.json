@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"types": [
+			"@nuxtjs/auth-next"
+		],
+		"paths": {
+			"~*": [
+				"./src/*"
+			],
+			"@*": [
+				"./src/*"
+			]
+		}
+	}
+}

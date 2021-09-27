@@ -203,7 +203,6 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 import { useI18n } from "vue-composable"
-import Logo from "@/components/logo.vue"
 
 export default defineComponent({
 	async setup() {
@@ -214,7 +213,6 @@ export default defineComponent({
 		}
 
 		return {
-			Logo,
 			i18n,
 			animation,
 		}
