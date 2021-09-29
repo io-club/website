@@ -57,11 +57,6 @@ export default defineConfig({
 	},
 	darkMode: 'class',
 	theme: {
-		//screens,
-		//colors,
-		//fontSize,
-		//width: fontSizeForSizing,
-		//height: fontSizeForSizing,
 		fontFamily: {
 			sans: ['Graphik', 'sans-serif'],
 			serif: ['Merriweather', 'serif'],
@@ -117,25 +112,42 @@ export default defineConfig({
 			includeThemeColors: true,
 		}),
 		plugin(function ({addVariant, addDynamic, theme}) {
-			addDynamic('ratio', ({Utility, Style}) => {
-				const prop = parseInt(Utility.handler.handleNumber(1, undefined, 'int').value ?? '90')
-				const output = Style.generate(Utility.class, {width: `${prop}%`})
+			const autoRatio = {
+				'px': ['padding-left', 'padding-right'],
+				'mx': ['margin-left', 'margin-right'],
+				'w': ['width'],
+			}
+			for (const [k, v] of Object.entries(autoRatio)) {
+				const step = `--io-ratio-${k}-step`
+				const init = `--io-ratio-${k}-init`
 
-				const screens = Object.entries(theme('container.screens', theme('screens')) as Record<string, string>) as [string, string][]
-				const step = - 20 / screens.length
-				let width = step
-				for (const [, size] of screens) {
-					if (typeof size !== 'string') continue;
-					const rules = Style.generate(Utility.class, {
-						width: `${prop + width}%`,
-					})
-					for (const rule of rules) {
-						output.push(rule.atRule(`@media (min-width: ${size})`))
+				addDynamic(`${k}-os`, ({Utility}) => {
+					return Utility.handler.handleSpacing().handleNegative().handleSize().createProperty(step)
+				})
+				addDynamic(`${k}-oi`, ({Utility}) => {
+					return Utility.handler.handleSpacing().handleSize().createProperty(init)
+				})
+				addDynamic(`${k}-o`, ({Utility, Style}) => {
+					function generateStyle(e: number) {
+						return v.reduce((p, n) => {
+							p[n] = `calc(var(${init}) + ${e} * var(${step}))`
+							return p
+						}, {} as Record<string, string>)
 					}
-					width += step
-				}
-				return output
-			})
+					const output = Style.generate(Utility.class, generateStyle(0))
+
+					for (const [idx, size] of Object.values(theme('container.screens', theme('screens')) as Record<string, string>).entries()) {
+						if (typeof size !== 'string') continue;
+
+						const rules = Style.generate(Utility.class, generateStyle(idx+1))
+						for (const rule of rules) {
+							output.push(rule.atRule(`@media (min-width: ${size})`))
+						}
+					}
+
+					return output
+				})
+			}
 			addVariant('hocus', ({modifySelectors}) => {
 				return modifySelectors(({className}) => {
 					return `.${className}:hover, .${className}:focus`;

@@ -1,5 +1,5 @@
 {
-	"name": "@ioclub/vite-mdvue",
+	"name": "@ioclub/mdvue",
 	"version": "0.1.0",
 	"exports": {
 		"require": "./dist/index.js",
@@ -14,7 +14,7 @@
 	"scripts": {
 		"build": "unbuild"
 	},
-	"repository": "xhebox/iolab",
+	"repository": "xhebox/ioclub",
 	"author": "xhe",
 	"license": "MIT",
 	"dependencies": {
@@ -24,6 +24,7 @@
 		"remark-rehype": "^9.1.0",
 		"unified": "^10.1.0",
 		"unist-util-visit": "4.1.0",
+		"unplugin": "^0.2.16",
 		"upath": "^2.0.1"
 	},
 	"devDependencies": {

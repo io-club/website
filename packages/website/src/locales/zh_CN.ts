@@ -1,4 +1,4 @@
-export default {
+const p = {
 	locales: {
 		en: 'English',
 		'zh-CN': '简体中文'
@@ -120,3 +120,4 @@ export default {
 	'home_sec5_hero': '我想问...?',
 	'home_sec5_sub': '有一个FAQ页面, 你可以在导航栏上点击关于, 或者点击下面的这个链接: '
 }
+export default p as typeof p

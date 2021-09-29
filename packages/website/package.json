@@ -15,30 +15,35 @@
 		"build-nuxt": "nu build",
 		"build": "concurrently -c 'yellow,reset' -k yarn:build-*"
 	},
+	"type": "module",
 	"license": "MIT",
 	"devDependencies": {
-		"@ioclub/vite-mdvue": "^0.1.0",
+		"@ioclub/mdvue": "^0.1.0",
+		"@types/dotenv-parse-variables": "^2.0.1",
 		"@types/ioredis": "^4.27.4",
-		"@types/lodash": "^4.14.174",
+		"@types/lodash": "^4.14.175",
 		"@types/nodemailer": "^6.4.4",
 		"@types/oidc-provider": "^7.6.1",
 		"autoprefixer": "^10.3.6",
 		"jose": "^3.19.0",
-		"nuxt3": "^0.10.0-27209310.3bf8568",
+		"nuxt3": "^0.10.0-27205720.2012361",
 		"postcss": "^8.3.8",
 		"postcss-import": "^14.0.2",
 		"postcss-nesting": "^8.0.1",
 		"postcss-pseudo-class-enter": "^5.0.0",
 		"postinstall-postinstall": "^2.1.0",
 		"send": "^0.17.1",
+		"unplugin": "^0.2.16",
 		"upath": "^2.0.1",
-		"vite-plugin-windicss": "^1.4.7"
+		"vite-plugin-windicss": "^1.4.8"
 	},
 	"dependencies": {
 		"@mgcrea/fastify-session": "^0.14.1",
 		"@mgcrea/fastify-session-sodium-crypto": "^0.8.2",
 		"@windicss/plugin-heropatterns": "^0.0.8",
 		"dayjs": "^1.10.7",
+		"dotenv-extended": "^2.9.0",
+		"dotenv-parse-variables": "^2.0.0",
 		"fastify": "^3.21.6",
 		"fastify-cookie": "^5.3.1",
 		"fastify-jwt": "^3.1.0",
@@ -51,8 +56,7 @@
 		"nodemailer": "^6.6.5",
 		"oidc-provider": "^7.8.0",
 		"openid-client": "^4.9.0",
-		"vue": "^3.2.19",
-		"vue-cal": "^4.2.0",
+		"vconsole": "^3.9.1",
 		"vue-composable": "^1.0.0-beta.23"
 	}
 }

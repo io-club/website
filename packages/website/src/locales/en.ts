@@ -111,4 +111,5 @@ export default {
 	'home_sec4_sub': 'We provide members some free hardware development kit, embbedded boards like STM32, rasberry PI, or even FPGA. Remove the barrier of learning hardware! But be lovely to the boards.',
 	'home_sec5_hero': 'May I ask ... ?',
 	'home_sec5_sub': 'There is a FAQ page. You can check \'About\' on the top navigation bar, or just click the link here: '
+	'untitled': '无题',
 } as i18n

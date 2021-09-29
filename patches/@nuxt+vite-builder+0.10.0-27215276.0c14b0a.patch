@@ -1,9 +1,9 @@
 diff --git a/node_modules/@nuxt/vite-builder/dist/index.cjs b/node_modules/@nuxt/vite-builder/dist/index.cjs
-index ec6b038..77949a4 100644
+index 1d4bee1..c31b1fe 100644
 --- a/node_modules/@nuxt/vite-builder/dist/index.cjs
 +++ b/node_modules/@nuxt/vite-builder/dist/index.cjs
 @@ -6,6 +6,7 @@ const vite = require('vite');
- const upath = require('upath');
+ const pathe = require('pathe');
  const consola = require('consola');
  const fsExtra = require('fs-extra');
 +const send = require('send');
@@ -17,8 +17,8 @@ index ec6b038..77949a4 100644
 +      !ctx.nuxt.options.dev ? null : {
 +        name: "nuxt:server-assets",
 +        configureServer(server) {
-+          server.middlewares.use(upath.join(ctx.config.base, 'assets'), async (req, res, next) => {
-+            const file = upath.join(ctx.nuxt.options.buildDir, "dist/server/assets", req.url)
++          server.middlewares.use(pathe.join(ctx.config.base, 'assets'), async (req, res, next) => {
++            const file = pathe.join(ctx.nuxt.options.buildDir, "dist/server/assets", req.url)
 +            if (await fsExtra__default.pathExists(file)) {
 +              return send(req, file).pipe(res)
 +            }
@@ -29,12 +29,3 @@ index ec6b038..77949a4 100644
        replace({ "process.env": "import.meta.env" }),
        cacheDirPlugin(ctx.nuxt.options.rootDir, "client"),
        vitePlugin__default(ctx.config.vue),
-@@ -201,7 +214,7 @@ async function buildServer(ctx) {
-       vitePlugin__default({
-         template: {
-           compilerOptions: {
--            ssrRuntimeModuleName: "vue/server-renderer/index.mjs"
-+            ssrRuntimeModuleName: "vue/server-renderer"
-           }
-         }
-       }),

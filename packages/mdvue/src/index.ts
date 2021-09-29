@@ -2,7 +2,6 @@ import type {Element, Root} from 'hast'
 import type {Options as hastStringifyOptions} from 'hast-util-to-html'
 import type {Options as toRehypeOptions} from 'mdast-util-to-hast'
 import type {Processor, Transformer} from 'unified'
-import type {PluginOption} from 'vite'
 
 import fs from 'fs'
 import rehype_parse from 'rehype-parse'
@@ -11,6 +10,7 @@ import remark_parse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import {unified} from 'unified'
 import {visit} from 'unist-util-visit'
+import {createUnplugin} from 'unplugin'
 import path from 'upath'
 
 export interface Config {
@@ -133,14 +133,13 @@ export function markdownParser(cfg: Config) {
 	}
 }
 
-export function createPlugin(ucfg?: UserConfig): PluginOption {
+export const createPlugin = createUnplugin(function (ucfg?: UserConfig) {
 	const cfg = NormalizeConfig(ucfg)
 
 	const parser = markdownParser(cfg)
 
 	return {
-		name: 'vite-mdvue',
-		enforce: 'pre',
+		name: 'mdvue',
 		async resolveId(id) {
 			const p = path.parse(id)
 			if (cfg.extensions.indexOf(p.ext) !== -1) {
@@ -155,4 +154,4 @@ export function createPlugin(ucfg?: UserConfig): PluginOption {
 			}
 		}
 	}
-}
+})

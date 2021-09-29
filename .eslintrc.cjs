@@ -31,7 +31,7 @@ module.exports = {
 			{
 				ignoredNodes: ['TSTypeParameterInstantiation']
 			}
-		]
+		],
 	},
 	overrides: [
 		{

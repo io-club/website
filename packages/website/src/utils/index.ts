@@ -13,15 +13,15 @@ export function toType(
 	type: 'object' | 'string' | 'number' | 'strobj'
 ): unknown {
 	switch (type) {
-		case 'object':
-		case 'strobj':
-			return value && typeof value === 'object' ? value : {};
-		case 'string':
-			if (typeof value === 'string') return value as string;
-			break;
-		case 'number':
-			if (typeof value === 'number') return value as number;
-			break;
+	case 'object':
+	case 'strobj':
+		return value && typeof value === 'object' ? value : {};
+	case 'string':
+		if (typeof value === 'string') return value as string;
+		break;
+	case 'number':
+		if (typeof value === 'number') return value as number;
+		break;
 	}
 }
 
@@ -42,3 +42,7 @@ export function listToMap(arr: unknown[]) {
 	return arr
 }
 
+
+export function klass(...args: string[]) {
+	return args.join(' ')
+}
