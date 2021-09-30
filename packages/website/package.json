@@ -31,9 +31,9 @@
 		"postcss-nesting": "^8.0.1",
 		"postcss-pseudo-class-enter": "^5.0.0",
 		"postinstall-postinstall": "^2.1.0",
-		"send": "^0.17.1",
 		"unplugin": "^0.2.16",
 		"upath": "^2.0.1",
+		"vite-imagetools": "^3.6.8",
 		"vite-plugin-windicss": "^1.4.8"
 	},
 	"dependencies": {
