@@ -1,135 +1,78 @@
-import type {Element, Root} from 'hast'
-import type {Options as hastStringifyOptions} from 'hast-util-to-html'
-import type {Options as toRehypeOptions} from 'mdast-util-to-hast'
-import type {Processor, Transformer} from 'unified'
+import type {Toc} from '@stefanprobst/rehype-extract-toc'
+import type {PluggableList} from 'unified'
 
-import fs from 'fs'
-import rehype_parse from 'rehype-parse'
-import rehype_stringify from 'rehype-stringify'
-import remark_parse from 'remark-parse'
-import remark2rehype from 'remark-rehype'
-import {unified} from 'unified'
-import {visit} from 'unist-util-visit'
+import rehype_toc from '@stefanprobst/rehype-extract-toc'
+import fs from 'fs/promises'
+import rehype_slug from 'rehype-slug'
+import remark_frontmatter from 'remark-frontmatter'
+import remark_frontmatter_parse from 'remark-parse-frontmatter'
 import {createUnplugin} from 'unplugin'
 import path from 'upath'
+import {createProcessor} from 'xdm'
+
+export interface Meta {
+	frontmatter?: Record<string, unknown>
+	toc?: Toc
+}
 
 export interface Config {
-	extensions: string[];
-	mdastConfig: (a: Processor) => Processor;
-	hastConfig: (a: Processor) => Processor;
-	toHast: toRehypeOptions;
-	hastStringify: hastStringifyOptions;
+	extensions: string[]
+	defaultLayout: string
+	remark: PluggableList
+	rehype: PluggableList
+	recma: PluggableList
 }
 
-export interface UserConfig {
-	extensions?: string[];
-	mdastConfig?: (a: Processor) => Processor;
-	hastConfig?: (a: Processor) => Processor;
-	mdastToHast?: toRehypeOptions;
-	hastStringify?: hastStringifyOptions;
-}
+export type UserConfig = Partial<Config>
 
 export function NormalizeConfig(ucfg?: UserConfig) {
-	const r: Config = {
+	return {
 		extensions: ['.md'],
-		mdastConfig: (a) => a,
-		hastConfig: (a) => a,
-		toHast: {},
-		hastStringify: {},
+		defaultLayout: 'md',
+		remark: [],
+		rehype: [],
+		recma: [],
+		...ucfg,
 	}
-
-	if (ucfg) {
-		if (ucfg.extensions && ucfg.extensions.length > 0)
-			r.extensions = ucfg.extensions
-		if (ucfg.mdastConfig)
-			r.mdastConfig = ucfg.mdastConfig
-		if (ucfg.hastConfig)
-			r.hastConfig = ucfg.hastConfig
-		if (ucfg.extensions)
-			r.extensions = ucfg.extensions
-		if (ucfg.mdastToHast)
-			r.toHast = ucfg.mdastToHast
-		if (ucfg.hastStringify)
-			r.hastStringify = ucfg.hastStringify
-	}
-
-	return r
 }
 
 export function markdownParser(cfg: Config) {
-	const blockParser = unified().use(rehype_parse, {fragment: true})
-
-	const parser1 = unified()
-		.use(remark_parse)
-
-	const parser2 = cfg.mdastConfig(parser1)
-		.use(remark2rehype, {
-			...cfg.toHast,
-			allowDangerousHtml: true,
-		})
-		.use((): Transformer => {
-			return (tree) => {
-				const hast = tree as Element
-
-				let scriptCount = 0
-				let styleCount = 0
-				let script: Element | undefined
-				let style: Root | undefined
-
-				visit(hast, 'raw', (n, i, p) => {
-					if (!i) return
-
-					const rootBlock = blockParser.parse(n.value)
-					if (rootBlock && rootBlock.children[0]) {
-						const block = rootBlock.children[0] as Element
-						if (block.tagName === 'script') {
-							if (scriptCount++ > 0) {
-								return false
-							}
-							script = block
-							p?.children.splice(i, 1)
-						} else if (block.tagName === 'style') {
-							if (styleCount++ > 0) {
-								return false
-							}
-							style = rootBlock
-							p?.children.splice(i, 1)
-						}
-					}
-				})
-				if (scriptCount > 1) {
-					throw 'more than one script block'
-				}
-				if (styleCount > 1) {
-					throw 'more than one style block'
-				}
-
-				const children = []
-
-				if (script)
-					children.push(script)
-
-				if (style)
-					children.push(style)
-
-				children.push({type: 'element', tagName: 'layout', children: hast.children})
-
-				return {type: 'root', children}
-			}
-		})
-
-	const parser3 = cfg.hastConfig(parser2)
-		.use(rehype_stringify, {
-			...cfg.hastStringify,
-			allowDangerousHtml: true,
-		})
+	const parser = createProcessor({
+		jsx: true,
+		outputFormat: 'function-body',
+		remarkPlugins: [
+			remark_frontmatter,
+			remark_frontmatter_parse,
+			...cfg.remark,
+		],
+		rehypePlugins: [
+			rehype_slug,
+			rehype_toc,
+			...cfg.rehype,
+		],
+		recmaPlugins: cfg.recma,
+	})
 
 	return async (content: string) => {
-		const processed = await parser3.process(content)
-		const ret = processed.toString()
-			.replace(/<layout>/g, '<template>')
-			.replace(/<\/layout>/g, '</template>')
-		return ret
+		const processed = await parser.process(content)
+		const data = processed.data as Meta
+		return `
+import {h} from 'vue'
+
+function MDX() {
+${processed.toString().replace('<>', '<div>').replace('</>', '</div>')}
+}
+
+export default defineComponent({
+	layout: '${data.frontmatter?.data ?? cfg.defaultLayout}',
+	setup(_, {expose}) {
+		const Content = MDX({}).default
+		const updateMeta = inject('md_update_meta')
+		if (updateMeta) updateMeta(${JSON.stringify(processed.data)})
+		return () => <Content />
+	}
+})
+`
 	}
 }
 
@@ -139,17 +82,18 @@ export const createPlugin = createUnplugin(function (ucfg?: UserConfig) {
 	const parser = markdownParser(cfg)
 
 	return {
-		name: 'mdvue',
+		name: 'mdx',
+		enforce: 'pre',
 		async resolveId(id) {
 			const p = path.parse(id)
 			if (cfg.extensions.indexOf(p.ext) !== -1) {
-				return `mdvue:${path.join(p.dir, p.name)}.vue`
+				return `mdx:${path.join(p.dir, p.name)}.jsx`
 			}
 		},
 		async load(id) {
-			if (id.startsWith('mdvue:')) {
-				const p = path.parse(id.slice(6))
-				const buf = fs.readFileSync(`${path.join(p.dir, p.name)}.md`)
+			if (id.startsWith('mdx:')) {
+				const p = path.parse(id.slice(4))
+				const buf = await fs.readFile(`${path.join(p.dir, p.name)}.md`)
 				return await parser(buf.toString())
 			}
 		}

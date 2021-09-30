@@ -15,7 +15,6 @@
 		"build-nuxt": "nu build",
 		"build": "concurrently -c 'yellow,reset' -k yarn:build-*"
 	},
-	"type": "module",
 	"license": "MIT",
 	"devDependencies": {
 		"@ioclub/mdvue": "^0.1.0",
@@ -26,7 +25,7 @@
 		"@types/oidc-provider": "^7.6.1",
 		"autoprefixer": "^10.3.6",
 		"jose": "^3.19.0",
-		"nuxt3": "^0.10.0-27205720.2012361",
+		"nuxt3": "^0.10.0-27215431.f06ee66",
 		"postcss": "^8.3.8",
 		"postcss-import": "^14.0.2",
 		"postcss-nesting": "^8.0.1",

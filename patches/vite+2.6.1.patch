@@ -1,6 +1,8 @@
---- a/node_modules/vite/dist/node/chunks/dep-36bf480c.js
-+++ b/node_modules/vite/dist/node/chunks/dep-36bf480c.js
-@@ -6003,7 +6007,7 @@ function assetPlugin(config) {
+diff --git a/node_modules/vite/dist/node/chunks/dep-a8e01c9f.js b/node_modules/vite/dist/node/chunks/dep-a8e01c9f.js
+index 4917f09..8e88cd3 100644
+--- a/node_modules/vite/dist/node/chunks/dep-a8e01c9f.js
++++ b/node_modules/vite/dist/node/chunks/dep-a8e01c9f.js
+@@ -5838,7 +5838,7 @@ function assetPlugin(config) {
          },
          generateBundle(_, bundle) {
              // do not emit assets for SSR build

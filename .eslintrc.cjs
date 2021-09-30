@@ -14,8 +14,8 @@ module.exports = {
 		quotes: ['error', 'single'],
 		'simple-import-sort/imports': ['error', {
 			groups: [
+				['.*\\u0000$'],
 				['^\\u0000'],
-				['\\u0000$'],
 				['^@?\\w'],
 				['^'],
 				['^\\.'],

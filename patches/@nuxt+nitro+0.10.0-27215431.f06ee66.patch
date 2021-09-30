@@ -12,7 +12,7 @@ index 73ec251..137b890 100644
      }
    };
 diff --git a/node_modules/@nuxt/nitro/dist/runtime/app/render.mjs b/node_modules/@nuxt/nitro/dist/runtime/app/render.mjs
-index a68fed6..ccc62d6 100644
+index 03bd228..b60a9ba 100644
 --- a/node_modules/@nuxt/nitro/dist/runtime/app/render.mjs
 +++ b/node_modules/@nuxt/nitro/dist/runtime/app/render.mjs
 @@ -27,7 +27,7 @@ const getSPARenderer = cachedResult(async () => {

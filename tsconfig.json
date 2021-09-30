@@ -18,6 +18,8 @@
 		"isolatedModules": true,
 		"forceConsistentCasingInFileNames": true,
 		"jsx": "preserve",
+		"jsxFactory": "h",
+		"jsxFragmentFactory": "Fragment",
 		"noUnusedLocals": true
 	},
 	"exclude": [
