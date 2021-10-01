@@ -8,12 +8,8 @@
 	},
 	"repository": "https://github.com/xhebox/ioclub/ioclub",
 	"scripts": {
-		"dev-redis": "redis-server",
-		"dev-nuxt": "nu dev --no-clear",
-		"dev": "concurrently -c 'yellow,reset' -k yarn:dev-*",
-		"build-redis": "redis-server",
-		"build-nuxt": "nu build",
-		"build": "concurrently -c 'yellow,reset' -k yarn:build-*"
+		"dev": "concurrently -c 'yellow,reset' -k -n redis,nuxt 'redis-server' 'nu dev --no-clear'",
+		"build": "concurrently -c 'yellow,reset' -k -n redis,nuxt 'redis-server' 'nu build'"
 	},
 	"license": "MIT",
 	"devDependencies": {
@@ -28,7 +24,6 @@
 		"babel-plugin-module-resolver": "^4.1.0",
 		"jose": "^3.19.0",
 		"json-schema-to-ts": "^1.6.4",
-		"nuxt3": "^0.10.0-27215666.041b60f",
 		"postcss": "^8.3.8",
 		"postcss-import": "^14.0.2",
 		"postcss-nesting": "^8.0.1",
@@ -36,10 +31,10 @@
 		"postinstall-postinstall": "^2.1.0",
 		"unplugin": "^0.2.16",
 		"upath": "^2.0.1",
-		"vite-imagetools": "^3.6.8",
 		"vite-plugin-windicss": "^1.4.8"
 	},
 	"dependencies": {
+		"nuxt3": "0.10.0-27215666.041b60f",
 		"@mgcrea/fastify-session": "^0.14.1",
 		"@mgcrea/fastify-session-sodium-crypto": "^0.8.2",
 		"@windicss/plugin-heropatterns": "^0.0.8",
