@@ -1,11 +1,12 @@
 import { defineComponent } from 'vue'
 import { useI18n } from 'vue-composable'
 
-import logo from '@/assets/logo.png'
+import LogoImg from '@/assets/logo.png'
 
 export default defineComponent({
 	setup() {
 		const { i18n } = useI18n()
+		console.log(LogoImg)
 		return () => {
 			const {cube, join_us, about_us, section, photo} = i18n.value.home
 			const ret = []
@@ -60,7 +61,7 @@ export default defineComponent({
 						{ about_us.title }
 					</p>
 					<div class="flex flex-wrap justify-around items-center md:(flex-nowrap flex-row-reverse)">
-						<img src={logo} class="max-w-3/5 md:max-w-1/3" />
+						<img src={LogoImg.src} width={LogoImg.width} height={LogoImg.height} class="max-w-3/5 md:max-w-1/3" />
 						<div class="w-full md:max-w-2/4">
 							<p class="text-center text-black-500">
 								{ about_us.sub_title }

@@ -1,29 +1,14 @@
 import type {FastifyPluginCallback} from 'fastify'
+import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 
+import fp from 'fastify-plugin'
 import {createTransport} from 'nodemailer'
 
-export interface Options {
-	transport: Parameters<typeof createTransport>[0],
-	defaults?: Parameters<typeof createTransport>[1],
+export interface Options extends SMTPTransport.Options {
 }
 
-const plugin: FastifyPluginCallback<Options> = async function (fastify, options) {
-	try {
-		const {defaults, transport} = options
-
-		if (!transport) {
-			throw new Error('You must provide a valid transport configuration object, connection url or a transport plugin instance')
-		}
-
-		const transporter = createTransport(transport, defaults)
-		if (fastify.mailer) {
-			return new Error('fastify-mailer has already been registered')
-		} else {
-			fastify.decorate('mailer', transporter)
-		}
-	} catch (error) {
-		return error
-	}
-}
+const plugin: FastifyPluginCallback<Options> = fp(async function (fastify, options) {
+	fastify.decorate('mailer', createTransport(options))
+})
 
 export default plugin

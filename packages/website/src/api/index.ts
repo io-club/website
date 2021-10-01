@@ -1,22 +1,27 @@
 import type {Config as authConfig} from './auth'
-import type {FastifyNodemailerOptions} from 'fastify-nodemailer-plugin'
+import type {Options as MailerOptions} from './plugins/mailer'
 import type {Configuration as oidcConfig} from 'oidc-provider'
 
-import FastifySession from '@mgcrea/fastify-session'
-import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
+//import FastifySession from '@mgcrea/fastify-session'
+//import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
 import {defineNuxtModule} from '@nuxt/kit'
 import {load as dotenv} from 'dotenv-extended'
 import dotenvVariables from 'dotenv-parse-variables'
 import Fastify from 'fastify'
 import FastifyCookie from 'fastify-cookie'
-import FastifyMailer from 'fastify-nodemailer-plugin'
 import FastifyRedis from 'fastify-redis'
 import IORedis from 'ioredis'
+import FastifyMiddie from 'middie'
 import {Provider} from 'oidc-provider'
 import {Client, Issuer} from 'openid-client'
 
-import auth from './auth'
+import auth from '@/api/auth'
+
 import RedisAdapter from './oidc/adapter'
+import FastifyFetch from './plugins/fetch'
+import FastifyMailer from './plugins/mailer'
+import FastifySharp from './plugins/sharp'
+import service from './service'
 import users from './users'
 
 export interface Options {
@@ -26,7 +31,7 @@ export interface Options {
 		ttl: number
 		key: string
 	},
-	mailer: FastifyNodemailerOptions,
+	mailer: MailerOptions,
 	auth: authConfig
 }
 
@@ -37,16 +42,16 @@ export default defineNuxtModule<Options>(function () {
 	})
 	const env = dotenvVariables(_env)
 
-	const url = env['SITE_URL'] ?? 'http://localhost:3000'
+	const url = env['SITE_URL'] as string ?? 'http://localhost:3000'
 
-	const oidc_cookie_keys = env['OIDC_COOKIE_KEYS'] ?? ['some secret key', 'and also the old rotated away some time ago', 'and one more']
-	const oidc_client_id = env['OIDC_CLIENT_ID'] ?? 'test'
-	const oidc_client_secret = env['OIDC_CLIENT_SECRET'] ?? '123456'
+	const oidc_cookie_keys = env['OIDC_COOKIE_KEYS'] as string[] ?? ['some secret key', 'and also the old rotated away some time ago', 'and one more']
+	const oidc_client_id = env['OIDC_CLIENT_ID'] as string ?? 'test'
+	const oidc_client_secret = env['OIDC_CLIENT_SECRET'] as string ?? '123456'
 
-	const mailer_host = env['MAILER_HOST'] ?? 'x.com' 
-	const mailer_port = env['MAILER_PORT'] ?? '456' 
-	const mailer_user = env['MAILER_USER'] ?? 'xx@x.com' 
-	const mailer_pass = env['MAILER_PASS'] ?? '123456' 
+	const mailer_host = env['MAILER_HOST'] as string ?? 'x.com' 
+	const mailer_port = env['MAILER_PORT'] as string ?? '456' 
+	const mailer_user = env['MAILER_USER'] as string ?? 'xx@x.com' 
+	const mailer_pass = env['MAILER_PASS'] as string ?? '123456' 
 
 	return {
 		defaults: {
@@ -102,8 +107,6 @@ export default defineNuxtModule<Options>(function () {
 			},
 		},
 		setup: async function (options, nuxt) {
-			console.log(options)
-
 			// redis
 			const redis = new IORedis()
 
@@ -117,19 +120,26 @@ export default defineNuxtModule<Options>(function () {
 
 			// global plugins
 			const app = Fastify({
-				logger: true,
+				logger: {
+					level: 'warn',
+				},
 			})
 				.register(FastifyRedis, {
 					client: redis,
 					closeClient: true,
 				})
+				.register(FastifyFetch)
+				.register(FastifySharp)
 				.register(FastifyCookie)
+				/*
 				.register(FastifySession, {
 					secret: options.session.key,
 					crypto: SODIUM_SECRETBOX,
 					cookie: {maxAge: options.session.ttl},
 				})
+				*/
 				.register(FastifyMailer, options.mailer)
+				.register(FastifyMiddie)
 
 			let oidcClient: Client
 			app.decorate('oidc', async function() {
@@ -145,24 +155,26 @@ export default defineNuxtModule<Options>(function () {
 				return oidcClient
 			})
 			
-			app.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
-				.register(auth, {prefix: '/auth', ...options.auth})
+			app.register(function (app) {
+				app
+					.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
+					.register(auth, {prefix: '/auth', ...options.auth})
+					.register(service, {prefix: '/service'})
+					.use('/oidc', oidc.callback)
+				return app
+			}, {
+				logLevel: 'info',
+			})
 
 			// wait for initialization
 			await app.ready()
 
-			nuxt.options.serverMiddleware.push(
-				{
-					path: '/api/oidc',
-					handler: oidc.callback(),
+			nuxt.options.serverMiddleware.push({
+				path: '/api',
+				handler: function (req: unknown, res: unknown) {
+					app.server.emit('request', req, res);
 				},
-				{
-					path: '/api',
-					handler: async function (req: unknown, res: unknown) {
-						app.server.emit('request', req, res);
-					},
-				}
-			)
+			})
 
 			// close the server
 			nuxt.hook('close', async () => await app.close())

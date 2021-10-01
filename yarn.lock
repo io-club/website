@@ -600,6 +600,11 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
+"@sinclair/typebox@^0.9.16":
+  version "0.9.16"
+  resolved "https://registry.npmmirror.com/@sinclair/typebox/download/@sinclair/typebox-0.9.16.tgz#804b1a4b08f545ea98593c6e7e682679cf8fd5fc"
+  integrity sha1-gEsaSwj1ReqYWTxufmgmec+P1fw=
+
 "@sindresorhus/is@^4.0.0":
   version "4.2.0"
   resolved "https://registry.npmmirror.com/@sindresorhus/is/download/@sindresorhus/is-4.2.0.tgz#667bfc6186ae7c9e0b45a08960c551437176e1ca"
@@ -800,7 +805,7 @@
     "@types/parse5" "*"
     "@types/tough-cookie" "*"
 
-"@types/json-schema@*", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.7", "@types/json-schema@^7.0.8":
+"@types/json-schema@*", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.6", "@types/json-schema@^7.0.7", "@types/json-schema@^7.0.8":
   version "7.0.9"
   resolved "https://registry.npmmirror.com/@types/json-schema/download/@types/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
   integrity sha1-l+3JA36gw4WFMgsolk3eOznkZg0=
@@ -931,6 +936,13 @@
   integrity sha1-9eDOh5fS18xevtpIpSyWxPpHqNk=
   dependencies:
     "@types/mime" "^1"
+    "@types/node" "*"
+
+"@types/sharp@^0.29.2":
+  version "0.29.2"
+  resolved "https://registry.npmmirror.com/@types/sharp/download/@types/sharp-0.29.2.tgz#b4e932e982e258d1013236c8b4bcc14f9883c9a3"
+  integrity sha1-tOky6YLiWNEBMjbItLzBT5iDyaM=
+  dependencies:
     "@types/node" "*"
 
 "@types/throttle-debounce@^2.1.0":
@@ -1699,6 +1711,17 @@ babel-loader@^8.2.2:
     make-dir "^3.1.0"
     schema-utils "^2.6.5"
 
+babel-plugin-module-resolver@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmmirror.com/babel-plugin-module-resolver/download/babel-plugin-module-resolver-4.1.0.tgz#22a4f32f7441727ec1fbf4967b863e1e3e9f33e2"
+  integrity sha1-IqTzL3RBcn7B+/SWe4Y+Hj6fM+I=
+  dependencies:
+    find-babel-config "^1.2.0"
+    glob "^7.1.6"
+    pkg-up "^3.1.0"
+    reselect "^4.0.0"
+    resolve "^1.13.1"
+
 bail@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmmirror.com/bail/download/bail-2.0.1.tgz#d676736373a374058a935aec81b94c12ba815771"
@@ -2085,6 +2108,14 @@ color@^3.1.3:
   integrity sha1-NUTcGYyvRJDD7MmnkLVP6f9F4WQ=
   dependencies:
     color-convert "^1.9.3"
+    color-string "^1.6.0"
+
+color@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmmirror.com/color/download/color-4.0.1.tgz#21df44cd10245a91b1ccf5ba031609b0e10e7d67"
+  integrity sha1-Id9EzRAkWpGxzPW6AxYJsOEOfWc=
+  dependencies:
+    color-convert "^2.0.1"
     color-string "^1.6.0"
 
 colord@^2.0.1, colord@^2.6:
@@ -3408,6 +3439,14 @@ finalhandler@1.1.2:
     statuses "~1.5.0"
     unpipe "~1.0.0"
 
+find-babel-config@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmmirror.com/find-babel-config/download/find-babel-config-1.2.0.tgz#a9b7b317eb5b9860cda9d54740a8c8337a2283a2"
+  integrity sha1-qbezF+tbmGDNqdVHQKjIM3oig6I=
+  dependencies:
+    json5 "^0.5.1"
+    path-exists "^3.0.0"
+
 find-cache-dir@^3.3.1:
   version "3.3.2"
   resolved "https://registry.npmmirror.com/find-cache-dir/download/find-cache-dir-3.3.2.tgz#b30c5b6eff0730731aea9bbd9dbecbd80256d64b"
@@ -3426,6 +3465,13 @@ find-my-way@^4.1.0:
     fast-deep-equal "^3.1.3"
     safe-regex2 "^2.0.0"
     semver-store "^0.3.0"
+
+find-up@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/find-up/download/find-up-3.0.0.tgz?cache=0&sync_timestamp=1633053326488&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Ffind-up%2Fdownload%2Ffind-up-3.0.0.tgz#49169f1d7993430646da61ecc5ae355c21c97b73"
+  integrity sha1-SRafHXmTQwZG2mHsxa41XCHJe3M=
+  dependencies:
+    locate-path "^3.0.0"
 
 find-up@^4.0.0:
   version "4.1.0"
@@ -4463,6 +4509,14 @@ json-parse-even-better-errors@^2.3.0:
   resolved "https://registry.npmmirror.com/json-parse-even-better-errors/download/json-parse-even-better-errors-2.3.1.tgz#7c47805a94319928e05777405dc12e1f7a4ee02d"
   integrity sha1-fEeAWpQxmSjgV3dAXcEuH3pO4C0=
 
+json-schema-to-ts@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.npmmirror.com/json-schema-to-ts/download/json-schema-to-ts-1.6.4.tgz#63e4fe854dff093923be9e8b59b39ee9a7971ba4"
+  integrity sha1-Y+T+hU3/CTkjvp6LWbOe6aeXG6Q=
+  dependencies:
+    "@types/json-schema" "^7.0.6"
+    ts-toolbelt "^6.15.5"
+
 json-schema-traverse@^0.4.1:
   version "0.4.1"
   resolved "https://registry.npmmirror.com/json-schema-traverse/download/json-schema-traverse-0.4.1.tgz#69f6a87d9513ab8bb8fe63bdb0979c448e684660"
@@ -4477,6 +4531,11 @@ json-stable-stringify-without-jsonify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmmirror.com/json-stable-stringify-without-jsonify/download/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
+
+json5@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.npmmirror.com/json5/download/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
+  integrity sha1-Hq3nrMASA0rYTiOWdn6tn6VJWCE=
 
 json5@^1.0.1:
   version "1.0.1"
@@ -4684,6 +4743,14 @@ loader-utils@^2.0.0:
     big.js "^5.2.2"
     emojis-list "^3.0.0"
     json5 "^2.1.2"
+
+locate-path@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/locate-path/download/locate-path-3.0.0.tgz#dbec3b3ab759758071b58fe59fc41871af21400e"
+  integrity sha1-2+w7OrdZdYBxtY/ln8QYca8hQA4=
+  dependencies:
+    p-locate "^3.0.0"
+    path-exists "^3.0.0"
 
 locate-path@^5.0.0:
   version "5.0.0"
@@ -5297,6 +5364,15 @@ micromatch@^4.0.2, micromatch@^4.0.4:
     braces "^3.0.1"
     picomatch "^2.2.3"
 
+middie@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.npmmirror.com/middie/download/middie-5.3.0.tgz#6c871b3efecdb65f86c67a7787336d39b03d626d"
+  integrity sha1-bIcbPv7Ntl+Gxnp3hzNtObA9Ym0=
+  dependencies:
+    fastify-plugin "^3.0.0"
+    path-to-regexp "^6.1.0"
+    reusify "^1.0.4"
+
 mime-db@1.49.0:
   version "1.49.0"
   resolved "https://registry.npmmirror.com/mime-db/download/mime-db-1.49.0.tgz#f3dfde60c99e9cf3bc9701d687778f537001cbed"
@@ -5524,6 +5600,11 @@ node-addon-api@^3.2.0:
   resolved "https://registry.npmmirror.com/node-addon-api/download/node-addon-api-3.2.1.tgz#81325e0a2117789c0128dab65e7e38f07ceba161"
   integrity sha1-gTJeCiEXeJwBKNq2Xn448HzroWE=
 
+node-addon-api@^4.1.0:
+  version "4.2.0"
+  resolved "https://registry.npmmirror.com/node-addon-api/download/node-addon-api-4.2.0.tgz#117cbb5a959dff0992e1c586ae0393573e4d2a87"
+  integrity sha1-EXy7WpWd/wmS4cWGrgOTVz5NKoc=
+
 node-fetch@^2.6.1, node-fetch@^2.6.2:
   version "2.6.5"
   resolved "https://registry.npmmirror.com/node-fetch/download/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
@@ -5533,7 +5614,7 @@ node-fetch@^2.6.1, node-fetch@^2.6.2:
 
 node-fetch@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.npmmirror.com/node-fetch/download/node-fetch-3.0.0.tgz#79da7146a520036f2c5f644e4a26095f17e411ea"
+  resolved "https://registry.npmmirror.com/node-fetch/download/node-fetch-3.0.0.tgz?cache=0&sync_timestamp=1633061881158&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fnode-fetch%2Fdownload%2Fnode-fetch-3.0.0.tgz#79da7146a520036f2c5f644e4a26095f17e411ea"
   integrity sha1-edpxRqUgA28sX2ROSiYJXxfkEeo=
   dependencies:
     data-uri-to-buffer "^3.0.1"
@@ -5892,7 +5973,7 @@ p-finally@^1.0.0:
   resolved "https://registry.npmmirror.com/p-finally/download/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
   integrity sha1-P7z7FbiZpEEjs0ttzBi3JDNqLK4=
 
-p-limit@^2.2.0:
+p-limit@^2.0.0, p-limit@^2.2.0:
   version "2.3.0"
   resolved "https://registry.npmmirror.com/p-limit/download/p-limit-2.3.0.tgz#3dd33c647a214fdfffd835933eb086da0dc21db1"
   integrity sha1-PdM8ZHohT9//2DWTPrCG2g3CHbE=
@@ -5905,6 +5986,13 @@ p-limit@^3.0.2, p-limit@^3.1.0:
   integrity sha1-4drMvnjQ0TiMoYxk/qOOPlfjcGs=
   dependencies:
     yocto-queue "^0.1.0"
+
+p-locate@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/p-locate/download/p-locate-3.0.0.tgz#322d69a05c0264b25997d9f40cd8a891ab0064a4"
+  integrity sha1-Mi1poFwCZLJZl9n0DNiokasAZKQ=
+  dependencies:
+    p-limit "^2.0.0"
 
 p-locate@^4.1.0:
   version "4.1.0"
@@ -5986,6 +6074,11 @@ patch-package@^6.4.7:
     slash "^2.0.0"
     tmp "^0.0.33"
 
+path-exists@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/path-exists/download/path-exists-3.0.0.tgz#ce0ebeaa5f78cb18925ea7d810d7b59b010fd515"
+  integrity sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=
+
 path-exists@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmmirror.com/path-exists/download/path-exists-4.0.0.tgz#513bdbe2d3b95d7762e8c1137efa195c6c61b5b3"
@@ -6010,6 +6103,11 @@ path-parse@^1.0.6:
   version "1.0.7"
   resolved "https://registry.npmmirror.com/path-parse/download/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha1-+8EUtgykKzDZ2vWFjkvWi77bZzU=
+
+path-to-regexp@^6.1.0:
+  version "6.2.0"
+  resolved "https://registry.npmmirror.com/path-to-regexp/download/path-to-regexp-6.2.0.tgz?cache=0&sync_timestamp=1633021776048&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fpath-to-regexp%2Fdownload%2Fpath-to-regexp-6.2.0.tgz#f7b3803336104c346889adece614669230645f38"
+  integrity sha1-97OAMzYQTDRoia3s5hRmkjBkXzg=
 
 path-type@^4.0.0:
   version "4.0.0"
@@ -6075,6 +6173,13 @@ pkg-dir@^4.1.0:
   integrity sha1-8JkTPfft5CLoHR2ESCcO6z5CYfM=
   dependencies:
     find-up "^4.0.0"
+
+pkg-up@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmmirror.com/pkg-up/download/pkg-up-3.1.0.tgz#100ec235cc150e4fd42519412596a28512a0def5"
+  integrity sha1-EA7CNcwVDk/UJRlBJZaihRKg3vU=
+  dependencies:
+    find-up "^3.0.0"
 
 postcss-calc@^8.0.0:
   version "8.0.0"
@@ -6413,7 +6518,7 @@ postinstall-postinstall@^2.1.0:
   resolved "https://registry.npmmirror.com/postinstall-postinstall/download/postinstall-postinstall-2.1.0.tgz#4f7f77441ef539d1512c40bd04c71b06a4704ca3"
   integrity sha1-T393RB71OdFRLEC9BMcbBqRwTKM=
 
-prebuild-install@^6.1.2:
+prebuild-install@^6.1.2, prebuild-install@^6.1.4:
   version "6.1.4"
   resolved "https://registry.npmmirror.com/prebuild-install/download/prebuild-install-6.1.4.tgz#ae3c0142ad611d58570b89af4986088a4937e00f"
   integrity sha1-rjwBQq1hHVhXC4mvSYYIikk34A8=
@@ -6702,6 +6807,11 @@ requires-port@^1.0.0:
   resolved "https://registry.npmmirror.com/requires-port/download/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
+reselect@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmmirror.com/reselect/download/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
+  integrity sha1-8lKYMOXT0OAhQIskaiBu9OpEN/c=
+
 resolve-alpn@^1.0.0:
   version "1.2.1"
   resolved "https://registry.npmmirror.com/resolve-alpn/download/resolve-alpn-1.2.1.tgz#b7adbdac3546aaaec20b45e7d8265927072726f9"
@@ -6717,7 +6827,7 @@ resolve-from@^5.0.0:
   resolved "https://registry.npmmirror.com/resolve-from/download/resolve-from-5.0.0.tgz#c35225843df8f776df21c57557bc087e9dfdfc69"
   integrity sha1-w1IlhD3493bfIcV1V7wIfp39/Gk=
 
-resolve@^1.1.7, resolve@^1.17.0, resolve@^1.19.0, resolve@^1.2.0, resolve@^1.20.0:
+resolve@^1.1.7, resolve@^1.13.1, resolve@^1.17.0, resolve@^1.19.0, resolve@^1.2.0, resolve@^1.20.0:
   version "1.20.0"
   resolved "https://registry.npmmirror.com/resolve/download/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
   integrity sha1-YpoBP7P3B1XW8LeTXMHCxTeLGXU=
@@ -7005,6 +7115,20 @@ sharp@^0.28.2:
     detect-libc "^1.0.3"
     node-addon-api "^3.2.0"
     prebuild-install "^6.1.2"
+    semver "^7.3.5"
+    simple-get "^3.1.0"
+    tar-fs "^2.1.1"
+    tunnel-agent "^0.6.0"
+
+sharp@^0.29.1:
+  version "0.29.1"
+  resolved "https://registry.npmmirror.com/sharp/download/sharp-0.29.1.tgz#f60b50f24f399464a24187c86bd2da41aae50b85"
+  integrity sha1-9gtQ8k85lGSiQYfIa9LaQarlC4U=
+  dependencies:
+    color "^4.0.1"
+    detect-libc "^1.0.3"
+    node-addon-api "^4.1.0"
+    prebuild-install "^6.1.4"
     semver "^7.3.5"
     simple-get "^3.1.0"
     tar-fs "^2.1.1"
@@ -7582,6 +7706,11 @@ ts-interface-checker@^0.1.9:
   version "0.1.13"
   resolved "https://registry.npmmirror.com/ts-interface-checker/download/ts-interface-checker-0.1.13.tgz#784fd3d679722bc103b1b4b8030bcddb5db2a699"
   integrity sha1-eE/T1nlyK8EDsbS4AwvN212yppk=
+
+ts-toolbelt@^6.15.5:
+  version "6.15.5"
+  resolved "https://registry.npmmirror.com/ts-toolbelt/download/ts-toolbelt-6.15.5.tgz#cb3b43ed725cb63644782c64fbcad7d8f28c0a83"
+  integrity sha1-yztD7XJctjZEeCxk+8rX2PKMCoM=
 
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"

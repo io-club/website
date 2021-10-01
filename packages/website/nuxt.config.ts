@@ -1,13 +1,12 @@
 import {createPlugin as mdvue} from '@ioclub/mdvue'
 import {defineNuxtConfig} from '@nuxt/kit'
-import {imagetools} from 'vite-imagetools'
 import windi from 'vite-plugin-windicss'
 
 export default defineNuxtConfig({
 	srcDir: 'src',
 	extensions: ['.js','.mjs','.ts','.tsx','.vue', '.md'],
 	modules: [
-		//'~/api',
+		'~/api',
 	],
 	nitro: {
 	},
@@ -15,7 +14,6 @@ export default defineNuxtConfig({
 		plugins: [
 			windi({}),
 			mdvue.vite({}),
-			imagetools({}),
 		],
 	},
 })

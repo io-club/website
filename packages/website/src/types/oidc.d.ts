@@ -1,6 +1,6 @@
-import 'fastify'
-
 import type {Client} from 'openid-client'
+
+import 'fastify'
 
 declare module 'fastify' {
 	interface FastifyInstance {

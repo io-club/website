@@ -1,6 +1,6 @@
-import 'vue-composable'
-
 import type s from '../src/locales/zh_CN'
+
+import 'vue-composable'
 
 type json = typeof s
 
