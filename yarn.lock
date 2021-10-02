@@ -5523,11 +5523,6 @@ mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-nan@^2.14.0:
-  version "2.15.0"
-  resolved "https://registry.npmmirror.com/nan/download/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
-  integrity sha1-PzSkc/8Y4VwbVia2KQO1rW5mX+4=
-
 nanocolors@^0.1.12:
   version "0.1.12"
   resolved "https://registry.npmmirror.com/nanocolors/download/nanocolors-0.1.12.tgz#8577482c58cbd7b5bb1681db4cf48f11a87fd5f6"
@@ -5639,13 +5634,6 @@ node-pre-gyp@^0.13.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
-
-node-pty@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.npmmirror.com/node-pty/download/node-pty-0.10.1.tgz#cd05d03a2710315ec40221232ec04186f6ac2c6d"
-  integrity sha1-zQXQOicQMV7EAiEjLsBBhvasLG0=
-  dependencies:
-    nan "^2.14.0"
 
 node-releases@^1.1.76:
   version "1.1.76"
@@ -6934,14 +6922,6 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-run-pty@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.npmmirror.com/run-pty/download/run-pty-2.3.2.tgz#a28fe5f2d0a1b1875ab162d0272a89f70e3a970b"
-  integrity sha1-oo/l8tChsYdasWLQJyqJ9w46lws=
-  dependencies:
-    node-pty "^0.10.1"
-    tiny-decoders "^6.0.0"
-
 rxjs@^6.6.3:
   version "6.6.7"
   resolved "https://registry.npmmirror.com/rxjs/download/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
@@ -7642,11 +7622,6 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.npmmirror.com/timsort/download/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
-
-tiny-decoders@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmmirror.com/tiny-decoders/download/tiny-decoders-6.0.0.tgz#bc80928a09132fe38c0f86e048466673a7abdb9f"
-  integrity sha1-vICSigkTL+OMD4bgSEZmc6er258=
 
 tiny-lru@^7.0.0:
   version "7.0.6"
