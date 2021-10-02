@@ -282,6 +282,11 @@
   resolved "https://registry.npmmirror.com/@humanwhocodes/object-schema/download/@humanwhocodes/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
   integrity sha1-h956+cIxgm/daKxyWPd8Qp4OX88=
 
+"@icon-park/vue-next@^1.3.5":
+  version "1.3.5"
+  resolved "https://registry.npmmirror.com/@icon-park/vue-next/download/@icon-park/vue-next-1.3.5.tgz#4c9cbe6c77c4f4dadbe60fd26b86b10ed4ad186b"
+  integrity sha1-TJy+bHfE9Nrb5g/Sa4axDtStGGs=
+
 "@koa/cors@^3.1.0":
   version "3.1.0"
   resolved "https://registry.npmmirror.com/@koa/cors/download/@koa/cors-3.1.0.tgz#618bb073438cfdbd3ebd0e648a76e33b84f3a3b2"
@@ -6606,6 +6611,11 @@ quick-lru@^5.1.1:
   version "5.1.1"
   resolved "https://registry.npmmirror.com/quick-lru/download/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha1-NmST5rPkKjpoheLpnRj4D7eoyTI=
+
+quick-lru@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.npmmirror.com/quick-lru/download/quick-lru-6.0.1.tgz#3a3fabc74960d663222d04957634766d3447c562"
+  integrity sha1-Oj+rx0lg1mMiLQSVdjR2bTRHxWI=
 
 randombytes@^2.1.0:
   version "2.1.0"

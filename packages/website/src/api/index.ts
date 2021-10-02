@@ -1,5 +1,6 @@
 import type {Config as authConfig} from './auth'
 import type {Options as MailerOptions} from './plugins/mailer'
+import type {Config as serviceConfig} from './service'
 import type {Configuration as oidcConfig} from 'oidc-provider'
 
 //import FastifySession from '@mgcrea/fastify-session'
@@ -30,9 +31,10 @@ export interface Options {
 	session: {
 		ttl: number
 		key: string
-	},
-	mailer: MailerOptions,
+	}
+	mailer: MailerOptions
 	auth: authConfig
+	service: serviceConfig
 }
 
 export default defineNuxtModule<Options>(function () {
@@ -105,6 +107,12 @@ export default defineNuxtModule<Options>(function () {
 			auth: {
 				mailTTL: 600,
 			},
+			service: {
+				image: {
+					maxSize: 1000,
+					maxAge: Infinity,
+				},
+			},
 		},
 		setup: async function (options, nuxt) {
 			// redis
@@ -159,7 +167,7 @@ export default defineNuxtModule<Options>(function () {
 				app
 					.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 					.register(auth, {prefix: '/auth', ...options.auth})
-					.register(service, {prefix: '/service'})
+					.register(service, {prefix: '/service', ...options.service})
 					.use('/oidc', oidc.callback)
 				return app
 			}, {

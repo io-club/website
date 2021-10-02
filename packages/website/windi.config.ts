@@ -115,6 +115,11 @@ export default defineConfig({
 		ratio,
 		hero({
 			patterns: ['circuit-board'],
+			opacity: {
+				default: '0.5',
+				80: '0.8',
+				100: '1.0',
+			},
 			includeThemeColors: true,
 		}),
 		plugin(function ({addVariant, addDynamic, theme}) {

@@ -52,6 +52,9 @@ declare module '@vue/runtime-dom' {
 		'w:resize'?: string
 		'w:select'?: string
 		'w:sr'?: string
+
 		'w:children'?: string
+		'w:md'?: string
+		'w:even'?: string
 	}
 }

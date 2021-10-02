@@ -50,5 +50,8 @@ export default {
 	'w:resize': String,
 	'w:select': String,
 	'w:sr': String,
+
 	'w:children': String,
+	'w:md': String,
+	'w:even': String,
 }
