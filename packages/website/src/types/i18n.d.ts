@@ -1,4 +1,4 @@
-import type s from '../src/locales/zh_CN'
+import type s from '@/locales/zh_CN'
 
 import 'vue-composable'
 

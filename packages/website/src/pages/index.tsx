@@ -1,7 +1,8 @@
 import { defineComponent } from 'vue'
 import { useI18n } from 'vue-composable'
 
-import LogoImg from '@/assets/logo.png'
+import Image from '@/components/image'
+import Link from '@/components/link'
 
 export default defineComponent({
 	setup() {
@@ -11,58 +12,112 @@ export default defineComponent({
 			const ret = []
 
 			ret.push(
-				<div class="bg-light-blue-800 bg-hero-circuit-board-white text-white relative h-72">
-					<div class="w-full h-full absolute t-0 l-0 opacity-50 animate-bg400 bg-rainbow bg-400 z-0"></div>
-					<div class="mx-auto w-48 h-48 flex justify-center items-center perspect-800px perspect-origin-top-right">
-						<div class="select-none w-24 h-24 preserve-3d relative animate-rotate360 children:(border-4 border-purple-500 opacity-80 font-bold flex justify-center items-center transform absolute w-full h-full)"
-							onClick={(e) => console.log(3, e)}
+				<div
+					w:pos="relative"
+					w:bg="rainbow 400"
+					w:animate="bg400"
+				>
+					<div
+						w:w="full"
+						w:h="full"
+						w:pos="absolute t-0 l-0"
+						w:bg="hero-circuit-board-white-80"
+						w:z="0"
+					></div>
+					<div w:p="y-8" w:children="my-4">
+						<div
+							w:m="x-auto"
+							w:w="48"
+							w:h="48"
+							w:flex="~"
+							w:justify="center"
+							w:align="items-center"
+							w:transform="perspect-800px perspect-origin-top-right"
 						>
-							<div class="bg-pink-500 translate-z-12">
-								{ cube[0] }
-							</div>
-							<div class="bg-blue-500 rotate-y-180 translate-z-12">
-								{ cube[1] }
-							</div>
-							<div class="bg-yellow-500 rotate-y-90 translate-z-12">
-								{ cube[2] }
-							</div>
-							<div class="bg-green-500 -rotate-y-90 translate-z-12">
-								{ cube[3] }
-							</div>
-							<div class="bg-red-500 rotate-x-90 translate-z-12">
-								{ cube[4] }
-							</div>
-							<div class="bg-gray-500 -rotate-x-90 translate-z-12">
-								{ cube[5] }
+							<div
+								w:select="none"
+								w:w="24"
+								w:h="24"
+								w:transform="preserve-3d"
+								w:pos="relative"
+								w:animate="rotate360"
+								w:children="border-4 border-purple-500 opacity-80 font-bold flex justify-center items-center transform absolute w-full h-full"
+								onClick={(e) => console.log(3, e)}
+							>
+								<div w:bg="pink-500" w:transform="translate-z-12">
+									{ cube[0] }
+								</div>
+								<div w:bg="blue-500" w:transform="rotate-y-180 translate-z-12">
+									{ cube[1] }
+								</div>
+								<div w:bg="yellow-500" w:transform="rotate-y-90 translate-z-12">
+									{ cube[2] }
+								</div>
+								<div w:bg="green-500" w:transform="-rotate-y-90 translate-z-12">
+									{ cube[3] }
+								</div>
+								<div w:bg="red-500" w:transform="rotate-x-90 translate-z-12">
+									{ cube[4] }
+								</div>
+								<div w:bg="gray-500" w:transform="-rotate-x-90 translate-z-12">
+									{ cube[5] }
+								</div>
 							</div>
 						</div>
+						<Link
+							to="/register"
+							w:display="block"
+							w:w="max"
+							w:m="x-auto"
+							w:pos="relative"
+							class="group"
+						>{() => [
+								<div
+									class="group-hover:(bg-black animate-expandX)"
+									w:h="full"
+									w:w="full"
+									w:pos="absolute t-0 l-0"
+									w:bg="white"
+									w:transition="all duration-500"
+									w:transform="origin-left"
+									w:border="rounded"
+									w:z="1"
+								></div>,
+								<div
+									class="group-hover:text-white"
+									w:text="black 3xl"
+									w:p="y-2 x-3"
+									w:display="relative"
+									w:z="2"
+								>
+									{ join_us }
+								</div>,
+							]}
+						</Link>
 					</div>
-					<a href="/register" class="block w-max mx-auto group relative">
-						<div class="h-full w-full absolute t-0 l-0 bg-white transition-all duration-500 origin-left group-hover:(bg-black animate-expandX) rounded z-1"></div>
-						<div class="z-2 text-black group-hover:text-white py-2 px-3 text-3xl relative">
-							{ join_us }
-						</div>
-					</a>
 				</div>
 			)
 
 			const about_us_p = []
 			for (const p of about_us.description) {
 				about_us_p.push(
-					<p class="text-sm leading-loose text-gray-600 indent">
+					<p w:text="sm gray-600 indent" w:font="leading-loose">
 						{ p }
 					</p>
 				)
 			}
 			ret.push(
-				<div id="about" class="py-3 px-oi-6 px-os-5 px-o children:mt-4">
-					<p class="text-2xl border-b-4 text-stroke-1 uppercase w-max mx-auto">
+				<div id="about"
+					w:p="y-4 x-oi-6 x-os-5 x-o"
+					w:children="mt-4"
+				>
+					<p w:text="2xl stroke-1 uppercase" w:border="b-4" w:w="max" w:m="x-auto">
 						{ about_us.title }
 					</p>
-					<div class="flex flex-wrap justify-around items-center md:(flex-nowrap flex-row-reverse)">
-						<img src={LogoImg.src} width={LogoImg.width} height={LogoImg.height} class="max-w-3/5 md:max-w-1/3" />
-						<div class="w-full md:max-w-2/4">
-							<p class="text-center text-black-500">
+					<div w:flex="~ wrap" w:justify="around" w:align="items-center" w:md="flex-nowrap flex-row-reverse">
+						<Image src='/logo.png' w:w="max-3/5 md:max-1/3" />
+						<div w:w="full md:max-2/4">
+							<p w:text="center black-500">
 								{ about_us.sub_title }
 							</p>
 							{about_us_p}
@@ -74,48 +129,60 @@ export default defineComponent({
 			const section_p = []
 			for (const p of section.content) {
 				section_p.push(
-					<div class="py-4 flex flex-wrap justify-center items-center even:(flex-row-reverse)">
-						<p class="text-xl bg-gray-600 text-white text-center py-6 px-4 mx-4 rounded">
+					<div
+						w:p="y-4"
+						w:flex="~ wrap"
+						w:justify="center"
+						w:align="items-center"
+						w:even="flex-row-reverse"
+					>
+						<p
+							w:bg="gray-600"
+							w:text="xl white center"
+							w:p="y-6 x-4"
+							w:m="x-4"
+							w:border="rounded"
+						>
 							{ p.brand }
 						</p>
-						<div class="w-5/8">
-							<p class="text-xl text-center">{ p.title }</p>
-							<p class="text-light-700">{ p.desc }</p>
+						<div w:w="5/8">
+							<p w:text="xl center">{ p.title }</p>
+							<p w:text="light-700">{ p.desc }</p>
 						</div>
 					</div>
 				)
 			}
 
 			ret.push(
-				<div id="show" class="py-6 px-2 bg-gray-700 text-white">
-					<div class="ratio-85 mx-auto children:my-4">
-						<div class="w-max mx-auto">
-							<p class="text-2xl border-b-4 text-stroke-1 uppercase inline-block">
-								{ section.title }
-							</p>
-						</div>
-						<div class="grid grid-cols-2 <md:grid-cols-1 justify-center items-center">
-							{section_p}
-						</div>
+				<div id="show"
+					w:bg="gray-700"
+					w:text="white"
+					w:p="y-4 x-oi-6 x-os-5 x-o"
+					w:children="my-4"
+				>
+					<p w:text="2xl stroke-1 uppercase" w:border="b-4" w:w="max" w:m="x-auto">
+						{ section.title }
+					</p>
+					<div w:grid="~ cols-2 <md:cols-1" w:justify="center" w:align="items-center">
+						{section_p}
 					</div>
 				</div>
 			)
 
 			const imgs = []
 			for (let i=1; i<10; i++) {
-				imgs.push(<img src={`/images/home/${i}.jpg`} />)
+				imgs.push(<Image src={`/images/home/${i}.jpg`} />)
 			}
 			ret.push(
-				<div id="photo" class="py-3 px-2">
-					<div class="ratio-85 mx-auto children:mt-4">
-						<div class="text-center">
-							<p class="text-2xl border-b-4 text-stroke-1 uppercase inline-block">
-								{ photo.title }
-							</p>
-						</div>
-						<div class="grid grid-cols-auto gap-2 justify-center">
-							{imgs}
-						</div>
+				<div id="photo"
+					w:p="y-4 x-oi-6 x-os-5 x-o"
+					w:children="my-4"
+				>
+					<p w:text="2xl stroke-1 uppercase" w:border="b-4" w:w="max" w:m="x-auto">
+						{ photo.title }
+					</p>
+					<div w:grid="~ cols-auto md:cols-3 gap-2" w:justify="center">
+						{imgs}
 					</div>
 				</div>
 			)

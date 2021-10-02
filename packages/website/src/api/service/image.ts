@@ -2,6 +2,7 @@ import type {FastifyPluginCallback} from 'fastify'
 import type {FromSchema} from 'json-schema-to-ts'
 
 import status_code from 'http-status-codes'
+import QuickLRU from 'quick-lru'
 
 const IImageSchema = {
 	type: 'object',
@@ -16,7 +17,18 @@ const IImageSchema = {
 
 type IImage = FromSchema<typeof IImageSchema>
 
-const routes: FastifyPluginCallback = async function (app) {
+function keyGen(query: IImage) {
+	Object.values(query).join(':')
+}
+
+export interface Config {
+	maxAge: number
+	maxSize: number
+}
+
+const routes: FastifyPluginCallback<Config> = async function (app, options) {
+	const lru = new QuickLRU({maxSize: options.maxSize, maxAge: options.maxAge});
+
 	app.get<{
 		Querystring: IImage,
 	}>('/image', {
@@ -42,11 +54,17 @@ const routes: FastifyPluginCallback = async function (app) {
 		if (query.format) {
 			transformer = transformer.toFormat(query.format)
 		}
-		const img = await this.fetch(url).then(e => e.body)
-		if (!img) {
-			return res.code(status_code.BAD_REQUEST).send('invalid url')
+		const key = keyGen(query)
+		const v = lru.get(key)
+		if (!v) {
+			const img = await this.fetch(url).then(e => e.body)
+			if (!img) {
+				return res.code(status_code.BAD_REQUEST).send('invalid url')
+			}
+			const buffer = await img.pipe(transformer).toBuffer()
+			lru.set(key, buffer)
 		}
-		img.pipe(transformer).pipe(res.raw)
+		return res.send(v)
 	})
 }
 
