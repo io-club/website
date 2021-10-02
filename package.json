@@ -1,10 +1,13 @@
 {
 	"private": true,
 	"workspaces": [
-		"packages/vite-*",
-		"packages/*"
+		"packages/mdvue",
+		"packages/website"
 	],
 	"scripts": {
+		"build": "yarn workspaces run build",
+		"dev": "yarn workspace @ioclub/website run dev",
+		"add": "yarn workspace @ioclub/website add",
 		"postinstall": "patch-package --exclude 'IAmNotARealFile.txt'"
 	},
 	"devDependencies": {

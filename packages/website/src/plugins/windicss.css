@@ -1,0 +1,6 @@
+html {
+	scroll-behavior: smooth;
+	caret-color: transparent;
+	background-color: white;
+	font-size: 16px;
+}

@@ -1,6 +1,4 @@
-import 'virtual:windi.css'
-
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { setI18n } from 'vue-composable'
 
 import Logo from '@/components/logo'
@@ -16,29 +14,40 @@ export default defineComponent({
 				'zh-cn': zh_CN,
 			},
 		})
+		const show = ref(false)
 		return () => {
 			const {header, title} = i18n.value.common
 			const ret = []
 
 			ret.push(
-				<div class="py-3 px-oi-6 px-os-5 px-o bg-white flex justify-between items-center">
-					<a class="inline-flex items-center" href="#">
-						<Logo class="max-w-10 mr-2" />
-						<span class="text-2xl font-heavy">{ title }</span>
+				<div 
+					w:p="y-3 x-oi-6 x-os-5 x-o"
+					w:bg="white"
+					w:flex="~ wrap"
+					w:justify="between"
+					w:align="items-center"
+				>
+					<a w:flex="~" w:align="items-center" href="#" >
+						<Logo w:h="8" w:m="r-2" />
+						<span w:text="2xl" w:font="heavy">{ title }</span>
 					</a>
-					<button class="md:hidden" type="button">menu</button>
-					<nav class="<md:hidden w-3/4">
-						<ul class="relative flex justify-around children:(border-b-2 transition-transform transform duration-100)">
-							<li class="hover:scale-110">
+					<button w:display="md:hidden" type="button" onClick={() => show.value = !show.value}>menu</button>
+					<nav w:w="full md:3/4" w:m="<md:t-2">
+						<ul
+							w:flex="~"
+							w:justify="around"
+							w:children="border-b-2 transition-transform transform duration-100"
+						>
+							<li w:transform="hover:scale-110">
 								<a href="/#about">{ header.about }</a>
 							</li>
-							<li class="hover:scale-110">
+							<li w:transform="hover:scale-110">
 								<a href="/notice">{ header.notice }</a>
 							</li>
-							<li class="text-gray-400">
+							<li w:text="gray-400">
 								<a href="#">{ header.forum }</a>
 							</li>
-							<li class="text-gray-400">
+							<li w:text="gray-400">
 								<a href="#">{ header.login }</a>
 							</li>
 						</ul>
@@ -50,7 +59,14 @@ export default defineComponent({
 				ret.push(slots.default())
 
 			ret.push(
-				<div class="min-h-20 bg-gray-800 text-white flex items-center justify-center">
+				<div 
+					w:bg="gray-800"
+					w:h="min-20"
+					w:text="white"
+					w:flex="~"
+					w:align="items-center"
+					w:justify="center"
+				>
 					<p>By &copy; 2021 I/O club All rights reserved</p>
 				</div>
 			)
@@ -59,12 +75,3 @@ export default defineComponent({
 		}
 	},
 })
-
-/*
-<style lang="scss">
-html {
-	scroll-behavior: smooth;
-	caret-color: transparent;
-}
-</style>
-	 */

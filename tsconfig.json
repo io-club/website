@@ -7,6 +7,7 @@
 		},
 		"sourceMap": true,
 		"esModuleInterop": true,
+		"downlevelIteration": true,
 		"noEmitOnError": true,
 		"strict": true,
 		"declaration": true,

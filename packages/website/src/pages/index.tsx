@@ -6,7 +6,6 @@ import LogoImg from '@/assets/logo.png'
 export default defineComponent({
 	setup() {
 		const { i18n } = useI18n()
-		console.log(LogoImg)
 		return () => {
 			const {cube, join_us, about_us, section, photo} = i18n.value.home
 			const ret = []

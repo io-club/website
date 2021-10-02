@@ -5,6 +5,8 @@ import plugin from 'windicss/plugin'
 import ratio from 'windicss/plugin/aspect-ratio'
 import typography from 'windicss/plugin/typography'
 
+import screens from './src/utils/screens'
+
 function generate360() {
 	const r: Record<string, unknown> = {}
 	const c = 4
@@ -56,11 +58,15 @@ export default defineConfig({
 		exclude: ['node_modules', '.git'],
 	},
 	darkMode: 'class',
+	attributify: {
+		prefix: 'w:',
+	},
 	theme: {
 		fontFamily: {
 			sans: ['Graphik', 'sans-serif'],
 			serif: ['Merriweather', 'serif'],
 		},
+		screens,
 		extend: {
 			animation: {
 				'expandX': 'expandX 0.5s cubic-bezier(.17, .84, .44, 1) 1',
