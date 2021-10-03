@@ -18,7 +18,7 @@ const IImageSchema = {
 type IImage = FromSchema<typeof IImageSchema>
 
 function keyGen(query: IImage) {
-	Object.values(query).join(':')
+	return Object.values(query).join(':')
 }
 
 export interface Config {
@@ -56,6 +56,7 @@ const routes: FastifyPluginCallback<Config> = async function (app, options) {
 		}
 		const key = keyGen(query)
 		const v = lru.get(key)
+		console.log(query, key, v)
 		if (!v) {
 			const img = await this.fetch(url).then(e => e.body)
 			if (!img) {

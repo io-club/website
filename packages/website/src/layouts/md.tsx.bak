@@ -18,7 +18,7 @@ export default defineComponent({
 			flush: 'post'
 		})
 		provide('md_update_meta', updateMeta)
-		return () => <News>
+		return () => <Default>
 			{() => {
 				// const ret = [<button onClick={() => console.log(Object.entries(meta))}>show</button>]
 				const ret = []
@@ -80,15 +80,24 @@ export default defineComponent({
 
 				if (slots.default) {
 					ret.push(
-						<div class="w-full flex">
-							<div class="max-w-75/100 bg-green-200 ">
-								<article  class="prose max-w-100/100 bg-blue-200">
-									{slots.default()}
-								</article>
+						<div class="">
+							<div class="">
+								{/* <p>{meta.frontmatter?.title ?? 'Loading'}</p> */}
+								<div class="h-160  w-70 overflow-y-scroll overflow-x-hidden fixed top-3.6em left-0 ">
+								</div>
 							</div>
-							<div class="w-25/100 overflow-y-scroll ">
-								<div class="overflow-auto relative" style="max-height:99vh">
-									{ generateMenu(meta.toc?.at(0)) }
+							<div class="">
+								<div>
+									<div class="ml-70 mr-70  bg-green-200 ">
+										<article  class="mx-auto flex-1 prose bg-blue-200">
+											{slots.default()}
+										</article>
+										<div class="w-70 overflow-y-scroll overflow-x-hidden fixed top-3.6em right-0 bg-yello-400">
+											<div class="h-160 rounded">
+												{ generateMenu(meta.toc?.at(0)) }
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -96,6 +105,6 @@ export default defineComponent({
 				}
 				return ret
 			}}
-		</News>
+		</Default>
 	}
 })
