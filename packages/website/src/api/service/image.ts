@@ -18,7 +18,7 @@ const IImageSchema = {
 type IImage = FromSchema<typeof IImageSchema>
 
 function keyGen(query: IImage) {
-	Object.values(query).join(':')
+	return Object.values(query).join(':')
 }
 
 export interface Config {
