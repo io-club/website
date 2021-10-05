@@ -712,11 +712,6 @@
   dependencies:
     "@types/ms" "*"
 
-"@types/dotenv-parse-variables@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.npmmirror.com/@types/dotenv-parse-variables/download/@types/dotenv-parse-variables-2.0.1.tgz#b0af93ee6c628e4da671acec5d287a8a269b492d"
-  integrity sha1-sK+T7mxijk2mcazsXSh6iiabSS0=
-
 "@types/eslint-scope@^3.7.0":
   version "3.7.1"
   resolved "https://registry.npmmirror.com/@types/eslint-scope/download/@types/eslint-scope-3.7.1.tgz#8dc390a7b4f9dd9f1284629efce982e41612116e"
@@ -1665,13 +1660,6 @@ atomic-sleep@^1.0.0:
   resolved "https://registry.npmmirror.com/atomic-sleep/download/atomic-sleep-1.0.0.tgz#eb85b77a601fc932cfe432c5acd364a9e2c9075b"
   integrity sha1-64W3emAfyTLP5DLFrNNkqeLJB1s=
 
-auto-parse@^1.3.0:
-  version "1.8.0"
-  resolved "https://registry.npmmirror.com/auto-parse/download/auto-parse-1.8.0.tgz#1164051c832d5574e8eb6a18d3a37a278fe61e72"
-  integrity sha1-EWQFHIMtVXTo62oY06N6J4/mHnI=
-  dependencies:
-    typpy "2.3.11"
-
 autoprefixer@^10.3.6:
   version "10.3.6"
   resolved "https://registry.npmmirror.com/autoprefixer/download/autoprefixer-10.3.6.tgz#537c8a046e32ec46bfe528bcc9e2a5f2d87cd4c4"
@@ -1887,7 +1875,7 @@ callsites@^3.0.0:
   resolved "https://registry.npmmirror.com/callsites/download/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha1-s2MKvYlDQy9Us/BRkjjjPNffL3M=
 
-camelcase@^5.0.0, camelcase@^5.3.1:
+camelcase@^5.0.0:
   version "5.3.1"
   resolved "https://registry.npmmirror.com/camelcase/download/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha1-48mzFWnhBoEd8kL3FXJaH0xJQyA=
@@ -2261,7 +2249,7 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
+cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.npmmirror.com/cross-spawn/download/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
   integrity sha1-9zqFudXUHQRVUcF34ogtSshXKKY=
@@ -2608,33 +2596,10 @@ dot-prop@^6.0.1:
   dependencies:
     is-obj "^2.0.0"
 
-dotenv-extended@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.npmmirror.com/dotenv-extended/download/dotenv-extended-2.9.0.tgz#1e44a018f90ee88c066273cd855e3095c7e781e5"
-  integrity sha1-HkSgGPkO6IwGYnPNhV4wlcfngeU=
-  dependencies:
-    auto-parse "^1.3.0"
-    camelcase "^5.3.1"
-    cross-spawn "^7.0.1"
-    dotenv "^8.2.0"
-
-dotenv-parse-variables@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmmirror.com/dotenv-parse-variables/download/dotenv-parse-variables-2.0.0.tgz#8bfd83842acdc9013c12d46b340df27ac6046a26"
-  integrity sha1-i/2DhCrNyQE8EtRrNA3yesYEaiY=
-  dependencies:
-    debug "^4.3.1"
-    is-string-and-not-blank "^0.0.2"
-
 dotenv@^10.0.0:
   version "10.0.0"
   resolved "https://registry.npmmirror.com/dotenv/download/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
   integrity sha1-PUInuPuV+BCWzdK2ZlP7LHCFuoE=
-
-dotenv@^8.2.0:
-  version "8.6.0"
-  resolved "https://registry.npmmirror.com/dotenv/download/dotenv-8.6.0.tgz#061af664d19f7f4d8fc6e4ff9b584ce237adcb8b"
-  integrity sha1-Bhr2ZNGff02PxuT/m1hM4jety4s=
 
 duplexer@^0.1.2:
   version "0.1.2"
@@ -3537,13 +3502,6 @@ function-bind@^1.1.1:
   resolved "https://registry.npmmirror.com/function-bind/download/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha1-pWiZ0+o8m6uHS7l3O3xe3pL0iV0=
 
-function.name@^1.0.3:
-  version "1.0.13"
-  resolved "https://registry.npmmirror.com/function.name/download/function.name-1.0.13.tgz#eef045abc4b5ff4e3e9d001a53ce14e090c971c6"
-  integrity sha1-7vBFq8S1/04+nQAaU84U4JDJccY=
-  dependencies:
-    noop6 "^1.0.1"
-
 functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmmirror.com/functional-red-black-tree/download/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
@@ -4280,18 +4238,6 @@ is-stream@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npmmirror.com/is-stream/download/is-stream-2.0.1.tgz#fac1e3d53b97ad5a9d0ae9cef2389f5810a5c077"
   integrity sha1-+sHj1TuXrVqdCunO8jifWBClwHc=
-
-is-string-and-not-blank@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npmmirror.com/is-string-and-not-blank/download/is-string-and-not-blank-0.0.2.tgz#cd19eded2ca4a514f79ca528915f1fb28e5dd38a"
-  integrity sha1-zRnt7SykpRT3nKUokV8fso5d04o=
-  dependencies:
-    is-string-blank "^1.0.1"
-
-is-string-blank@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmmirror.com/is-string-blank/download/is-string-blank-1.0.1.tgz#866dca066d41d2894ebdfd2d8fe93e586e583a03"
-  integrity sha1-hm3KBm1B0olOvf0tj+k+WG5YOgM=
 
 is-string@^1.0.5, is-string@^1.0.7:
   version "1.0.7"
@@ -5499,11 +5445,6 @@ nodemailer@^6.6.3, nodemailer@^6.6.5:
   version "6.6.5"
   resolved "https://registry.npmmirror.com/nodemailer/download/nodemailer-6.6.5.tgz#f9f6953cee5cfe82cbea152eeddacf7a0442049a"
   integrity sha1-+faVPO5c/oLL6hUu7drPegRCBJo=
-
-noop6@^1.0.1:
-  version "1.0.9"
-  resolved "https://registry.npmmirror.com/noop6/download/noop6-1.0.9.tgz#8749944c15c09f2cd2d562ac24f5a8341762a950"
-  integrity sha1-h0mUTBXAnyzS1WKsJPWoNBdiqVA=
 
 nopt@^4.0.1:
   version "4.0.3"
@@ -7531,13 +7472,6 @@ typescript@^4.4.3:
   version "4.4.3"
   resolved "https://registry.npmmirror.com/typescript/download/typescript-4.4.3.tgz#bdc5407caa2b109efd4f82fe130656f977a29324"
   integrity sha1-vcVAfKorEJ79T4L+EwZW+XeikyQ=
-
-typpy@2.3.11:
-  version "2.3.11"
-  resolved "https://registry.npmmirror.com/typpy/download/typpy-2.3.11.tgz#21a0d22c96fb646306e08b6c669ad43608e1b3b9"
-  integrity sha1-IaDSLJb7ZGMG4ItsZprUNgjhs7k=
-  dependencies:
-    function.name "^1.0.3"
 
 ufo@^0.7.9:
   version "0.7.9"

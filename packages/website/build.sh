@@ -1,5 +1,6 @@
 #!/bin/sh
-cd ./RedisJson
+set -ex
+cd ./RedisJSON
 cargo build --release
 cd -
 

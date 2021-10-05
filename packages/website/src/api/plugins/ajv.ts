@@ -18,9 +18,25 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 	format(ajv)
 
 	fastify.decorate('ajv', ajv)
-	// @ts-expect-error
+
+	// raw json string
+	fastify.removeContentTypeParser(['application/json'])
+	fastify.addContentTypeParser('application/json', { parseAs: 'string' }, function (_, body, done) {
+		done(null, body)
+	})
+
+	// parse and validate
 	fastify.setValidatorCompiler(({ schema }) => {
-		return ajv.compile(schema)
+		const parser = ajv.compileParser(schema)
+		return (data) => {
+			const value = parser(data)
+			return {value, error: value ? undefined : new Error(`${parser.message} at ${parser.position}`)} 
+		}
+	})
+
+	// serialize
+	fastify.setSerializerCompiler(({ schema }) => {
+		return ajv.compileSerializer(schema)
 	})
 }, {
 	name: 'ajv'

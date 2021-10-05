@@ -1,0 +1,13 @@
+diff --git a/node_modules/h3/dist/index.mjs b/node_modules/h3/dist/index.mjs
+index cfd919c..ba14eb3 100644
+--- a/node_modules/h3/dist/index.mjs
++++ b/node_modules/h3/dist/index.mjs
+@@ -109,7 +109,7 @@ function callHandle(handle, req, res) {
+     const next = (err) => err ? reject(err) : resolve(void 0);
+     try {
+       const returned = handle(req, res, next);
+-      if (returned !== void 0) {
++      if (returned !== void 0 && !(returned instanceof Promise)) {
+         resolve(returned);
+       } else {
+         res.once("close", next);

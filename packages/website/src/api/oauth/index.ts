@@ -53,11 +53,11 @@ export const context: FastifyPluginCallback<Config> = fp(async function (app, op
 	// bootstrap
 	const redis = await app.redis.acquire()
 	try {
-		const oauth_bootstrap = `${options.prefix}:bootstrap`
+		const oauth_bootstrap = join(options.prefix, 'bootstrap')
 		await redis.watch(oauth_bootstrap)
-		const inited = await redis.get(oauth_bootstrap)
-		if (!inited) {
-			let pipe = redis.pipeline()
+		const inited = await redis.exists(oauth_bootstrap)
+		if (inited !== 1) {
+			let pipe = redis.multi()
 			pipe = pipe['ft.create']('json',
 				{
 					name: ctx.client.index,
@@ -112,6 +112,7 @@ export const context: FastifyPluginCallback<Config> = fp(async function (app, op
 					'$.id': ['id', 'tag'],
 				},
 			)
+			pipe = pipe.set(oauth_bootstrap, 'true')
 
 			const res = await pipe.exec()
 			for (const [err,] of res) {
@@ -179,23 +180,52 @@ export const context: FastifyPluginCallback<Config> = fp(async function (app, op
 })
 
 export const routes: FastifyPluginCallback = async function (app) {
-	const authorize_schema = {
-		properties: {
-			response_type: { enum: ['code'] },
-			client_id: { type: 'string' },
-			redirect_uri: { type: 'string' },
-			state: { type: 'string' },
-			code_challenge: { type: 'string' },
-			code_challenge_method: { enum: ['plain', 'S256'] },
-		},
-	} as const
-	app.get<{ Querystring: JTDDataType<typeof authorize_schema> }>('/authorize',
-		{
-			schema: {
-				querystring: authorize_schema,
+	const schemas = {
+		authorize: {
+			req: {
+				properties: {
+					response_type: { enum: ['code'] },
+					client_id: { type: 'string' },
+					redirect_uri: { type: 'string' },
+					state: { type: 'string' },
+					code_challenge: { type: 'string' },
+					code_challenge_method: { enum: ['plain', 'S256'] },
+				},
 			},
 		},
-		async function (req, res) {
+		token: {
+			req: {
+				discriminator: 'grant_type',
+				mapping: {
+					'client_credentials': {
+						properties: {
+							client_id: { type: 'string' },
+							client_secret: { type: 'string' },
+							scope: { type: 'string' },
+						},
+					},
+					'refresh_token': {
+						properties: {
+							client_id: { type: 'string' },
+							client_secret: { type: 'string' },
+							refresh_token: { type: 'string' },
+						},
+						optionalProperties: {
+							scope: { type: 'string' },
+						},
+					},
+				},
+			},
+		},
+	} as const
+
+	app.route<{ Querystring: JTDDataType<typeof schemas.authorize.req> }>({
+		method: 'GET',
+		url: '/authorize',
+		schema: {
+			querystring: schemas.authorize.req,
+		},
+		handler: async function (req, res) {
 			try {
 				const authRequest = await this.oauth.authServer.validateAuthorizationRequest(new OAuthRequest({query: req.query}))
 
@@ -231,51 +261,34 @@ export const routes: FastifyPluginCallback = async function (app) {
 					message: e.message,
 				})
 			}
-		})
-
-	const token_schema = {
-		discriminator: 'grant_type',
-		mapping: {
-			'client_credentials': {
-				properties: {
-					client_id: { type: 'string' },
-					client_secret: { type: 'string' },
-					scope: { type: 'string' },
-				},
-			},
-			'refresh_token': {
-				properties: {
-					client_id: { type: 'string' },
-					client_secret: { type: 'string' },
-					refresh_token: { type: 'string' },
-				},
-				optionalProperties: {
-					scope: { type: 'string' },
-				},
-			},
 		},
-	} as const
-	app.post<{ Querystring: JTDDataType<typeof token_schema> }>('/token', async function (req, res) {
-		try {
-			const response = await this.oauth.authServer.respondToAccessTokenRequest(
-				new OAuthRequest({query: req.query}),
-				new OAuthResponse({headers: res.headers}),
-			)
-			if (response.status === 302) {
-				if (!response.headers.location) throw new Error('missing redirect location');
-				res.headers(response.headers);
-				res.redirect(response.headers.location);
-			} else {
-				res.headers(response.headers);
-				res.status(response.status).send(response.body);
-			}
-		} catch (e) {
-			if (!(e instanceof OAuthException)) throw e
+	})
 
-			res.status(e.status).send({
-				status: e.status,
-				message: e.message,
-			})
-		}
+	app.route<{ Querystring: JTDDataType<typeof schemas.token.req> }>({
+		method: 'POST',
+		url: '/token',
+		handler: async function (req, res) {
+			try {
+				const response = await this.oauth.authServer.respondToAccessTokenRequest(
+					new OAuthRequest({query: req.query}),
+					new OAuthResponse({headers: res.headers}),
+				)
+				if (response.status === 302) {
+					if (!response.headers.location) throw new Error('missing redirect location');
+					res.headers(response.headers)
+					res.redirect(response.headers.location)
+				} else {
+					res.headers(response.headers)
+					res.status(response.status).send(response.body)
+				}
+			} catch (e) {
+				if (!(e instanceof OAuthException)) throw e
+
+				res.status(e.status).send({
+					status: e.status,
+					message: e.message,
+				})
+			}
+		},
 	})
 }

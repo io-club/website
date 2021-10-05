@@ -113,6 +113,7 @@ function createApp() {
 	app.register(function (app) {
 		app
 			.register(OAuthRoutes)
+
 		//.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 		//.register(auth, {prefix: '/auth', ...options.auth})
 		//.register(service, {prefix: '/service', ...options.service})

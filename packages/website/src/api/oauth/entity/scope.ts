@@ -67,7 +67,7 @@ export class ScopeRepository implements OAuthScopeRepository {
 			let pipe = redis.pipeline()
 			for (const scope of scopes) {
 				if (!this.#validate(scope)) throw new Error('invalid scope')
-				pipe = pipe['json.set'](join(this.data, scope.id), scope)
+				pipe = pipe['json.set'](join(this.data, scope.name), scope)
 			}
 			const res = await pipe.exec()
 			for (const [err,] of res) {

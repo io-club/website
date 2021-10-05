@@ -94,39 +94,6 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 		}
 		return r
 	})
-
-
-	const redis = await pool.acquire()
-
-	const res1 = await redis['ft.create']('json', {
-		name: 'test'
-	}, {
-		'$.name': ['name', 'tag'],
-		'$.val': ['val', 'text'],
-	})
-	console.log(res1)
-
-	const res2 = await redis['json.set']('json:t1', {
-		name: '3',
-		hit: 3,
-		val: '999',
-	})
-	await redis['json.set']('json:t2', {
-		name: '4',
-		hit: 3,
-		val: '999',
-	})
-	console.log(res2)
-
-	console.log(await redis['ft.search']('test', '@name:{3}'))
-	console.log(await redis['ft.search']('test', '@name:{1}'))
-	console.log(await redis['ft.search']('test', '@name:{ 4 | 3 }'))
-	console.log(await redis['ft.search']('test', '@val:3'))
-	console.log(await redis['ft.search']('test', '@val:9'))
-	console.log(await redis['ft.search']('test', '@val:(999)'))
-	console.log(await redis['json.get']('json:t1', '$', '$.name'))
-
-	pool.release(redis)
 }, {
 	name: 'redis',
 })
