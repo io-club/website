@@ -24,6 +24,8 @@ function keyGen(query: IImage) {
 export interface Config {
 	maxAge: number
 	maxSize: number
+
+	_url: string
 }
 
 const routes: FastifyPluginCallback<Config> = async function (app, options) {
@@ -41,7 +43,7 @@ const routes: FastifyPluginCallback<Config> = async function (app, options) {
 		let url = query.url
 		if (url.startsWith('/')) {
 			// internal resource
-			url = `${req.protocol}://${req.hostname}${url}`
+			url = `${options._url}${url}`
 		}
 
 		let transformer = this.sharp()

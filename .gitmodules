@@ -4,3 +4,12 @@
 [submodule "RustPython"]
 	path = RustPython
 	url = https://github.com/RustPython/RustPython
+[submodule "packages/RediSearch"]
+	path = packages/website/RediSearch/
+	url = https://github.com/RediSearch/RediSearch
+[submodule "packages/RedisJson"]
+	path = packages/website/RedisJSON
+	url = https://github.com/RedisJSON/RedisJSON
+[submodule "packages/website/RediSearch"]
+	path = packages/website/RediSearch
+	url = https://github.com/RediSearch/RediSearch

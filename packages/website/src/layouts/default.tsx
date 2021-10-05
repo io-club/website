@@ -1,4 +1,5 @@
 import { ApplicationMenu } from '@icon-park/vue-next'
+import { DEFAULT_ICON_CONFIGS, IconProvider } from '@icon-park/vue-next'
 import { defineComponent, provide, ref } from 'vue'
 import { setI18n } from 'vue-composable'
 
@@ -17,6 +18,7 @@ export default defineComponent({
 			},
 		})
 		const show = ref(false)
+		IconProvider({...DEFAULT_ICON_CONFIGS, prefix: 'icon'});
 		provide('mobile_menu', show)
 		return () => {
 			const {header, title} = i18n.value.common
