@@ -29,6 +29,7 @@ export default defineComponent({
 					w:flex="~ wrap"
 					w:justify="between"
 					w:align="items-center"
+					id="header"
 				>
 					<Link w:flex="~" w:align="items-center" to="/" >{() => [
 						<Logo w:h="8" w:m="r-2" />,
@@ -71,6 +72,7 @@ export default defineComponent({
 					w:flex="~"
 					w:align="items-center"
 					w:justify="center"
+					id="copyright"
 				>
 					<p>By &copy; 2021 I/O club All rights reserved</p>
 				</div>
