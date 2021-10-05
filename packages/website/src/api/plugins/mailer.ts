@@ -9,6 +9,8 @@ export interface Options extends SMTPTransport.Options {
 
 const plugin: FastifyPluginCallback<Options> = fp(async function (fastify, options) {
 	fastify.decorate('mailer', createTransport(options))
+}, {
+	name: 'mailer',
 })
 
 export default plugin

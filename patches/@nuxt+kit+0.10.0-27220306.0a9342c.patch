@@ -1,8 +1,8 @@
-diff --git a/node_modules/@nuxt/kit/dist/index.cjs b/node_modules/@nuxt/kit/dist/index.cjs
-index 772951a..cc2abde 100644
---- a/node_modules/@nuxt/kit/dist/index.cjs
-+++ b/node_modules/@nuxt/kit/dist/index.cjs
-@@ -104,12 +104,23 @@ function tryResolveModule(path, opts = {}) {
+diff --git a/node_modules/@nuxt/kit/dist/index.mjs b/node_modules/@nuxt/kit/dist/index.mjs
+index d4a8d8b..e80dac9 100644
+--- a/node_modules/@nuxt/kit/dist/index.mjs
++++ b/node_modules/@nuxt/kit/dist/index.mjs
+@@ -76,12 +76,23 @@ function tryResolveModule(path, opts = {}) {
      }
    }
  }
@@ -13,7 +13,7 @@ index 772951a..cc2abde 100644
      clearRequireCache(resolvedPath);
    }
 -  let requiredModule = _require(resolvedPath);
-+  let requiredModule = jiti__default(process.cwd(), !jopts ? {} : {
++  let requiredModule = jiti(process.cwd(), !jopts ? {} : {
 +		transformOptions: {
 +			babel: {
 +				plugins: [
@@ -28,7 +28,7 @@ index 772951a..cc2abde 100644
    if (opts.interopDefault !== false && requiredModule && requiredModule.default) {
      requiredModule = requiredModule.default;
    }
-@@ -1145,7 +1156,7 @@ async function installModule(nuxt, installOpts) {
+@@ -1166,7 +1177,7 @@ async function installModule(nuxt, installOpts) {
    let handler;
    if (typeof src === "string") {
      const _src = resolveModule(resolveAlias(src, nuxt.options.alias), { paths: nuxt.options.modulesDir });
