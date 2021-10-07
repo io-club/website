@@ -6,6 +6,7 @@
 		"packages/website"
 	],
 	"scripts": {
+		"install-submodule": "git submodule update --init",
 		"build-dep-oauth": "yarn workspace @jmondi/oauth2-server run build",
 		"build-dep-mdvue": "yarn workspace @ioclub/mdvue run build",
 		"build-dep": "concurrently yarn:build-dep-*",
