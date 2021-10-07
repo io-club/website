@@ -120,7 +120,15 @@ ${json}`)
 				keys.push(...await opts.addtional(redis, ...ids))
 			}
 
-			const res = await redis.multi().del(...keys).exec()
+			let val = false
+			if (opts.lock) {
+				val = (await redis.get(opts.lock)) === 'true'
+			}
+			const pipe = redis.multi().del(...keys)
+			if (opts.lock) {
+				pipe.set(opts.lock, val ? 'false' : 'true')
+			}
+			const res = await pipe.exec()
 			for (const [err,] of res) {
 				if (err) throw new Error(`can not delete entity ${err}`)
 			}
