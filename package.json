@@ -6,6 +6,9 @@
 		"packages/website"
 	],
 	"scripts": {
+		"build-dep-oauth": "yarn workspace @jmondi/oauth2-server run build",
+		"build-dep-mdvue": "yarn workspace @ioclub/mdvue run build",
+		"build-dep": "concurrently yarn:build-dep-*",
 		"build": "yarn workspaces run build",
 		"dev": "yarn workspace @ioclub/website run dev",
 		"postinstall": "patch-package --exclude 'IAmNotARealFile.txt'"
