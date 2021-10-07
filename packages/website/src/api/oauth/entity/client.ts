@@ -1,104 +1,82 @@
 import type {GrantIdentifier, OAuthClient, OAuthClientRepository} from '@jmondi/oauth2-server'
-import type {ValidateFunction} from '~/alias/jtd'
-import type {Context} from '~/api/oauth'
+import type {JTDDataType} from '~/alias/jtd'
+import type {Config} from '~/api/oauth'
+import type {FastifyInstance} from 'fastify'
 
 import {join} from 'pathe'
+
+import {BaseRepository} from '~/api/entity/base'
+import {escapeTag} from '~/api/plugins/redis'
 
 import {grantIdentDefinition} from './grantIdent'
 import {scopeDefinition} from './scope'
 
 export const clientDefinition = {
 	properties: {
-		id: { type: 'string' },
+		id: { type: 'string', metadata: { format: 'alnun' } },
 		name: { type: 'string' },
 		redirectUris: { elements: { type: 'string' } },
 		allowedGrants: { elements: grantIdentDefinition },
-		scopes: { elements: scopeDefinition },
+		scopeNames: { elements: scopeDefinition.properties.name },
 	},
 	optionalProperties: {
 		secret: { type: 'string' },
 	},
 } as const
 
-export class ClientRepository implements OAuthClientRepository {
-	#index: string
-	#data: string
-	#ctx: Context
-	#validate: ValidateFunction<OAuthClient>
+export class ClientRepository extends BaseRepository<JTDDataType<typeof clientDefinition>> implements OAuthClientRepository {
+	#lock: string
+	#token_index: string
+	#token_data: string
+	#code_index: string
+	#code_data: string
 
-	constructor(ctx: Context) {
-		this.#ctx = ctx
-		this.#validate = ctx.app.ajv.compile(clientDefinition)
-		this.#index = join(ctx.cfg.prefix, 'client', 'index')
-		this.#data = join(ctx.cfg.prefix, 'client', 'data')
+	constructor(app: FastifyInstance, cfg: Config) {
+		super({
+			redis: app.redis,
+			data: join(cfg.prefix, 'client', 'data'),
+			id: (a: OAuthClient) => `${a.id}`,
+			parser: app.ajv.compileParser(clientDefinition),
+			serializer: app.ajv.compileSerializer(clientDefinition),
+		})
+		this.#lock = join(cfg.prefix, 'lock')
+		this.#token_index = join(cfg.prefix, 'token', 'index')
+		this.#token_data = join(cfg.prefix, 'token', 'data')
+		this.#code_index = join(cfg.prefix, 'code', 'index')
+		this.#code_data = join(cfg.prefix, 'code', 'data')
 	}
 
-	get index() {
-		return this.#index
-	}
+	async del(...ids: string[]) {
+		await super.delWithOpts({
+			lock: this.#lock, 
+			addtional: async (redis, ...ids: string[]) => {
+				const keys = []
 
-	get data() {
-		return this.#data
-	}
+				const re1 = await redis['ft.search'](
+					this.#code_index,
+					`@client:{${ids.map(id => escapeTag(id)).join(' | ')}}`,
+					{
+						return: '$.code',
+					},
+				)
+				keys.push(...Object.values(re1).map(([,v]) => join(this.#code_data, v)))
 
-	async add(...clients: unknown[]) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			let pipe = redis.pipeline()
-			for (const client of clients) {
-				if (!this.#validate(client)) throw new Error('invalid client')
-				pipe = pipe['json.set'](join(this.data, client.id), client)
-			}
-			const res = await pipe.exec()
-			for (const [err,] of res) {
-				if (err) throw new Error(`fails to set ${err}`)
-			}
-		} finally {
-			await this.#ctx.app.redis.release(redis)
-		}
-	}
+				const re2 = await redis['ft.search'](
+					this.#token_index,
+					`@client:{${ids.map(id => escapeTag(id)).join(' | ')}}`,
+					{
+						return: '$.accessToken',
+					},
+				)
+				keys.push(...Object.values(re2).map(([,v]) => join(this.#token_data, v)))
 
-	/*
-	async del(...clients: string[]) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			await redis.watch()
-			let pipe = redis.pipeline()
-			for (const client of clients) {
-				pipe = pipe['json.del'](join(this.data, client.id), client)
-			}
-			const res = await pipe.exec()
-			for (const [err,] of res) {
-				if (err) throw new Error(`fails to set ${err}`)
-			}
-		} finally {
-			await redis.unwatch()
-			await this.#ctx.app.redis.release(redis)
-		}
+				return keys
+			},
+		}, ...ids)
 	}
-	*/
 
 	async getByIdentifier(clientId: string) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			const res = (await redis['ft.search'](this.index, `@id:{${clientId}}`))
-
-			const clients = Object.values(res)
-			if (clients.length !== 1) {
-				// TODO: trick to bypass the type check
-				// this API can return null
-				// https://github.com/jasonraimondi/ts-oauth2-server/blob/0bc94c57ece8ec8bc07057273b12ea555b9b5f00/src/grants/auth_code.grant.ts#L138-L140
-				return undefined as unknown as OAuthClient
-			}
-			if (!this.#validate(clients[0][1])) {
-				// TODO: same as the previous check
-				return undefined as unknown as OAuthClient
-			}
-
-			return clients[0][1]
-		} finally {
-			await this.#ctx.app.redis.release(redis)
-		}
+		return (await this.getWithPath(clientId))[0]
 	}
 
 	async isClientValid(grantType: GrantIdentifier, client: OAuthClient, clientSecret?: string) {

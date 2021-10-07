@@ -77,11 +77,7 @@ function createApp() {
 				secret: env['OAUTH_ROOT_SECRET'] ?? '123456',
 				allowedGrants: ['client_credentials'],
 				redirectUris: [`${url}/oauth/token`],
-				scopes: (env['OAUTH_ROOT_SCOPES'] ?? '').split(',')
-					.filter(e => e !== '')
-					.map(name => {
-						return {name}
-					}),
+				scopeNames: (env['OAUTH_ROOT_SCOPES'] ?? '').split(',').filter(e => e !== ''),
 			},
 			accessTokenTTL: env['OAUTH_ACCESS_TOKEN_TTL'] ?? '1h',
 		},
@@ -112,7 +108,7 @@ function createApp() {
 
 	app.register(function (app) {
 		app
-			.register(OAuthRoutes)
+			.register(OAuthRoutes, {prefix: options.oauth.prefix})
 
 		//.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 		//.register(auth, {prefix: '/auth', ...options.auth})

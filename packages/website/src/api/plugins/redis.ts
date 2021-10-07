@@ -1,10 +1,13 @@
 import type {FastifyPluginCallback} from 'fastify'
-import type {ft_create_opt, ft_search_opt, Redis, ValueType} from 'ioredis'
+import type {ft_create_arg, ft_create_opt, ft_search_opt, Redis, ValueType} from 'ioredis'
 
-import destr from 'destr'
 import fp from 'fastify-plugin'
 import {createPool} from 'generic-pool'
 import IORedis, {Command} from 'ioredis'
+
+export function escapeTag(tag: string) {
+	return tag.replace(/[ \t,./(){}[]:;\\~!@#$%^&*-=%+|'`"<>%?_%z]/g, '\\$&')
+}
 
 export interface Config {
 	url: string
@@ -18,6 +21,7 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 			redis.addBuiltinCommand('json.get')
 			redis.addBuiltinCommand('ft.create')
 			redis.addBuiltinCommand('ft.search')
+			redis.addBuiltinCommand('ft.dropindex')
 			return redis
 		},
 		async destroy(client) {
@@ -32,20 +36,12 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 
 	// json.get
 	Command.setArgumentTransformer('json.get', function (args) {
-		if (args.length === 2) {
-			args.push('$')
-		}
 		return args
 	})
 
 	// json.set
 	Command.setArgumentTransformer('json.set', function (args) {
-		if (args.length === 2) {
-			if (typeof args[1] !== 'string') {
-				args.push(JSON.stringify(args[1]))
-			}
-			args[1] = '$'
-		} else if (args.length === 3) {
+		if (args.length === 3) {
 			if (typeof args[2] !== 'string') {
 				args[2] = JSON.stringify(args[2])
 			}
@@ -55,7 +51,7 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 
 	// ft.create json
 	Command.setArgumentTransformer('ft.create', function (args) {
-		if (args.length === 3) {
+		if (args.length >= 2) {
 			if (args[0] === 'json') {
 				const opt = args[1] as unknown as ft_create_opt
 
@@ -65,8 +61,22 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 					r.push('prefix', opt.prefix.length, ...opt.prefix)
 
 				r.push('schema')
-				for (const [x, [y, z]] of Object.entries(args[2]))
-					r.push(x, 'as', y, z)
+
+				for (const v of args.slice(2)) {
+					const e = v as unknown as ft_create_arg
+					if (e instanceof Array) {
+						r.push(e[0], e[1])
+					} else {
+						r.push(e.ident)
+						if (e.as)
+							r.push('as', e.as)
+						r.push(e.type)
+						if (e.separator)
+							r.push('SEPARATOR', e.separator)
+						if (e.case_sensitive)
+							r.push('CASESENSITIVE')
+					}
+				}
 
 				return r
 			}
@@ -82,6 +92,12 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 			const opt: ft_search_opt = args.length === 3 ? args[2] as unknown : {}
 			const r = []
 			r.push(args[0], args[1])
+			if (opt.return) {
+				if (typeof opt.return === 'string')
+					r.push('return', 1, opt.return)
+				else
+					r.push('return', 3, opt.return[0], 'as', opt.return[1])
+			}
 			return r
 		}
 		return args
@@ -90,9 +106,15 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 		const n = result[0] 
 		const r: Record<string, unknown> = {}
 		for (let i=0;i<n;i++) {
-			r[result[2*i+1]] = [result[2*i+2][0], destr(result[2*i+2][1])]
+			r[result[2*i+1]] = [result[2*i+2][0], result[2*i+2][1]]
 		}
 		return r
+	})
+
+	// ft.dropindex
+	Command.setArgumentTransformer('ft.dropindex', function (args) {
+		if (args.length == 2 && args[1]) args[1] = 'dd'
+		return args
 	})
 }, {
 	name: 'redis',

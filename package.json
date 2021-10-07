@@ -1,6 +1,7 @@
 {
 	"private": true,
 	"workspaces": [
+		"packages/ts-oauth2-server",
 		"packages/mdvue",
 		"packages/website"
 	],

@@ -1,10 +1,13 @@
 import type {OAuthClient, OAuthScope, OAuthToken, OAuthTokenRepository, OAuthUser} from '@jmondi/oauth2-server'
-import type {ValidateFunction} from '~/alias/jtd'
-import type {Context} from '~/api/oauth'
+import type {JTDDataType} from '~/alias/jtd'
+import type {Config} from '~/api/oauth'
+import type {FastifyInstance} from 'fastify'
 
 import dayjs from 'dayjs'
-import {nanoid} from 'nanoid'
+import {customAlphabet} from 'nanoid'
 import {join} from 'pathe'
+
+import {BaseRepository} from '~/api/entity/base'
 
 import {clientDefinition} from './client'
 import {scopeDefinition} from './scope'
@@ -12,112 +15,77 @@ import {userDefinition} from './user'
 
 export const tokenDefinition = {
 	properties: {
-		accessToken: { type: 'string' },
+		accessToken: { type: 'string', metadata: { format: 'alnun' } },
 		accessTokenExpiresAt: { type: 'timestamp' },
-		client: clientDefinition,
-		scopes: { elements: scopeDefinition },
+		clientId: clientDefinition.properties.id,
+		scopeNames: { elements: scopeDefinition.properties.name },
 	},
 	optionalProperties: {
-		refreshToken: { type: 'string' },
+		refreshToken: { type: 'string', metadata: { format: 'alnun' } },
 		refreshTokenExpiresAt: { type: 'timestamp' },
-		user: userDefinition,
+		userId: userDefinition.properties.id,
 	},
 } as const
 
-export class TokenRepository implements OAuthTokenRepository {
-	#ctx: Context
+type T = JTDDataType<typeof tokenDefinition>
+export class TokenRepository extends BaseRepository<T> implements OAuthTokenRepository {
+	#idgen: () => string
 	#index: string
-	#data: string
-	#validate: ValidateFunction<OAuthToken>
 
-	constructor(ctx: Context) {
-		this.#ctx = ctx
-		this.#index = join(ctx.cfg.prefix, 'token', 'index')
-		this.#data = join(ctx.cfg.prefix, 'token', 'data')
-		this.#validate = ctx.app.ajv.compile(tokenDefinition)
+	constructor(app: FastifyInstance, cfg: Config) {
+		super({
+			redis: app.redis,
+			data: join(cfg.prefix, 'token', 'data'),
+			id: (a) => `${a.accessToken}`,
+			parser: app.ajv.compileParser(tokenDefinition),
+			serializer: app.ajv.compileSerializer(tokenDefinition),
+		})
+		this.#idgen = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 21)
+		this.#index = join(cfg.prefix, 'token', 'index')
 	}
 
-	get index() {
-		return this.#index
+	async del(...ids: string[]) {
+		await super.delWithOpts({}, ...ids)
 	}
 
-	get data() {
-		return this.#data
-	}
-
-	async issueToken(client: OAuthClient, _scopes: OAuthScope[], user: OAuthUser) {
-		// TODO: we dont need to init
-		// accessTokenExpiresAt/refresh... according to the source code
-		// fix the type cast warning
-		return {
-			accessToken: nanoid(),
-			client,
-			user,
-			scopes: _scopes.filter(e => client.scopes.includes(e)),
-		} as any
+	async issueToken(client: OAuthClient, _scopes: OAuthScope[], user?: OAuthUser) {
+		return <OAuthToken>{
+			accessToken: this.#idgen(),
+			accessTokenExpiresAt: null as unknown as Date,
+			clientId: client.id,
+			userId: user?.id,
+			scopeNames: _scopes.map(e => e.name),
+		}
 	}
 
 	async persist(accessToken: OAuthToken) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			const res = await redis['json.set'](join(this.data, accessToken.accessToken), accessToken)
-			if (!res) throw new Error('fails to set')
-		} finally {
-			await this.#ctx.app.redis.release(redis)
-		}
+		// TODO: fix type cast
+		await this.add('upsert', accessToken as unknown as T)
 	}
 
 	async revoke(accessToken: OAuthToken) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			const key = join(this.data, accessToken.accessToken)
-			await redis.watch(key)
-			const exists = await redis.exists(key)
-			if (exists) {
-				let pipe = redis.multi()
-				pipe = pipe['json.set'](key, '$.accessTokenExpiresAt', 0)
-				pipe = pipe['json.set'](key, '$.refreshTokenExpiresAt', 0)
-				const res = await pipe.exec()
-				for (const [err,] of res) {
-					if (err) throw new Error(`fails to set ${err}`)
-				}
-			}
-		} finally {
-			await redis.unwatch()
-			await this.#ctx.app.redis.release(redis)
-		}
+		await this.del(accessToken.accessToken)
 	}
 
 	async isRevoked(accessToken: string) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			const res = await redis.exists(join(this.data, accessToken))
-			return res === 0
-		} finally {
-			await this.#ctx.app.redis.release(redis)
-		}
+		return await this.exists(accessToken) == 0
 	}
 
 	async getByRefreshToken(refreshToken: string) {
-		const redis = await this.#ctx.app.redis.acquire()
+		const redis = await super.redis.acquire()
 		try {
-			const res = (await redis['ft.search'](this.index, `@refreshToken:{${refreshToken}}`))
+			const res = (await redis['ft.search'](this.#index, `@refresh:{${refreshToken}}`))
 
 			const tokens = Object.values(res)
-			if (tokens.length !== 1) throw new Error('can not find the token')
+			if (tokens.length !== 1)
+				throw new Error('can not find the token')
+			if (tokens[0][0])
+				throw new Error(`can not find the token ${tokens[0][0]}`)
 
-			const r = tokens[0][1] as Record<string, unknown>
-
-			if (typeof r.accessTokenExpiresAt === 'string')
-				r.accessTokenExpiresAt = dayjs(r.accessTokenExpiresAt).toDate()
-			if (typeof r.refreshTokenExpiresAt === 'string')
-				r.refreshTokenExpiresAt = dayjs(r.refreshTokenExpiresAt).toDate()
-
-			if (!this.#validate(r)) throw new Error('invalid token')
-
-			return r
+			// TODO: refer https://github.com/ajv-validator/ajv/issues/1780
+			return super.parse(tokens[0][1]) as OAuthToken
 		} finally {
-			await this.#ctx.app.redis.release(redis)
+			await super.redis.release(redis)
 		}
 	}
 
@@ -127,21 +95,21 @@ export class TokenRepository implements OAuthTokenRepository {
 	}
 
 	async issueRefreshToken(token: OAuthToken) {
-		token.refreshToken = nanoid()
+		token.refreshToken = this.#idgen()
 		token.refreshTokenExpiresAt = dayjs().add(1, 'day').toDate()
-		const redis = await this.#ctx.app.redis.acquire()
+		const redis = await super.redis.acquire()
 		try {
 			const key = join(this.data, token.accessToken)
-			let pipe = redis.pipeline()
-			pipe = pipe['json.set'](key, '$.refreshToken', token.refreshToken)
-			pipe = pipe['json.set'](key, '$.refreshTokenExpiresAt', token.refreshTokenExpiresAt)
+			let pipe = redis.multi()
+			pipe = pipe['json.set'](key, '$.refreshToken', token.refreshToken, 'xx')
+			pipe = pipe['json.set'](key, '$.refreshTokenExpiresAt', token.refreshTokenExpiresAt, 'xx')
 			const res = await pipe.exec()
 			for (const [err,] of res) {
 				if (err) throw new Error(`fails to set ${err}`)
 			}
 			return token
 		} finally {
-			await this.#ctx.app.redis.release(redis)
+			await super.redis.release(redis)
 		}
 	}
 }

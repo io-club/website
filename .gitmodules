@@ -13,3 +13,6 @@
 [submodule "packages/website/RediSearch"]
 	path = packages/website/RediSearch
 	url = https://github.com/RediSearch/RediSearch
+[submodule "packages/ts-oauth2-server"]
+	path = packages/ts-oauth2-server
+	url = http://github.com/xhebox/ts-oauth2-server

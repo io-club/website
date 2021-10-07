@@ -1,51 +1,36 @@
 import type {GrantIdentifier, OAuthClient, OAuthScope, OAuthScopeRepository} from '@jmondi/oauth2-server'
-import type {ValidateFunction} from '~/alias/jtd'
-import type {Context} from '~/api/oauth'
+import type {JTDDataType} from '~/alias/jtd'
+import type {Config} from '~/api/oauth'
+import type {FastifyInstance} from 'fastify'
 
 import {join} from 'pathe'
 
+import {BaseRepository} from '~/api/entity/base'
+
 export const scopeDefinition = {
 	properties: {
-		name: { type: 'string' }
+		name: { type: 'string', metadata: { format: 'alnun' } }
 	},
 	additionalProperties: true
 } as const
 
-export class ScopeRepository implements OAuthScopeRepository {
-	#ctx: Context
-	#index: string
-	#data: string
-	#validate: ValidateFunction<OAuthScope>
-
-	constructor(ctx: Context) {
-		this.#ctx = ctx
-		this.#index = join(ctx.cfg.prefix, 'scope', 'index')
-		this.#data = join(ctx.cfg.prefix, 'scope', 'data')
-		this.#validate = ctx.app.ajv.compile(scopeDefinition)
+export class ScopeRepository extends BaseRepository<JTDDataType<typeof scopeDefinition>> implements OAuthScopeRepository {
+	constructor(app: FastifyInstance, cfg: Config) {
+		super({
+			redis: app.redis,
+			data: join(cfg.prefix, 'scope', 'data'),
+			id: (a) => `${a.name}`,
+			parser: app.ajv.compileParser(scopeDefinition),
+			serializer: app.ajv.compileSerializer(scopeDefinition),
+		})
 	}
 
-	get index() {
-		return this.#index
-	}
-
-	get data() {
-		return this.#data
+	async del(...ids: string[]) {
+		await super.delWithOpts({}, ...ids)
 	}
 
 	async getAllByIdentifiers(scopeNames: string[]) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			const res = (await redis['ft.search'](this.index, `@name:{${scopeNames.join(' | ')}}`))
-			const ret = []
-			for (const [,v] of Object.values(res)) {
-				if (!this.#validate(v)) throw new Error('invalid oauth scope')
-				// this API only requires valid scopes
-				if (v) ret.push(v)
-			}
-			return ret
-		} finally {
-			await this.#ctx.app.redis.release(redis)
-		}
+		return await this.getWithPath(...scopeNames)
 	}
 
 	async finalize(
@@ -56,25 +41,8 @@ export class ScopeRepository implements OAuthScopeRepository {
 	) {
 		if (!_client.allowedGrants.includes(_identifier))
 			throw new Error('client request forbidden grant_type')
-		if (scopes.some(e => !_client.scopes.includes(e)))
+		if (scopes.some(e => !_client.scopeNames.includes(e.name)))
 			throw new Error('client request forbidden scope')
 		return scopes
-	}
-
-	async add(...scopes: unknown[]) {
-		const redis = await this.#ctx.app.redis.acquire()
-		try {
-			let pipe = redis.pipeline()
-			for (const scope of scopes) {
-				if (!this.#validate(scope)) throw new Error('invalid scope')
-				pipe = pipe['json.set'](join(this.data, scope.name), scope)
-			}
-			const res = await pipe.exec()
-			for (const [err,] of res) {
-				if (err) throw new Error(`fails to set ${err}`)
-			}
-		} finally {
-			await this.#ctx.app.redis.release(redis)
-		}
 	}
 }

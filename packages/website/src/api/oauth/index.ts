@@ -1,5 +1,5 @@
 import type {JTDDataType} from '~/alias/jtd'
-import type {FastifyInstance, FastifyPluginCallback, FastifyRequest} from 'fastify'
+import type {FastifyPluginCallback, FastifyRequest} from 'fastify'
 import type {JwtPayload, Secret} from 'jsonwebtoken'
 
 import {AuthorizationServer, DateInterval, OAuthClient, OAuthRequest, OAuthResponse, OAuthScope} from '@jmondi/oauth2-server'
@@ -14,24 +14,23 @@ import {ScopeRepository} from './entity/scope'
 import {TokenRepository} from './entity/token'
 import {UserRepository} from './entity/user'
 import {JwtService} from './jwt'
+import {routes as userRoutes} from './user'
 
 export interface Config {
 	prefix: string 
-	jwtSecret: Secret
 	accessTokenTTL: string
+	jwtSecret: Secret
 	root: OAuthClient
 }
 
 export interface Context {
-	cfg: Config
-	app: FastifyInstance
+	built_in_scopes: OAuthScope[]
+
 	client: ClientRepository
 	code: CodeRepository
 	token: TokenRepository
 	scope: ScopeRepository
 	user: UserRepository
-	built_in_scopes: OAuthScope[]
-	jwt: JwtService
 	authServer: AuthorizationServer
 
 	validateRequest(req: FastifyRequest): Promise<string | JwtPayload | null>
@@ -39,111 +38,157 @@ export interface Context {
 
 export const context: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	// setup context
-	const ctx: Context = {
-		cfg: options,
-		app: app,
-		jwt: new JwtService(options.jwtSecret),
-	} as unknown as Context
-	ctx.client = new ClientRepository(ctx)
-	ctx.code = new CodeRepository(ctx)
-	ctx.token = new TokenRepository(ctx)
-	ctx.scope = new ScopeRepository(ctx)
-	ctx.user = new UserRepository(ctx)
+	const ctx: Context = {} as unknown as Context
+
+	ctx.client = new ClientRepository(app, options)
+	ctx.code = new CodeRepository(app, options)
+	ctx.token = new TokenRepository(app, options)
+	ctx.scope = new ScopeRepository(app, options)
+	ctx.user = new UserRepository(app, options)
+
+	const jwt = new JwtService(options.jwtSecret)
 
 	// bootstrap
 	const redis = await app.redis.acquire()
+	const oauth_bootstrap = join(options.prefix, 'bootstrap')
 	try {
-		const oauth_bootstrap = join(options.prefix, 'bootstrap')
-		await redis.watch(oauth_bootstrap)
+		await redis.watch(join(options.prefix, 'lock'))
 		const inited = await redis.exists(oauth_bootstrap)
 		if (inited !== 1) {
-			let pipe = redis.multi()
-			pipe = pipe['ft.create']('json',
+			const pipe = redis.multi()
+
+			pipe['ft.create']('json',
 				{
-					name: ctx.client.index,
+					name: join(options.prefix, 'client', 'index'),
 					prefix: [ctx.client.data],
 				},
 				{
-					'$.id': ['id', 'tag'],
-					'$.allowedGrants[*]': ['grant', 'tag'],
-					'$.scopes[*]': ['scope', 'tag'],
+					ident: '$.id',
+					as: 'id',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.allowedGrants[*]',
+					as: 'grant',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.scopes[*].name',
+					as: 'scope',
+					type: 'tag',
+					case_sensitive: true,
 				},
 			)
-			pipe = pipe['ft.create']('json',
+
+			pipe['ft.create']('json',
 				{
-					name: ctx.code.index,
+					name: join(options.prefix, 'code', 'index'),
 					prefix: [ctx.code.data],
 				},
 				{
-					'$.code': ['code', 'tag'],
-					'$.client.id': ['client_id', 'tag'],
-					'$.user.id': ['user_id', 'tag'],
-					'$.scopes[*]': ['scope', 'tag'],
+					ident: '$.code',
+					as: 'id',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.client.id',
+					as: 'client',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.user.id',
+					as: 'user',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.scopes[*].name',
+					as: 'scope',
+					type: 'tag',
+					case_sensitive: true,
 				},
 			)
-			pipe = pipe['ft.create']('json',
+
+			pipe['ft.create']('json',
 				{
-					name: ctx.scope.index,
-					prefix: [ctx.scope.data],
-				},
-				{
-					'$.name': ['name', 'tag'],
-				},
-			)
-			pipe = pipe['ft.create']('json',
-				{
-					name: ctx.token.index,
+					name: join(options.prefix, 'token', 'index'),
 					prefix: [ctx.token.data],
 				},
 				{
-					'$.accessToken': ['accessToken', 'tag'],
-					'$.refreshToken': ['refreshToken', 'tag'],
-					'$.client.id': ['client_id', 'tag'],
-					'$.user.id': ['user_id', 'tag'],
-					'$.scopes[*]': ['scope', 'tag'],
+					ident: '$.accessToken',
+					as: 'id',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.refreshToken',
+					as: 'refresh',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.client.id',
+					as: 'client',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.user.id',
+					as: 'user',
+					type: 'tag',
+					case_sensitive: true,
+				},
+				{
+					ident: '$.scopes[*].name',
+					as: 'scope',
+					type: 'tag',
+					case_sensitive: true,
 				},
 			)
-			pipe = pipe['ft.create']('json',
+
+			pipe['ft.create']('json',
 				{
-					name: ctx.user.index,
+					name: join(options.prefix, 'scope', 'index'),
+					prefix: [ctx.scope.data],
+				},
+				{
+					ident: '$.name',
+					as: 'id',
+					type: 'tag',
+					case_sensitive: true,
+				},
+			)
+
+			pipe['ft.create']('json',
+				{
+					name: join(options.prefix, 'user', 'index'),
 					prefix: [ctx.user.data],
 				},
 				{
-					'$.id': ['id', 'tag'],
+					ident: '$.id',
+					as: 'id',
+					type: 'tag',
+					case_sensitive: true,
 				},
 			)
-			pipe = pipe.set(oauth_bootstrap, 'true')
+			pipe.set(oauth_bootstrap, 'true')
 
 			const res = await pipe.exec()
 			for (const [err,] of res) {
 				if (err) throw new Error(`fails to create index ${err}`)
 			}
 		}
+	} catch(err) {
+		await redis.del(oauth_bootstrap)
+		throw err
 	} finally {
 		await redis.unwatch()
 		await app.redis.release(redis)
 	}
-
-	// it is safe to override these internal scopes
-	// add built-in scopes
-	ctx.built_in_scopes = [
-		{name: join('scope', 'read')},
-		{name: join('scope', 'write')},
-		{name: join('client', 'read')},
-		{name: join('client', 'write')},
-		{name: join('user', 'read')},
-		{name: join('user', 'write')},
-	]
-	await ctx.scope.add(...ctx.built_in_scopes)
-
-	// add the super client
-	options.root.name = 'root'
-	for (const scope of ctx.built_in_scopes) {
-		// add built-in scopes if not present
-		if (options.root.scopes.every(e => e.name !== scope.name))
-			options.root.scopes.push(scope)
-	}
-	await ctx.client.add(options.root)
 
 	// create the auth server
 	ctx.authServer = new AuthorizationServer(
@@ -152,7 +197,7 @@ export const context: FastifyPluginCallback<Config> = fp(async function (app, op
 		ctx.token,
 		ctx.scope,
 		ctx.user,
-		ctx.jwt,
+		jwt,
 		{requiresPKCE: true},
 	)
 	ctx.authServer.enableGrantTypes(
@@ -167,8 +212,32 @@ export const context: FastifyPluginCallback<Config> = fp(async function (app, op
 		const ctx = req.server.oauth
 		const revoked = await ctx.token.isRevoked(token)
 		if (revoked) return null
-		return ctx.jwt.decode(token)
+		const res =  jwt.decode(token)
+		console.log('jwt', res)
+		return res
 	}
+
+	// it is safe to override these internal scopes
+	// add built-in scopes
+	ctx.built_in_scopes = [
+		{name: 'scope_read'},
+		{name: 'scope_write'},
+		{name: 'user_read'},
+		{name: 'user_write'},
+		{name: 'client_read'},
+		{name: 'client_write'},
+	]
+	await ctx.scope.add('create', ...ctx.built_in_scopes)
+
+	// add the super client
+	options.root.name = 'root'
+	options.root.allowedGrants = ['client_credentials']
+	// add built-in scopes if not present
+	for (const scope of ctx.built_in_scopes) {
+		if (options.root.scopeNames.every(e => e !== scope.name))
+			options.root.scopeNames.push(scope.name)
+	}
+	await ctx.client.add('create', options.root)
 
 	app.decorate('oauth', ctx)
 }, {
@@ -182,7 +251,7 @@ export const context: FastifyPluginCallback<Config> = fp(async function (app, op
 export const routes: FastifyPluginCallback = async function (app) {
 	const schemas = {
 		authorize: {
-			req: {
+			query: {
 				properties: {
 					response_type: { enum: ['code'] },
 					client_id: { type: 'string' },
@@ -194,10 +263,17 @@ export const routes: FastifyPluginCallback = async function (app) {
 			},
 		},
 		token: {
-			req: {
+			body: {
 				discriminator: 'grant_type',
 				mapping: {
 					'client_credentials': {
+						properties: {
+							client_id: { type: 'string' },
+							client_secret: { type: 'string' },
+							scope: { type: 'string' },
+						},
+					},
+					'authorization_code': {
 						properties: {
 							client_id: { type: 'string' },
 							client_secret: { type: 'string' },
@@ -219,11 +295,11 @@ export const routes: FastifyPluginCallback = async function (app) {
 		},
 	} as const
 
-	app.route<{ Querystring: JTDDataType<typeof schemas.authorize.req> }>({
+	app.route<{ Querystring: JTDDataType<typeof schemas.authorize.query> }>({
 		method: 'GET',
 		url: '/authorize',
 		schema: {
-			querystring: schemas.authorize.req,
+			querystring: schemas.authorize.query,
 		},
 		handler: async function (req, res) {
 			try {
@@ -245,12 +321,13 @@ export const routes: FastifyPluginCallback = async function (app) {
 
 				// Return the HTTP redirect response
 				const response = await this.oauth.authServer.completeAuthorizationRequest(authRequest)
+				for (const [k,v] of Object.entries(response.headers)) {
+					res.header(k, v)
+				}
 				if (response.status === 302) {
 					if (!response.headers.location) throw new Error('missing redirect location');
-					res.headers(response.headers);
 					res.redirect(response.headers.location);
 				} else {
-					res.headers(response.headers);
 					res.status(response.status).send(response.body);
 				}
 			} catch (e) {
@@ -264,21 +341,25 @@ export const routes: FastifyPluginCallback = async function (app) {
 		},
 	})
 
-	app.route<{ Querystring: JTDDataType<typeof schemas.token.req> }>({
+	app.route<{ Body: JTDDataType<typeof schemas.token.body> }>({
 		method: 'POST',
 		url: '/token',
+		schema: {
+			body: schemas.token.body,
+		},
 		handler: async function (req, res) {
 			try {
 				const response = await this.oauth.authServer.respondToAccessTokenRequest(
-					new OAuthRequest({query: req.query}),
-					new OAuthResponse({headers: res.headers}),
+					new OAuthRequest({body: req.body}),
+					new OAuthResponse(),
 				)
+				for (const [k,v] of Object.entries(response.headers)) {
+					res.header(k, v)
+				}
 				if (response.status === 302) {
 					if (!response.headers.location) throw new Error('missing redirect location');
-					res.headers(response.headers)
 					res.redirect(response.headers.location)
 				} else {
-					res.headers(response.headers)
 					res.status(response.status).send(response.body)
 				}
 			} catch (e) {
@@ -291,4 +372,6 @@ export const routes: FastifyPluginCallback = async function (app) {
 			}
 		},
 	})
+
+	app.register(userRoutes, {prefix: '/user'})
 }
