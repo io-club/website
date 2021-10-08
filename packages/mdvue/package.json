@@ -29,7 +29,7 @@
 	},
 	"devDependencies": {
 		"unified": "^10.1.0",
-		"xdm": "^2.1.0"
+		"xdm": "^3.0.0"
 	},
 	"engines": {
 		"node": ">=14"

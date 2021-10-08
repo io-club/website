@@ -5,7 +5,7 @@ import type {FastifyInstance} from 'fastify'
 
 import {join} from 'pathe'
 
-import {BaseRepository} from '~/api/entity/base'
+import {BaseRepository} from './base'
 
 export const scopeDefinition = {
 	properties: {

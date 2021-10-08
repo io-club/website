@@ -1,3 +1,4 @@
+import type {OAuthUserIdentifier} from '@jmondi/oauth2-server'
 import type {JTDParser} from '~/alias/jtd'
 import type {FastifyInstance} from 'fastify'
 import type {Redis} from 'ioredis'
@@ -51,12 +52,21 @@ ${json}`)
 		return this.#serializer(data)
 	}
 
-	async add(mode: 'create' | 'modify' | 'upsert', ...entities: T[]) {
+	// WARNING: this api does not prevent you from upserting partial object.
+	// You need to follow the contract of API.
+	// mode:
+	// 1. create: insert full object, only if not exist
+	// 2. modify: insert full object, only if exist
+	// 3. upsert: insert full object, exist or not
+	// 4. patch: partial object with id, only if exist
+	async add(mode: 'create' | 'modify' | 'upsert' | 'patch', ...entities: (T | Partial<T>)[]) {
 		const redis = await this.#redis.acquire()
 		try {
 			const keys = []
 			for (const entity of entities) {
-				keys.push(join(this.data, this.#id(entity)))
+				const id = this.#id(entity as T)
+				if (!id) throw new Error('can not get id from partial entity')
+				keys.push(join(this.data, id))
 			}
 
 			await redis.watch(...keys)
@@ -64,19 +74,23 @@ ${json}`)
 			for (const [i, u] of entities.entries()) {
 				switch (mode) {
 				case 'create':
-					pipe['json.set'](keys[i], '$', this.serialize(u), 'nx')
+					pipe['json.set'](keys[i], '$', this.serialize(u as T), 'nx')
 					break
 				case 'modify':
-					pipe['json.set'](keys[i], '$', this.serialize(u), 'xx')
+					pipe['json.set'](keys[i], '$', this.serialize(u as T), 'xx')
 					break
 				case 'upsert':
-					pipe['json.set'](keys[i], '$', this.serialize(u))
+					pipe['json.set'](keys[i], '$', this.serialize(u as T))
+					break
+				case 'patch':
+					for (const [k,v] of Object.entries(u as T))
+						pipe['json.set'](keys[i], `$.${k}`, this.serialize(v), 'xx')
 					break
 				}
 			}
 			const res = await pipe.exec()
 			for (const [err,] of res) {
-				if (err) throw new Error(`can not add entity ${err}`)
+				if (err) throw new Error(`can not execute transaction for entity ${err}`)
 			}
 		} finally {
 			await redis.unwatch()
@@ -84,13 +98,13 @@ ${json}`)
 		}
 	}
 
-	async getWithPath(...ids: string[]) {
+	async getWithPath(...ids: OAuthUserIdentifier[]) {
 		const res = []
 		const redis = await this.#redis.acquire()
 		try {
 			const pipe = redis.pipeline()
 			for (const id of ids) {
-				pipe['json.get'](join(this.data, id))
+				pipe['json.get'](join(this.data, id.toString()))
 			}
 			res.push(...await pipe.exec())
 		} finally {

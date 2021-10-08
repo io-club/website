@@ -15,13 +15,13 @@
 		"postinstall": "patch-package --exclude 'IAmNotARealFile.txt'"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^4.32.0",
-		"@typescript-eslint/parser": "^4.32.0",
-		"concurrently": "^6.2.2",
+		"@typescript-eslint/eslint-plugin": "^4.33.0",
+		"@typescript-eslint/parser": "^4.33.0",
+		"concurrently": "^6.3.0",
 		"eslint": "^7.32.0",
 		"eslint-plugin-simple-import-sort": "^7.0.0",
 		"patch-package": "^6.4.7",
 		"typescript": "^4.4.3",
-		"unbuild": "^0.5.5"
+		"unbuild": "^0.5.6"
 	}
 }

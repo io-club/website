@@ -5,29 +5,47 @@ import type {FastifyInstance} from 'fastify'
 
 import {join} from 'pathe'
 
-import {BaseRepository} from '~/api/entity/base'
 import {escapeTag} from '~/api/plugins/redis'
+
+import {BaseRepository} from './base'
 
 export const userDefinition = {
 	properties: {
 		id: { type: 'string', metadata: { format: 'alnun' } },
-		access: { 
-			elements: {
-				properties: {
-					prop: { type: 'string' },
-					mode: { enum: ['public', 'private'] },
-				},
-			},
-		},
 	},
 	optionalProperties: {
-		email: {
+		nick: {
 			type: 'string',
-			metadata: { format: 'email' },
+			metadata: { format: 'alnun' },
+		},
+		password: {
+			type: 'string',
+		},
+		email: {
+			properties: {
+				value: {
+					type: 'string',
+					metadata: { format: 'email' },
+				},
+				mode: { enum: ['public', 'private'] },
+				verified: { type: 'boolean' },
+			}
 		},
 		phone: {
-			type: 'string',
-			metadata: { format: 'phone' },
+			properties: {
+				value: {
+					type: 'string',
+					metadata: { format: 'phone' },
+				},
+				mode: { enum: ['public', 'private'] },
+				verified: { type: 'boolean' },
+			}
+		},
+		follows: {
+			elements: {
+				type: 'string',
+				metadata: { format: 'email' },
+			},
 		},
 	},
 } as const
@@ -60,6 +78,7 @@ export class UserRepository extends BaseRepository<JTDDataType<typeof userDefini
 
 	async extraAccessTokenFields(user: OAuthUser) {
 		return {
+			userId: user.id,
 			email: user.email,
 			phone: user.phone,
 		}

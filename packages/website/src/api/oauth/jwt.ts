@@ -1,5 +1,5 @@
 import type {JwtInterface} from '@jmondi/oauth2-server'
-import type {JwtPayload, Secret, SignOptions, VerifyOptions} from 'jsonwebtoken'
+import type {DecodeOptions, JwtPayload, Secret, SignOptions, VerifyOptions} from 'jsonwebtoken'
 
 import jwt from 'jsonwebtoken'
 
@@ -19,8 +19,8 @@ export class JwtService implements JwtInterface {
 		})
 	}
 
-	decode(encryptedData: string) {
-		return jwt.decode(encryptedData)
+	decode(encryptedData: string, opts: DecodeOptions = {}) {
+		return jwt.decode(encryptedData, opts)
 	}
 
 	sign(payload: string | Buffer | Record<string, unknown>, options: SignOptions = {}) {

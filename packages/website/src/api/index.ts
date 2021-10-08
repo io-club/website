@@ -10,7 +10,7 @@ import type {Config as serviceConfig} from './service'
 import Fastify from 'fastify'
 import FastifyCookie from 'fastify-cookie'
 
-import {context as OAuthContext, routes as OAuthRoutes} from './oauth'
+import OAuthRoutes from './oauth'
 import FastifyAjv from './plugins/ajv'
 import FastifyFetch from './plugins/fetch'
 import FastifyMailer from './plugins/mailer'
@@ -85,6 +85,7 @@ function createApp() {
 
 	// global plugins
 	const app = Fastify({
+		pluginTimeout: 12000,
 		logger: {
 			level: 'warn',
 		},
@@ -104,16 +105,14 @@ function createApp() {
 				})
 				*/
 		.register(FastifyMailer, options.mailer)
-		.register(OAuthContext, options.oauth)
 
-	app.register(function (app) {
+	app.register(async function (app) {
 		app
-			.register(OAuthRoutes, {prefix: options.oauth.prefix})
+			.register(OAuthRoutes, options.oauth)
 
 		//.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 		//.register(auth, {prefix: '/auth', ...options.auth})
 		//.register(service, {prefix: '/service', ...options.service})
-		return app
 	}, {
 		logLevel: 'info',
 	})

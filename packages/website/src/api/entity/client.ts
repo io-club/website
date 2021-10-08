@@ -5,10 +5,9 @@ import type {FastifyInstance} from 'fastify'
 
 import {join} from 'pathe'
 
-import {BaseRepository} from '~/api/entity/base'
 import {escapeTag} from '~/api/plugins/redis'
 
-import {grantIdentDefinition} from './grantIdent'
+import {BaseRepository} from './base'
 import {scopeDefinition} from './scope'
 
 export const clientDefinition = {
@@ -16,7 +15,11 @@ export const clientDefinition = {
 		id: { type: 'string', metadata: { format: 'alnun' } },
 		name: { type: 'string' },
 		redirectUris: { elements: { type: 'string' } },
-		allowedGrants: { elements: grantIdentDefinition },
+		allowedGrants: {
+			elements:  {
+				enum: ['authorization_code', 'client_credentials', 'refresh_token', 'password', 'implicit'],
+			},
+		},
 		scopeNames: { elements: scopeDefinition.properties.name },
 	},
 	optionalProperties: {

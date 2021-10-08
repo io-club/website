@@ -7,8 +7,7 @@ import dayjs from 'dayjs'
 import {customAlphabet} from 'nanoid'
 import {join} from 'pathe'
 
-import {BaseRepository} from '~/api/entity/base'
-
+import {BaseRepository} from './base'
 import {clientDefinition} from './client'
 import {scopeDefinition} from './scope'
 import {userDefinition} from './user'

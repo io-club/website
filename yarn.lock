@@ -1346,10 +1346,10 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
-"@nuxt/kit@npm:@nuxt/kit-edge@0.10.0-27220306.0a9342c":
-  version "0.10.0-27220306.0a9342c"
-  resolved "https://registry.npmmirror.com/@nuxt/kit-edge/download/@nuxt/kit-edge-0.10.0-27220306.0a9342c.tgz#2c899f10244cbc76f1eb7b95a61cb9208749c2a9"
-  integrity sha1-LImfECRMvHbx63uVphy5IIdJwqk=
+"@nuxt/kit@npm:@nuxt/kit-edge@3.0.0-27228388.2bf645b":
+  version "3.0.0-27228388.2bf645b"
+  resolved "https://registry.npmmirror.com/@nuxt/kit-edge/download/@nuxt/kit-edge-3.0.0-27228388.2bf645b.tgz#8d3a6cff6850c205e55fd952ff7f6caa4bee26ba"
+  integrity sha1-jTps/2hQwgXlX9lS/39sqkvuJro=
   dependencies:
     consola "^2.15.3"
     create-require "^1.1.1"
@@ -1360,6 +1360,7 @@
     hookable "^5.0.0"
     jiti "^1.12.6"
     lodash.template "^4.5.0"
+    mlly "^0.2.5"
     pathe "^0.2.0"
     rc9 "^1.2.0"
     scule "^0.2.1"
@@ -1369,16 +1370,16 @@
     unctx "^1.0.2"
     untyped "^0.2.9"
 
-"@nuxt/nitro@npm:@nuxt/nitro-edge@0.10.0-27220306.0a9342c":
-  version "0.10.0-27220306.0a9342c"
-  resolved "https://registry.npmmirror.com/@nuxt/nitro-edge/download/@nuxt/nitro-edge-0.10.0-27220306.0a9342c.tgz#f8caa8992a099e871c847f29800132dcaa4f3889"
-  integrity sha1-+MqomSoJnocchH8pgAEy3KpPOIk=
+"@nuxt/nitro@npm:@nuxt/nitro-edge@3.0.0-27228388.2bf645b":
+  version "3.0.0-27228388.2bf645b"
+  resolved "https://registry.npmmirror.com/@nuxt/nitro-edge/download/@nuxt/nitro-edge-3.0.0-27228388.2bf645b.tgz#bb3e425a798d8b71e286823134234b3185a72b59"
+  integrity sha1-uz5CWnmNi3HihoIxNCNLMYWnK1k=
   dependencies:
     "@cloudflare/kv-asset-handler" "^0.1.3"
     "@netlify/functions" "^0.7.2"
     "@nuxt/design" "0.0.6"
     "@nuxt/devalue" "^2.0.0"
-    "@nuxt/kit" "npm:@nuxt/kit-edge@0.10.0-27220306.0a9342c"
+    "@nuxt/kit" "npm:@nuxt/kit-edge@3.0.0-27228388.2bf645b"
     "@rollup/plugin-alias" "^3.1.5"
     "@rollup/plugin-commonjs" "^21.0.0"
     "@rollup/plugin-inject" "^4.0.2"
@@ -1386,9 +1387,10 @@
     "@rollup/plugin-node-resolve" "^13.0.5"
     "@rollup/plugin-replace" "^3.0.0"
     "@rollup/plugin-virtual" "^2.0.3"
+    "@rollup/plugin-wasm" "^5.1.2"
     "@rollup/pluginutils" "^4.1.1"
     "@types/jsdom" "^16.2.13"
-    "@vercel/nft" "^0.15.0"
+    "@vercel/nft" "^0.15.1"
     archiver "^5.3.0"
     chalk "^4.1.2"
     chokidar "^3.5.2"
@@ -1415,6 +1417,7 @@
     node-fetch "^3.0.0"
     ohmyfetch "^0.3.1"
     ora "^6.0.1"
+    p-debounce "^4.0.0"
     pathe "^0.2.0"
     pretty-bytes "^5.6.0"
     rollup "^2.58.0"
@@ -1431,13 +1434,13 @@
     vue-bundle-renderer "^0.3.1"
     vue-server-renderer "^2.6.14"
 
-"@nuxt/vite-builder@npm:@nuxt/vite-builder-edge@0.10.0-27220306.0a9342c":
-  version "0.10.0-27220306.0a9342c"
-  resolved "https://registry.npmmirror.com/@nuxt/vite-builder-edge/download/@nuxt/vite-builder-edge-0.10.0-27220306.0a9342c.tgz#a5eaaef5f9aa430f9372a960460a0a665522606f"
-  integrity sha1-pequ9fmqQw+TcqlgRgoKZlUiYG8=
+"@nuxt/vite-builder@npm:@nuxt/vite-builder-edge@3.0.0-27228388.2bf645b":
+  version "3.0.0-27228388.2bf645b"
+  resolved "https://registry.npmmirror.com/@nuxt/vite-builder-edge/download/@nuxt/vite-builder-edge-3.0.0-27228388.2bf645b.tgz#b221890864fc72276e14bf74b7557877afec4003"
+  integrity sha1-siGJCGT8ciduFL90t1V4d6/sQAM=
   dependencies:
-    "@nuxt/kit" "npm:@nuxt/kit-edge@0.10.0-27220306.0a9342c"
-    "@vitejs/plugin-vue" "^1.9.2"
+    "@nuxt/kit" "npm:@nuxt/kit-edge@3.0.0-27228388.2bf645b"
+    "@vitejs/plugin-vue" "^1.9.3"
     chokidar "^3.5.2"
     consola "^2.15.3"
     debounce "^1.2.1"
@@ -1445,23 +1448,23 @@
     magic-string "^0.25.7"
     pathe "^0.2.0"
     ufo "^0.7.9"
-    vite "^2.6.2"
+    vite "^2.6.3"
     vue "3.2.19"
 
-"@nuxt/webpack-builder@npm:@nuxt/webpack-builder-edge@0.10.0-27220306.0a9342c":
-  version "0.10.0-27220306.0a9342c"
-  resolved "https://registry.npmmirror.com/@nuxt/webpack-builder-edge/download/@nuxt/webpack-builder-edge-0.10.0-27220306.0a9342c.tgz#4edcff6415e30df5987b23737b06a0d21db315ef"
-  integrity sha1-Ttz/ZBXjDfWYeyNzewag0h2zFe8=
+"@nuxt/webpack-builder@npm:@nuxt/webpack-builder-edge@3.0.0-27228388.2bf645b":
+  version "3.0.0-27228388.2bf645b"
+  resolved "https://registry.npmmirror.com/@nuxt/webpack-builder-edge/download/@nuxt/webpack-builder-edge-3.0.0-27228388.2bf645b.tgz#002a9e3c2b7d9be7c990d2ecb3525da771a33138"
+  integrity sha1-ACqePCt9m+fJkNLss1Jdp3GjMTg=
   dependencies:
     "@babel/core" "^7.15.5"
     "@nuxt/friendly-errors-webpack-plugin" "^2.5.1"
-    "@nuxt/kit" "npm:@nuxt/kit-edge@0.10.0-27220306.0a9342c"
+    "@nuxt/kit" "npm:@nuxt/kit-edge@3.0.0-27228388.2bf645b"
     "@vue/babel-preset-jsx" "^1.2.4"
-    autoprefixer "^10.3.6"
+    autoprefixer "^10.3.7"
     babel-loader "^8.2.2"
     consola "^2.15.3"
     css-loader "^6.3.0"
-    css-minimizer-webpack-plugin "^3.0.2"
+    css-minimizer-webpack-plugin "^3.1.0"
     cssnano "^5.0.8"
     esbuild-loader "^2.15.1"
     file-loader "^6.2.0"
@@ -1474,7 +1477,7 @@
     mlly "^0.2.4"
     pathe "^0.2.0"
     pify "^5.0.0"
-    postcss "^8.3.8"
+    postcss "^8.3.9"
     postcss-import "^14.0.2"
     postcss-import-resolver "^2.0.0"
     postcss-loader "^6.1.1"
@@ -1486,7 +1489,7 @@
     vue "3.2.19"
     vue-loader "^16.8.1"
     vue-style-loader "^4.1.3"
-    webpack "^5.56.0"
+    webpack "^5.56.1"
     webpack-bundle-analyzer "^4.4.2"
     webpack-dev-middleware "^5.2.1"
     webpack-hot-middleware "^2.25.1"
@@ -1571,6 +1574,11 @@
   version "2.0.3"
   resolved "https://registry.npmmirror.com/@rollup/plugin-virtual/download/@rollup/plugin-virtual-2.0.3.tgz#0afc88d75c1e1378ab290b8e9898d4edb5be0d74"
   integrity sha1-CvyI11weE3irKQuOmJjU7bW+DXQ=
+
+"@rollup/plugin-wasm@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.npmmirror.com/@rollup/plugin-wasm/download/@rollup/plugin-wasm-5.1.2.tgz#5ebd767a14eb7cc98f45aee817e3efbe15c944d8"
+  integrity sha1-Xr12ehTrfMmPRa7oF+PvvhXJRNg=
 
 "@rollup/pluginutils@^3.0.4", "@rollup/pluginutils@^3.0.8", "@rollup/pluginutils@^3.1.0":
   version "3.1.0"
@@ -2127,7 +2135,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^4.31.2":
+"@typescript-eslint/eslint-plugin@^4.31.2", "@typescript-eslint/eslint-plugin@^4.33.0":
   version "4.33.0"
   resolved "https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/download/@typescript-eslint/eslint-plugin-4.33.0.tgz#c24dc7c8069c7706bc40d99f6fa87edcb2005276"
   integrity sha1-wk3HyAacdwa8QNmfb6h+3LIAUnY=
@@ -2141,32 +2149,6 @@
     semver "^7.3.5"
     tsutils "^3.21.0"
 
-"@typescript-eslint/eslint-plugin@^4.32.0":
-  version "4.32.0"
-  resolved "https://registry.npmmirror.com/@typescript-eslint/eslint-plugin/download/@typescript-eslint/eslint-plugin-4.32.0.tgz#46d2370ae9311092f2a6f7246d28357daf2d4e89"
-  integrity sha1-RtI3CukxEJLypvckbSg1fa8tTok=
-  dependencies:
-    "@typescript-eslint/experimental-utils" "4.32.0"
-    "@typescript-eslint/scope-manager" "4.32.0"
-    debug "^4.3.1"
-    functional-red-black-tree "^1.0.1"
-    ignore "^5.1.8"
-    regexpp "^3.1.0"
-    semver "^7.3.5"
-    tsutils "^3.21.0"
-
-"@typescript-eslint/experimental-utils@4.32.0":
-  version "4.32.0"
-  resolved "https://registry.npmmirror.com/@typescript-eslint/experimental-utils/download/@typescript-eslint/experimental-utils-4.32.0.tgz#53a8267d16ca5a79134739129871966c56a59dc4"
-  integrity sha1-U6gmfRbKWnkTRzkSmHGWbFalncQ=
-  dependencies:
-    "@types/json-schema" "^7.0.7"
-    "@typescript-eslint/scope-manager" "4.32.0"
-    "@typescript-eslint/types" "4.32.0"
-    "@typescript-eslint/typescript-estree" "4.32.0"
-    eslint-scope "^5.1.1"
-    eslint-utils "^3.0.0"
-
 "@typescript-eslint/experimental-utils@4.33.0":
   version "4.33.0"
   resolved "https://registry.npmmirror.com/@typescript-eslint/experimental-utils/download/@typescript-eslint/experimental-utils-4.33.0.tgz?cache=0&sync_timestamp=1633597127956&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40typescript-eslint%2Fexperimental-utils%2Fdownload%2F%40typescript-eslint%2Fexperimental-utils-4.33.0.tgz#6f2a786a4209fa2222989e9380b5331b2810f7fd"
@@ -2179,7 +2161,7 @@
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
-"@typescript-eslint/parser@^4.31.2":
+"@typescript-eslint/parser@^4.31.2", "@typescript-eslint/parser@^4.33.0":
   version "4.33.0"
   resolved "https://registry.npmmirror.com/@typescript-eslint/parser/download/@typescript-eslint/parser-4.33.0.tgz#dfe797570d9694e560528d18eecad86c8c744899"
   integrity sha1-3+eXVw2WlOVgUo0Y7srYbIx0SJk=
@@ -2189,24 +2171,6 @@
     "@typescript-eslint/typescript-estree" "4.33.0"
     debug "^4.3.1"
 
-"@typescript-eslint/parser@^4.32.0":
-  version "4.32.0"
-  resolved "https://registry.npmmirror.com/@typescript-eslint/parser/download/@typescript-eslint/parser-4.32.0.tgz#751ecca0e2fecd3d44484a9b3049ffc1871616e5"
-  integrity sha1-dR7MoOL+zT1ESEqbMEn/wYcWFuU=
-  dependencies:
-    "@typescript-eslint/scope-manager" "4.32.0"
-    "@typescript-eslint/types" "4.32.0"
-    "@typescript-eslint/typescript-estree" "4.32.0"
-    debug "^4.3.1"
-
-"@typescript-eslint/scope-manager@4.32.0":
-  version "4.32.0"
-  resolved "https://registry.npmmirror.com/@typescript-eslint/scope-manager/download/@typescript-eslint/scope-manager-4.32.0.tgz#e03c8668f8b954072b3f944d5b799c0c9225a7d5"
-  integrity sha1-4DyGaPi5VAcrP5RNW3mcDJIlp9U=
-  dependencies:
-    "@typescript-eslint/types" "4.32.0"
-    "@typescript-eslint/visitor-keys" "4.32.0"
-
 "@typescript-eslint/scope-manager@4.33.0":
   version "4.33.0"
   resolved "https://registry.npmmirror.com/@typescript-eslint/scope-manager/download/@typescript-eslint/scope-manager-4.33.0.tgz#d38e49280d983e8772e29121cf8c6e9221f280a3"
@@ -2215,28 +2179,10 @@
     "@typescript-eslint/types" "4.33.0"
     "@typescript-eslint/visitor-keys" "4.33.0"
 
-"@typescript-eslint/types@4.32.0":
-  version "4.32.0"
-  resolved "https://registry.npmmirror.com/@typescript-eslint/types/download/@typescript-eslint/types-4.32.0.tgz#52c633c18da47aee09449144bf59565ab36df00d"
-  integrity sha1-UsYzwY2keu4JRJFEv1lWWrNt8A0=
-
 "@typescript-eslint/types@4.33.0":
   version "4.33.0"
   resolved "https://registry.npmmirror.com/@typescript-eslint/types/download/@typescript-eslint/types-4.33.0.tgz#a1e59036a3b53ae8430ceebf2a919dc7f9af6d72"
   integrity sha1-oeWQNqO1OuhDDO6/KpGdx/mvbXI=
-
-"@typescript-eslint/typescript-estree@4.32.0":
-  version "4.32.0"
-  resolved "https://registry.npmmirror.com/@typescript-eslint/typescript-estree/download/@typescript-eslint/typescript-estree-4.32.0.tgz#db00ccc41ccedc8d7367ea3f50c6994b8efa9f3b"
-  integrity sha1-2wDMxBzO3I1zZ+o/UMaZS476nzs=
-  dependencies:
-    "@typescript-eslint/types" "4.32.0"
-    "@typescript-eslint/visitor-keys" "4.32.0"
-    debug "^4.3.1"
-    globby "^11.0.3"
-    is-glob "^4.0.1"
-    semver "^7.3.5"
-    tsutils "^3.21.0"
 
 "@typescript-eslint/typescript-estree@4.33.0":
   version "4.33.0"
@@ -2251,14 +2197,6 @@
     semver "^7.3.5"
     tsutils "^3.21.0"
 
-"@typescript-eslint/visitor-keys@4.32.0":
-  version "4.32.0"
-  resolved "https://registry.npmmirror.com/@typescript-eslint/visitor-keys/download/@typescript-eslint/visitor-keys-4.32.0.tgz#455ba8b51242f2722a497ffae29313f33b14cb7f"
-  integrity sha1-RVuotRJC8nIqSX/64pMT8zsUy38=
-  dependencies:
-    "@typescript-eslint/types" "4.32.0"
-    eslint-visitor-keys "^2.0.0"
-
 "@typescript-eslint/visitor-keys@4.33.0":
   version "4.33.0"
   resolved "https://registry.npmmirror.com/@typescript-eslint/visitor-keys/download/@typescript-eslint/visitor-keys-4.33.0.tgz#2a22f77a41604289b7a186586e9ec48ca92ef1dd"
@@ -2267,10 +2205,10 @@
     "@typescript-eslint/types" "4.33.0"
     eslint-visitor-keys "^2.0.0"
 
-"@vercel/nft@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.npmmirror.com/@vercel/nft/download/@vercel/nft-0.15.0.tgz#af8b7a8583d6ce3d12334f2ccf9b2c29acfd6e2c"
-  integrity sha1-r4t6hYPWzj0SM08sz5ssKaz9biw=
+"@vercel/nft@^0.15.1":
+  version "0.15.1"
+  resolved "https://registry.npmmirror.com/@vercel/nft/download/@vercel/nft-0.15.1.tgz#c059e921f3d0f1cdbdc700c0ba060dee6851dcba"
+  integrity sha1-wFnpIfPQ8c29xwDAugYN7mhR3Lo=
   dependencies:
     "@mapbox/node-pre-gyp" "^1.0.5"
     acorn "^8.3.0"
@@ -2288,10 +2226,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@vitejs/plugin-vue@^1.9.2":
-  version "1.9.2"
-  resolved "https://registry.npmmirror.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.9.2.tgz#7234efb8c3c3d60c7eac350a935074ab1820ae0e"
-  integrity sha1-cjTvuMPD1gx+rDUKk1B0qxggrg4=
+"@vitejs/plugin-vue@^1.9.3":
+  version "1.9.3"
+  resolved "https://registry.npmmirror.com/@vitejs/plugin-vue/download/@vitejs/plugin-vue-1.9.3.tgz#93d61893ce6c723d0209af0483ec8b91a2cd811f"
+  integrity sha1-k9YYk85scj0CCa8Eg+yLkaLNgR8=
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
@@ -3455,16 +3393,16 @@ autocomplete.js@0.36.0:
   dependencies:
     immediate "^3.2.3"
 
-autoprefixer@^10.3.6:
-  version "10.3.6"
-  resolved "https://registry.npmmirror.com/autoprefixer/download/autoprefixer-10.3.6.tgz#537c8a046e32ec46bfe528bcc9e2a5f2d87cd4c4"
-  integrity sha1-U3yKBG4y7Ea/5Si8yeKl8th81MQ=
+autoprefixer@^10.3.7:
+  version "10.3.7"
+  resolved "https://registry.npmmirror.com/autoprefixer/download/autoprefixer-10.3.7.tgz#cef2562058406bd378c94aacda36bb46a97b3186"
+  integrity sha1-zvJWIFhAa9N4yUqs2ja7Rql7MYY=
   dependencies:
-    browserslist "^4.17.1"
-    caniuse-lite "^1.0.30001260"
+    browserslist "^4.17.3"
+    caniuse-lite "^1.0.30001264"
     fraction.js "^4.1.1"
-    nanocolors "^0.2.8"
     normalize-range "^0.1.2"
+    picocolors "^0.2.1"
     postcss-value-parser "^4.1.0"
 
 autoprefixer@^9.5.1:
@@ -3867,7 +3805,7 @@ browserify-zlib@^0.2.0:
   dependencies:
     pako "~1.0.5"
 
-browserslist@^4.0.0, browserslist@^4.14.5, browserslist@^4.16.0, browserslist@^4.16.6, browserslist@^4.17.1:
+browserslist@^4.0.0, browserslist@^4.14.5, browserslist@^4.16.0, browserslist@^4.16.6:
   version "4.17.2"
   resolved "https://registry.npmmirror.com/browserslist/download/browserslist-4.17.2.tgz#aa15dbd2fab399a399fe4df601bb09363c5458a6"
   integrity sha1-qhXb0vqzmaOZ/k32AbsJNjxUWKY=
@@ -4146,7 +4084,7 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001260, caniuse-lite@^1.0.30001261:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001261:
   version "1.0.30001263"
   resolved "https://registry.npmmirror.com/caniuse-lite/download/caniuse-lite-1.0.30001263.tgz#7ce7a6fb482a137585cbc908aaf38e90c53a16a4"
   integrity sha1-fOem+0gqE3WFy8kIqvOOkMU6FqQ=
@@ -4564,10 +4502,10 @@ concat-stream@^1.5.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-concurrently@^6.2.2:
-  version "6.2.2"
-  resolved "https://registry.npmmirror.com/concurrently/download/concurrently-6.2.2.tgz#81c11b85d9a7de56ad4388ff6aab4a94ddea51f2"
-  integrity sha1-gcEbhdmn3latQ4j/aqtKlN3qUfI=
+concurrently@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.npmmirror.com/concurrently/download/concurrently-6.3.0.tgz#63128cb4a6ed54d3c0ed8528728590a5fe54582a"
+  integrity sha1-YxKMtKbtVNPA7YUocoWQpf5UWCo=
   dependencies:
     chalk "^4.1.0"
     date-fns "^2.16.1"
@@ -4920,16 +4858,16 @@ css-loader@^6.3.0:
     postcss-value-parser "^4.1.0"
     semver "^7.3.5"
 
-css-minimizer-webpack-plugin@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npmmirror.com/css-minimizer-webpack-plugin/download/css-minimizer-webpack-plugin-3.0.2.tgz#8fadbdf10128cb40227bff275a4bb47412534245"
-  integrity sha1-j6298QEoy0Aie/8nWku0dBJTQkU=
+css-minimizer-webpack-plugin@^3.1.0:
+  version "3.1.1"
+  resolved "https://registry.npmmirror.com/css-minimizer-webpack-plugin/download/css-minimizer-webpack-plugin-3.1.1.tgz#27bafa3b75054713565b2266c64b0228acd18634"
+  integrity sha1-J7r6O3UFRxNWWyJmxksCKKzRhjQ=
   dependencies:
     cssnano "^5.0.6"
     jest-worker "^27.0.2"
     p-limit "^3.0.2"
     postcss "^8.3.5"
-    schema-utils "^3.0.0"
+    schema-utils "^3.1.0"
     serialize-javascript "^6.0.0"
     source-map "^0.6.1"
 
@@ -9679,16 +9617,17 @@ mdast-util-mdxjs-esm@^1.0.0:
     mdast-util-from-markdown "^1.0.0"
     mdast-util-to-markdown "^1.0.0"
 
-mdast-util-to-hast@^11.0.0:
-  version "11.3.0"
-  resolved "https://registry.npmmirror.com/mdast-util-to-hast/download/mdast-util-to-hast-11.3.0.tgz#ea9220617a710e80aa5cc3ac7cc9d4bb0440ae7a"
-  integrity sha1-6pIgYXpxDoCqXMOsfMnUuwRArno=
+mdast-util-to-hast@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.npmmirror.com/mdast-util-to-hast/download/mdast-util-to-hast-12.0.0.tgz#d697afa58e56b7e66899c03cd8f789f7d44df44b"
+  integrity sha1-1pevpY5Wt+ZomcA82PeJ99RN9Es=
   dependencies:
     "@types/hast" "^2.0.0"
     "@types/mdast" "^3.0.0"
     "@types/mdurl" "^1.0.0"
     mdast-util-definitions "^5.0.0"
     mdurl "^1.0.0"
+    micromark-util-sanitize-uri "^1.0.0"
     unist-builder "^3.0.0"
     unist-util-generated "^2.0.0"
     unist-util-position "^4.0.0"
@@ -10310,6 +10249,13 @@ mlly@^0.2.4:
   dependencies:
     import-meta-resolve "^1.1.1"
 
+mlly@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.npmmirror.com/mlly/download/mlly-0.2.5.tgz#cd7096d0efcfae311091ec1cb855b9e585ce26d3"
+  integrity sha1-zXCW0O/PrjEQkewcuFW55YXOJtM=
+  dependencies:
+    import-meta-resolve "^1.1.1"
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmmirror.com/move-concurrently/download/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -10384,7 +10330,7 @@ nanocolors@^0.1.12:
   resolved "https://registry.npmmirror.com/nanocolors/download/nanocolors-0.1.12.tgz#8577482c58cbd7b5bb1681db4cf48f11a87fd5f6"
   integrity sha1-hXdILFjL17W7FoHbTPSPEah/1fY=
 
-nanocolors@^0.2.12, nanocolors@^0.2.2, nanocolors@^0.2.8:
+nanocolors@^0.2.12, nanocolors@^0.2.2:
   version "0.2.12"
   resolved "https://registry.npmmirror.com/nanocolors/download/nanocolors-0.2.12.tgz#4d05932e70116078673ea4cc6699a1c56cc77777"
   integrity sha1-TQWTLnARYHhnPqTMZpmhxWzHd3c=
@@ -10393,6 +10339,11 @@ nanoid@^3.1.22, nanoid@^3.1.25, nanoid@^3.1.28:
   version "3.1.28"
   resolved "https://registry.npmmirror.com/nanoid/download/nanoid-3.1.28.tgz#3c01bac14cb6c5680569014cc65a2f26424c6bd4"
   integrity sha1-PAG6wUy2xWgFaQFMxlovJkJMa9Q=
+
+nanoid@^3.1.29:
+  version "3.1.29"
+  resolved "https://registry.npmmirror.com/nanoid/download/nanoid-3.1.29.tgz#214fb2d7a33e1a5bef4757b779dfaeb6a4e5aeb4"
+  integrity sha1-IU+y16M+GlvvR1e3ed+utqTlrrQ=
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -10726,22 +10677,22 @@ number-is-nan@^1.0.0:
   resolved "https://registry.npmmirror.com/number-is-nan/download/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-"nuxi@npm:nuxi-edge@0.10.0-27220306.0a9342c":
-  version "0.10.0-27220306.0a9342c"
-  resolved "https://registry.npmmirror.com/nuxi-edge/download/nuxi-edge-0.10.0-27220306.0a9342c.tgz#6641d66a974ed44915e4ef81ec194ee54deba708"
-  integrity sha1-ZkHWapdO1EkV5O+B7BlO5U3rpwg=
+"nuxi@npm:nuxi-edge@3.0.0-27228388.2bf645b":
+  version "3.0.0-27228388.2bf645b"
+  resolved "https://registry.npmmirror.com/nuxi-edge/download/nuxi-edge-3.0.0-27228388.2bf645b.tgz#e6cfeb38ed8e741765203d1955b5309c8861ccd7"
+  integrity sha1-5s/rOO2OdBdlID0ZVbUwnIhhzNc=
   optionalDependencies:
     fsevents "~2.3.2"
 
-nuxt3@^3.0.0-27220306.0a9342c:
-  version "3.0.0-27220306.0a9342c"
-  resolved "https://registry.npmmirror.com/nuxt3/download/nuxt3-3.0.0-27220306.0a9342c.tgz#2e396e3c0a00125f4d606ac0cfea84c60aa5720b"
-  integrity sha1-LjluPAoAEl9NYGrAz+qExgqlcgs=
+nuxt3@3.0.0-27228388.2bf645b:
+  version "3.0.0-27228388.2bf645b"
+  resolved "https://registry.npmmirror.com/nuxt3/download/nuxt3-3.0.0-27228388.2bf645b.tgz#0ef3a7a91d40e083adf68c62b644266000d9896f"
+  integrity sha1-DvOnqR1A4IOt9oxitkQmYADZiW8=
   dependencies:
-    "@nuxt/kit" "npm:@nuxt/kit-edge@0.10.0-27220306.0a9342c"
-    "@nuxt/nitro" "npm:@nuxt/nitro-edge@0.10.0-27220306.0a9342c"
-    "@nuxt/vite-builder" "npm:@nuxt/vite-builder-edge@0.10.0-27220306.0a9342c"
-    "@nuxt/webpack-builder" "npm:@nuxt/webpack-builder-edge@0.10.0-27220306.0a9342c"
+    "@nuxt/kit" "npm:@nuxt/kit-edge@3.0.0-27228388.2bf645b"
+    "@nuxt/nitro" "npm:@nuxt/nitro-edge@3.0.0-27228388.2bf645b"
+    "@nuxt/vite-builder" "npm:@nuxt/vite-builder-edge@3.0.0-27228388.2bf645b"
+    "@nuxt/webpack-builder" "npm:@nuxt/webpack-builder-edge@3.0.0-27228388.2bf645b"
     "@vue/reactivity" "3.2.19"
     "@vue/shared" "3.2.19"
     "@vueuse/head" "^0.6.0"
@@ -10754,7 +10705,7 @@ nuxt3@^3.0.0-27220306.0a9342c:
     hookable "^5.0.0"
     ignore "^5.1.8"
     mlly "^0.2.4"
-    nuxi "npm:nuxi-edge@0.10.0-27220306.0a9342c"
+    nuxi "npm:nuxi-edge@3.0.0-27228388.2bf645b"
     ohmyfetch "^0.3.1"
     pathe "^0.2.0"
     scule "^0.2.1"
@@ -11008,6 +10959,11 @@ p-cancelable@^2.0.0:
   version "2.1.1"
   resolved "https://registry.npmmirror.com/p-cancelable/download/p-cancelable-2.1.1.tgz#aab7fbd416582fa32a3db49859c122487c5ed2cf"
   integrity sha1-qrf71BZYL6MqPbSYWcEiSHxe0s8=
+
+p-debounce@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmmirror.com/p-debounce/download/p-debounce-4.0.0.tgz#348e3f44489baa9435cc7d807f17b3bb2fb16b24"
+  integrity sha1-NI4/REibqpQ1zH2Afxezuy+xayQ=
 
 p-finally@^1.0.0:
   version "1.0.0"
@@ -12065,6 +12021,15 @@ postcss@^8.1.10, postcss@^8.2.15, postcss@^8.3.5, postcss@^8.3.8:
     nanoid "^3.1.25"
     source-map-js "^0.6.2"
 
+postcss@^8.3.9:
+  version "8.3.9"
+  resolved "https://registry.npmmirror.com/postcss/download/postcss-8.3.9.tgz#98754caa06c4ee9eb59cc48bd073bb6bd3437c31"
+  integrity sha1-mHVMqgbE7p61nMSL0HO7a9NDfDE=
+  dependencies:
+    nanoid "^3.1.28"
+    picocolors "^0.2.1"
+    source-map-js "^0.6.2"
+
 postinstall-postinstall@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmmirror.com/postinstall-postinstall/download/postinstall-postinstall-2.1.0.tgz#4f7f77441ef539d1512c40bd04c71b06a4704ca3"
@@ -12604,14 +12569,14 @@ remark-parse@^10.0.0:
     mdast-util-from-markdown "^1.0.0"
     unified "^10.0.0"
 
-remark-rehype@^9.0.0:
-  version "9.1.0"
-  resolved "https://registry.npmmirror.com/remark-rehype/download/remark-rehype-9.1.0.tgz#e4b5b6e19c125b3780343eb66c3e9b99b0f06a81"
-  integrity sha1-5LW24ZwSWzeAND62bD6bmbDwaoE=
+remark-rehype@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.npmmirror.com/remark-rehype/download/remark-rehype-10.0.0.tgz#e45f07701b766a4e958fb7a843e19836082c4290"
+  integrity sha1-5F8HcBt2ak6Vj7eoQ+GYNggsQpA=
   dependencies:
     "@types/hast" "^2.0.0"
     "@types/mdast" "^3.0.0"
-    mdast-util-to-hast "^11.0.0"
+    mdast-util-to-hast "^12.0.0"
     unified "^10.0.0"
 
 remark-slug@^7.0.0:
@@ -14456,23 +14421,27 @@ unbox-primitive@^1.0.1:
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
 
-unbuild@^0.5.5:
-  version "0.5.5"
-  resolved "https://registry.npmmirror.com/unbuild/download/unbuild-0.5.5.tgz#dc1e616b939c1f9b01a7202b696784fa8a9894b4"
-  integrity sha1-3B5ha5OcH5sBpyAraWeE+oqYlLQ=
+unbuild@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.npmmirror.com/unbuild/download/unbuild-0.5.6.tgz#e4cae48d7fa8a18988384e7f34cedcbd0a7fe883"
+  integrity sha1-5MrkjX+ooYmIOE5/NM7cvQp/6IM=
   dependencies:
     "@rollup/plugin-alias" "^3.1.4"
     "@rollup/plugin-commonjs" "^20.0.0"
     "@rollup/plugin-json" "^4.1.0"
     "@rollup/plugin-node-resolve" "^13.0.5"
+    "@rollup/plugin-replace" "^3.0.0"
     chalk "^4.1.1"
     consola "^2.15.3"
     defu "^5.0.0"
     esbuild "^0.13.3"
     jiti "^1.12.5"
+    magic-string "^0.25.7"
     mkdirp "^1.0.4"
     mkdist "^0.3.3"
+    mlly "^0.2.4"
     mri "^1.2.0"
+    pathe "^0.2.0"
     pretty-bytes "^5.6.0"
     rimraf "^3.0.2"
     rollup "^2.57.0"
@@ -14481,7 +14450,6 @@ unbuild@^0.5.5:
     scule "^0.2.1"
     typescript "^4.4.3"
     untyped "^0.2.9"
-    upath "^2.0.1"
 
 unctx@^1.0.2:
   version "1.0.2"
@@ -14978,10 +14946,10 @@ vite-plugin-windicss@^1.4.9:
     debug "^4.3.2"
     windicss "^3.1.8"
 
-vite@^2.6.2:
-  version "2.6.2"
-  resolved "https://registry.npmmirror.com/vite/download/vite-2.6.2.tgz#5bbb4afe1f69ed9d6482e51a0f761f8cfc230e22"
-  integrity sha1-W7tK/h9p7Z1kguUaD3YfjPwjDiI=
+vite@^2.6.3:
+  version "2.6.5"
+  resolved "https://registry.npmmirror.com/vite/download/vite-2.6.5.tgz#c4d25972e2f7371e682da86828722ddf5126f3d1"
+  integrity sha1-xNJZcuL3Nx5oLahoKHIt31Em89E=
   dependencies:
     esbuild "^0.13.2"
     postcss "^8.3.8"
@@ -15395,10 +15363,10 @@ webpack@^4.8.1:
     watchpack "^1.7.4"
     webpack-sources "^1.4.1"
 
-webpack@^5.56.0:
-  version "5.56.1"
-  resolved "https://registry.npmmirror.com/webpack/download/webpack-5.56.1.tgz#e39d1d1f1acdb6f07e346f74b7dcfe323da4ded9"
-  integrity sha1-450dHxrNtvB+NG90t9z+Mj2k3tk=
+webpack@^5.56.1:
+  version "5.58.1"
+  resolved "https://registry.npmmirror.com/webpack/download/webpack-5.58.1.tgz?cache=0&sync_timestamp=1633715294971&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fwebpack%2Fdownload%2Fwebpack-5.58.1.tgz#df8aad72b617a9d0db8c89d4f410784ee93320d7"
+  integrity sha1-34qtcrYXqdDbjInU9BB4TukzINc=
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"
@@ -15629,10 +15597,10 @@ xdg-basedir@^4.0.0:
   resolved "https://registry.npmmirror.com/xdg-basedir/download/xdg-basedir-4.0.0.tgz#4bc8d9984403696225ef83a1573cbbcb4e79db13"
   integrity sha1-S8jZmEQDaWIl74OhVzy7y0552xM=
 
-xdm@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmmirror.com/xdm/download/xdm-2.1.0.tgz#d0060eb0f1230b47247bc6b3208ca3965d0053a4"
-  integrity sha1-0AYOsPEjC0cke8azIIyjll0AU6Q=
+xdm@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/xdm/download/xdm-3.0.0.tgz#d6748edab9633ef0e9faa1aa2c05e45dc82d5e97"
+  integrity sha1-1nSO2rljPvDp+qGqLAXkXcgtXpc=
   dependencies:
     "@rollup/pluginutils" "^4.0.0"
     "@types/estree-jsx" "^0.0.1"
@@ -15648,7 +15616,7 @@ xdm@^2.1.0:
     micromark-extension-mdxjs "^1.0.0"
     periscopic "^3.0.0"
     remark-parse "^10.0.0"
-    remark-rehype "^9.0.0"
+    remark-rehype "^10.0.0"
     source-map "^0.7.0"
     unified "^10.0.0"
     unist-util-position-from-estree "^1.0.0"
