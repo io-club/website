@@ -1,8 +1,9 @@
+import type {NuxtConfig} from '@nuxt/kit'
+
 import {createPlugin as mdvue} from '@ioclub/mdvue'
-import {defineNuxtConfig} from '@nuxt/kit'
 import windi from 'vite-plugin-windicss'
 
-export default defineNuxtConfig({
+export default <NuxtConfig>{
 	srcDir: 'src',
 	extensions: ['.js','.mjs','.ts','.tsx','.vue', '.md'],
 	serverMiddleware: [
@@ -13,7 +14,7 @@ export default defineNuxtConfig({
 	vite: {
 		plugins: [
 			windi({}),
-			mdvue.vite({}),
+			mdvue({}),
 		],
 	},
-})
+}

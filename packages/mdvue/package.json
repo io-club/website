@@ -2,8 +2,9 @@
 	"name": "@ioclub/mdvue",
 	"version": "0.1.0",
 	"types": "./dist/index.d.ts",
+	"type": "module",
 	"exports": {
-		"require": "./dist/index.cjs",
+		"require": "./dist/index.mjs",
 		"import": "./dist/index.mjs"
 	},
 	"sideEffects": false,
@@ -24,12 +25,31 @@
 		"remark-frontmatter": "^4.0.0",
 		"remark-parse-frontmatter": "^1.0.3",
 		"remark-slug": "^7.0.0",
-		"unplugin": "^0.2.16",
-		"upath": "^2.0.1"
+		"upath": "^2.0.1",
+		"unified": "^10.1.0",
+		"@rollup/pluginutils": "^4.1.1",
+		"astring": "^1.7.5",
+		"estree-util-is-identifier-name": "^2.0.0",
+		"got": "^11.8.2",
+		"hast-util-to-estree": "^2.0.2",
+		"loader-utils": "^2.0.0",
+		"markdown-extensions": "^1.1.1",
+		"mdast-util-mdx": "^1.1.0",
+		"micromark-extension-mdxjs": "^1.0.0",
+		"remark-parse": "^10.0.0",
+		"remark-rehype": "^10.0.0",
+		"source-map": "^0.7.3",
+		"unist-util-position-from-estree": "^1.1.1",
+		"unist-util-stringify-position": "^3.0.0",
+		"unist-util-visit": "^4.1.0",
+		"vfile": "^5.1.0"
 	},
 	"devDependencies": {
-		"unified": "^10.1.0",
-		"xdm": "^3.0.0"
+		"estree-walker": "^3.0.0",
+		"@types/estree-jsx": "^0.0.1",
+		"periscopic": "^3.0.4",
+		"estree-util-build-jsx": "^2.0.0",
+		"xdm": "3.0.0"
 	},
 	"engines": {
 		"node": ">=14"

@@ -6,7 +6,6 @@ import fs from 'fs/promises'
 import rehype_slug from 'rehype-slug'
 import remark_frontmatter from 'remark-frontmatter'
 import remark_frontmatter_parse from 'remark-parse-frontmatter'
-import {createUnplugin} from 'unplugin'
 import path from 'upath'
 import {createProcessor} from 'xdm'
 
@@ -76,7 +75,7 @@ export default defineComponent({
 	}
 }
 
-export const createPlugin = createUnplugin(function (ucfg?: UserConfig) {
+export const createPlugin = function (ucfg?: UserConfig) {
 	const cfg = NormalizeConfig(ucfg)
 
 	const parser = markdownParser(cfg)
@@ -84,13 +83,13 @@ export const createPlugin = createUnplugin(function (ucfg?: UserConfig) {
 	return {
 		name: 'mdx',
 		enforce: 'pre',
-		async resolveId(id) {
+		async resolveId(id: string) {
 			const p = path.parse(id)
 			if (cfg.extensions.indexOf(p.ext) !== -1) {
 				return `mdx:${path.join(p.dir, p.name)}.jsx`
 			}
 		},
-		async load(id) {
+		async load(id: string) {
 			if (id.startsWith('mdx:')) {
 				const p = path.parse(id.slice(4))
 				const buf = await fs.readFile(`${path.join(p.dir, p.name)}.md`)
@@ -98,4 +97,4 @@ export const createPlugin = createUnplugin(function (ucfg?: UserConfig) {
 			}
 		}
 	}
-})
+}

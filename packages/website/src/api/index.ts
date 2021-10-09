@@ -1,15 +1,13 @@
-import type {Config as authConfig} from './auth'
 import type {Config as oauthConfig} from './oauth'
 import type {Config as ajvConfig} from './plugins/ajv'
 import type {Options as MailerOptions} from './plugins/mailer'
 import type {Config as redisConfig} from './plugins/redis'
-import type {Config as serviceConfig} from './service'
 
-//import FastifySession from '@mgcrea/fastify-session'
-//import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
 import Fastify from 'fastify'
 import FastifyCookie from 'fastify-cookie'
 
+//import FastifySession from '@mgcrea/fastify-session'
+//import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
 import OAuthRoutes from './oauth'
 import FastifyAjv from './plugins/ajv'
 import FastifyFetch from './plugins/fetch'
@@ -28,8 +26,8 @@ export interface Options {
 	ajv: ajvConfig
 	redis: redisConfig
 	mailer: MailerOptions
-	auth: authConfig
-	service: serviceConfig
+	//auth: authConfig
+	//service: serviceConfig
 	oauth: oauthConfig
 }
 
