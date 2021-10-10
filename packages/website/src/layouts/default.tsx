@@ -1,24 +1,15 @@
-import { ApplicationMenu } from '@icon-park/vue-next'
-import { DEFAULT_ICON_CONFIGS, IconProvider } from '@icon-park/vue-next'
-import { defineComponent, provide, ref } from 'vue'
-import { setI18n } from 'vue-composable'
+import {useI18n} from '@ioclub/composable'
+import Menu from 'virtual:icons/mdi-light/menu'
+import {defineComponent, provide, ref} from 'vue'
 
 import Link from '@/components/link'
 import Logo from '@/components/logo'
-import zh_CN from '@/locales/zh_CN'
 
 export default defineComponent({
 	props: {'name': String},
 	setup(_, {slots}) {
-		const { i18n } = setI18n({
-			locale: 'zh-cn',
-			fallback: 'zh-cn',
-			messages: {
-				'zh-cn': zh_CN,
-			},
-		})
+		const {i18n} = useI18n()
 		const show = ref(false)
-		IconProvider({...DEFAULT_ICON_CONFIGS, prefix: 'icon'});
 		provide('mobile_menu', show)
 		return () => {
 			const {header, title} = i18n.value.common
@@ -34,10 +25,10 @@ export default defineComponent({
 				>
 					<Link w:flex="~" w:align="items-center" to="/" >{() => [
 						<Logo w:h="8" w:m="r-2" />,
-						<span w:text="2xl" w:font="heavy">{ title }</span>,
+						<span w:text="2xl" w:font="heavy">{title}</span>,
 					]}</Link>
 					<button w:display="md:hidden" type="button" onClick={() => show.value = !show.value}>
-						<ApplicationMenu size="1.5rem" />
+						<Menu height="1.5rem" />
 					</button>
 					<nav w:w="full md:3/4" w:m="<md:t-2">
 						<ul
@@ -46,16 +37,16 @@ export default defineComponent({
 							w:children="border-b-2 transition-transform transform duration-100"
 						>
 							<li w:transform="hover:scale-110">
-								<a href="/#about">{ header.about }</a>
+								<a href="/#about">{header.about}</a>
 							</li>
 							<li w:transform="hover:scale-110">
-								<a href="/notice">{ header.notice }</a>
+								<a href="/notice">{header.notice}</a>
 							</li>
 							<li w:text="gray-400">
-								<a href="#">{ header.forum }</a>
+								<a href="#">{header.forum}</a>
 							</li>
 							<li w:text="gray-400">
-								<a href="#">{ header.login }</a>
+								<a href="#">{header.login}</a>
 							</li>
 						</ul>
 					</nav>

@@ -14,7 +14,7 @@
 	},
 	"license": "MIT",
 	"devDependencies": {
-		"@icon-park/vue-next": "^1.3.5",
+		"@iconify/json": "^1.1.412",
 		"@ioclub/mdvue": "^0.1.0",
 		"@types/ioredis": "^4.27.6",
 		"@types/lodash": "^4.14.175",
@@ -29,10 +29,12 @@
 		"postcss-pseudo-class-enter": "^5.0.0",
 		"postinstall-postinstall": "^2.1.0",
 		"unplugin": "^0.2.16",
+		"unplugin-icons": "^0.12.12",
 		"upath": "^2.0.1",
 		"vite-plugin-windicss": "^1.4.10"
 	},
 	"dependencies": {
+		"@ioclub/composable": "^0.1.0",
 		"@jmondi/oauth2-server": "^2.0.3",
 		"@mgcrea/fastify-session": "^0.14.1",
 		"@mgcrea/fastify-session-sodium-crypto": "^0.8.3",
@@ -59,8 +61,6 @@
 		"nuxt3": "3.0.0-27228388.2bf645b",
 		"ohmyfetch": "^0.3.1",
 		"pathe": "^0.2.0",
-		"sharp": "^0.29.1",
-		"vconsole": "^3.9.1",
-		"vue-composable": "^1.0.0-beta.23"
+		"sharp": "^0.29.1"
 	}
 }

@@ -1,9 +1,9 @@
 import type s from '@/locales/zh_CN'
 
-import 'vue-composable'
+import '@ioclub/composable'
 
 type json = typeof s
 
-declare module 'vue-composable' {
-	interface i18n extends json {}
+declare module '@ioclub/composable' {
+	interface T extends json {}
 }

@@ -1,5 +1,6 @@
 import type {Toc} from '@stefanprobst/rehype-extract-toc'
 import type {PluggableList} from 'unified'
+import type {Plugin} from 'vite'
 
 import rehype_toc from '@stefanprobst/rehype-extract-toc'
 import fs from 'fs/promises'
@@ -75,7 +76,7 @@ export default defineComponent({
 	}
 }
 
-export const createPlugin = function (ucfg?: UserConfig) {
+export function createPlugin(ucfg?: UserConfig): Plugin {
 	const cfg = NormalizeConfig(ucfg)
 
 	const parser = markdownParser(cfg)

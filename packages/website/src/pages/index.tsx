@@ -1,12 +1,12 @@
-import { defineComponent } from 'vue'
-import { useI18n } from 'vue-composable'
+import {useI18n} from '@ioclub/composable'
+import {defineComponent} from 'vue'
 
 import Image from '@/components/image'
 import Link from '@/components/link'
 
 export default defineComponent({
 	setup() {
-		const { i18n } = useI18n()
+		const {i18n} = useI18n()
 		return () => {
 			const {cube, join_us, about_us, section, photo} = i18n.value.home
 			const ret = []
@@ -45,22 +45,22 @@ export default defineComponent({
 								onClick={(e) => console.log(3, e)}
 							>
 								<div w:bg="pink-500" w:transform="translate-z-12">
-									{ cube[0] }
+									{cube[0]}
 								</div>
 								<div w:bg="blue-500" w:transform="rotate-y-180 translate-z-12">
-									{ cube[1] }
+									{cube[1]}
 								</div>
 								<div w:bg="yellow-500" w:transform="rotate-y-90 translate-z-12">
-									{ cube[2] }
+									{cube[2]}
 								</div>
 								<div w:bg="green-500" w:transform="-rotate-y-90 translate-z-12">
-									{ cube[3] }
+									{cube[3]}
 								</div>
 								<div w:bg="red-500" w:transform="rotate-x-90 translate-z-12">
-									{ cube[4] }
+									{cube[4]}
 								</div>
 								<div w:bg="gray-500" w:transform="-rotate-x-90 translate-z-12">
-									{ cube[5] }
+									{cube[5]}
 								</div>
 							</div>
 						</div>
@@ -90,7 +90,7 @@ export default defineComponent({
 									w:display="relative"
 									w:z="2"
 								>
-									{ join_us }
+									{join_us}
 								</div>,
 							]}
 						</Link>
@@ -102,7 +102,7 @@ export default defineComponent({
 			for (const p of about_us.description) {
 				about_us_p.push(
 					<p w:text="sm gray-600 indent" w:font="leading-loose">
-						{ p }
+						{p}
 					</p>
 				)
 			}
@@ -112,13 +112,13 @@ export default defineComponent({
 					w:children="mt-4"
 				>
 					<p w:text="2xl stroke-1 uppercase" w:border="b-4" w:w="max" w:m="x-auto">
-						{ about_us.title }
+						{about_us.title}
 					</p>
 					<div w:flex="~ wrap" w:justify="around" w:align="items-center" w:md="flex-nowrap flex-row-reverse">
 						<Image src='/logo.png' w:w="max-3/5 md:max-1/3" />
 						<div w:w="full md:max-2/4">
 							<p w:text="center black-500">
-								{ about_us.sub_title }
+								{about_us.sub_title}
 							</p>
 							{about_us_p}
 						</div>
@@ -143,11 +143,11 @@ export default defineComponent({
 							w:m="x-4"
 							w:border="rounded"
 						>
-							{ p.brand }
+							{p.brand}
 						</p>
 						<div w:w="5/8">
-							<p w:text="xl center">{ p.title }</p>
-							<p w:text="light-700">{ p.desc }</p>
+							<p w:text="xl center">{p.title}</p>
+							<p w:text="light-700">{p.desc}</p>
 						</div>
 					</div>
 				)
@@ -161,7 +161,7 @@ export default defineComponent({
 					w:children="my-4"
 				>
 					<p w:text="2xl stroke-1 uppercase" w:border="b-4" w:w="max" w:m="x-auto">
-						{ section.title }
+						{section.title}
 					</p>
 					<div w:grid="~ cols-2 <md:cols-1" w:justify="center" w:align="items-center">
 						{section_p}
@@ -170,7 +170,7 @@ export default defineComponent({
 			)
 
 			const imgs = []
-			for (let i=1; i<10; i++) {
+			for (let i = 1; i < 10; i++) {
 				imgs.push(<Image src={`/images/home/${i}.jpg`} />)
 			}
 			ret.push(
@@ -179,7 +179,7 @@ export default defineComponent({
 					w:children="my-4"
 				>
 					<p w:text="2xl stroke-1 uppercase" w:border="b-4" w:w="max" w:m="x-auto">
-						{ photo.title }
+						{photo.title}
 					</p>
 					<div w:grid="~ cols-auto md:cols-3 gap-2" w:justify="center">
 						{imgs}

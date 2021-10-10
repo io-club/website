@@ -1,99 +1,104 @@
-import type {Meta, TocEntry} from '@ioclub/mdvue'
+import type {Meta} from '@ioclub/mdvue'
 
-import { defineComponent, provide, reactive } from 'vue'
+import {useI18n} from '@ioclub/composable'
+import Menu from 'virtual:icons/mdi-light/menu'
+import {defineComponent, provide, reactive, ref} from 'vue'
 
-import DefaultMd from './default_md'
-// import {article} from "windicss/plugin/typography"
+import Link from '@/components/link'
+import Logo from '@/components/logo'
 import MdMenu from '~/components/generater/mdmenu'
-import MdSidebar from '~/components/generater/mdsidebar'
+
 export default defineComponent({
 	props: {'name': String},
 	setup(_, {slots}) {
+		const {i18n} = useI18n()
+		const show = ref(false)
+		provide('mobile_menu', show)
+
 		const meta: Meta = reactive({})
 		const updateMeta = (n: Meta) => {
 			meta.frontmatter = n.frontmatter
 			meta.toc = n.toc
 		}
-		const handleScroll = () => {
-			// 设备/屏幕高度
-			let clientHeight = document.documentElement.clientHeight || document.body.clientHeight
-			// 滚动区域到头部的距离
-			// let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-
-			let header = document.getElementById("header")?.getBoundingClientRect().bottom
-			if (header >= 0) {
-				document.getElementById("leftnav")?.style.setProperty("top", header + "px")
-				document.getElementById("rightmenu")?.style.setProperty("top", header + "px")
-			} else {
-				document.getElementById("leftnav")?.style.setProperty("top", "0px")
-				document.getElementById("rightmenu")?.style.setProperty("top", "0px")
-			}
-			
-			let footer = document.getElementById("copyright")?.getBoundingClientRect().top
-			if (clientHeight - footer >= 0) {
-				document.getElementById("leftnav")?.style.setProperty("bottom", clientHeight - footer + "px")
-				document.getElementById("rightmenu")?.style.setProperty("bottom", clientHeight - footer + "px")
-			} else {
-				document.getElementById("leftnav")?.style.setProperty("bottom", "0px")
-				document.getElementById("rightmenu")?.style.setProperty("bottom", "0px")
-			}
-
-		}
-		onMounted(() => {
-			// 监听滚动事件，然后用handleScroll这个方法进行相应的处理
-			window.addEventListener('scroll', handleScroll)
-		})
-		onBeforeUnmount(() => {
-			window.removeEventListener('scroll', handleScroll)
-		})
 		provide('md_update_meta', updateMeta)
-		const el = ref(null)
-		return () => <DefaultMd>
-			{() => {
-				const ret = []
-				ret.push(
-					<div class="grid grid-cols-[1fr,4fr] grid-rows-1">
-						<div class="border-r">
-							<div id="leftnav" 
-							class="fixed overflow-y-auto w-20/100 px-4 " 
-							style="top: 90px; bottom: 0px">
-								<div class={`flex my-4`}>
-									<div>⚡ </div>
-									<div class="flex-grow">
-										<div>
-											<span>What's Happing</span>	
-										</div>
-										<div class="text-sm text-gray-400">
-											<span>latest update 3 minutes before</span>	
-										</div>
-									</div>
-								</div>	
-								<MdSidebar/>
-							</div>
-						</div>
-						<div>
-							<div class="w-full grid grid-cols-[3fr,1fr]">
-								<div class="mx-auto pt-7">
-									<article  class="prose">
-										{slots.default ? slots.default() : null}
-									</article>
-								</div>
-								<div class="fixed bg-gray-50 overflow-y-auto w-20/100 text-sm px-3 
-								rounded-md mb-4 p-4 max-w-sm w-full mx-auto" 
-								id="rightmenu" 
-								style="top: 90px; bottom: 0px; right:0px">
-									<div class="my-3 text-sm"  
-									style="text-align:center">
-										<span># Document Menu </span>
-									</div>
-									<MdMenu toc={meta.toc?.at(0)} />
-								</div>
-							</div>
-						</div>
-					</div>
-				)
-				return ret
-			}}
-		</DefaultMd>
-	}
+
+		const el_header = ref(null)
+		const el_footer = ref(null)
+		return () => {
+			const {header, title} = i18n.value.common
+			const ret = []
+
+			ret.push(
+				<div
+					w:p="y-3 x-oi-6 x-os-5 x-o"
+					w:bg="white"
+					w:flex="~ wrap"
+					w:justify="between"
+					w:align="items-center"
+					ref={el_header}
+				>
+					<Link w:flex="~" w:align="items-center" to="/" >{() => [
+						<Logo w:h="8" w:m="r-2" />,
+						<span w:text="2xl" w:font="heavy">{title}</span>,
+					]}</Link>
+					<button w:display="md:hidden" type="button" onClick={() => show.value = !show.value}>
+						<Menu height="1.5rem" />
+					</button>
+					<nav w:w="full md:3/4" w:m="<md:t-2">
+						<ul
+							w:flex="~"
+							w:justify="around"
+							w:children="border-b-2 transition-transform transform duration-100"
+						>
+							<li w:transform="hover:scale-110">
+								<a href="/#about">{header.about}</a>
+							</li>
+							<li w:transform="hover:scale-110">
+								<a href="/t">{header.notice}</a>
+							</li>
+							<li w:text="gray-400">
+								<a href="#">{header.forum}</a>
+							</li>
+							<li w:text="gray-400">
+								<a href="#">{header.login}</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			)
+
+			ret.push(
+				<div
+					w:p="t-4"
+					w:grid="~ cols-[4fr,1fr] rows-1"
+				>
+					<article class="prose mx-auto">
+						{slots.default ? slots.default() : null}
+					</article>
+					<aside class="sticky bg-gray-50 overflow-y-auto text-sm px-3 
+								rounded-md mb-4 p-4 max-w-sm w-full mx-auto"
+					style="top: 90px; bottom: 0px; right:0px">
+						<span># Document Menu </span>
+						<MdMenu toc={{}} />
+					</aside>
+				</div>
+			)
+
+			ret.push(
+				<div
+					w:bg="gray-800"
+					w:h="min-20"
+					w:text="white"
+					w:flex="~"
+					w:align="items-center"
+					w:justify="center"
+					ref={el_footer}
+				>
+					<p>By &copy; 2021 I/O club All rights reserved</p>
+				</div>
+			)
+
+			return ret
+		}
+	},
 })
