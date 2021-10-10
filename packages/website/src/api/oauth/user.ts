@@ -1,5 +1,4 @@
-import type {JTDDataType} from '~/alias/jtd'
-import type {UserRepository} from '~/api/entity/user'
+import type {User, UserRepository} from '~/api/entity/user'
 import type {FastifyPluginCallback} from 'fastify'
 
 import status_code from 'http-status-codes'
@@ -42,7 +41,7 @@ export const routes: FastifyPluginCallback<Config> = async function (app, option
 		response: { type: 'string' },
 	} as const
 	app.route<{
-		Body: JTDDataType<typeof current_patch_schema.body>,
+		Body: {email: User['email'], phone: User['phone']},
 	}>({
 		method: 'PATCH',
 		url: '/',
@@ -72,7 +71,7 @@ export const routes: FastifyPluginCallback<Config> = async function (app, option
 			},
 		} as const
 		app.route<{
-			Params: JTDDataType<typeof get_schema.params>,
+			Params: {id: User['id']},
 		}>({
 			method: 'GET',
 			url: '/:id',
@@ -110,8 +109,8 @@ export const routes: FastifyPluginCallback<Config> = async function (app, option
 			body: userDefinition,
 		} as const
 		app.route<{
-			Params: JTDDataType<typeof update_schema.params>,
-			Body: JTDDataType<typeof update_schema.body>,
+			Params: {op: Extract<Parameters<typeof options.user.add>[0], 'create' | 'modify'>},
+			Body: User,
 		}>({
 			method: 'POST',
 			url: '/:op',
@@ -134,7 +133,7 @@ export const routes: FastifyPluginCallback<Config> = async function (app, option
 			response: userDefinition,
 		} as const
 		app.route<{
-			Params: JTDDataType<typeof get_schema.params>,
+			Params: {id: User['id']},
 		}>({
 			method: 'GET',
 			url: '/:id',
@@ -159,7 +158,7 @@ export const routes: FastifyPluginCallback<Config> = async function (app, option
 			response: { type: 'string' },
 		} as const
 		app.route<{
-			Params: JTDDataType<typeof delete_schema.params>,
+			Params: {id: User['id']},
 		}>({
 			method: 'DELETE',
 			url: '/:id',

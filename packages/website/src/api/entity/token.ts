@@ -1,5 +1,5 @@
 import type {OAuthClient, OAuthScope, OAuthToken, OAuthTokenRepository, OAuthUser} from '@jmondi/oauth2-server'
-import type {JTDDataType} from '~/alias/jtd'
+import type {JTDSchemaType} from '~/alias/jtd'
 import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
@@ -12,7 +12,17 @@ import {clientDefinition} from './client'
 import {scopeDefinition} from './scope'
 import {userDefinition} from './user'
 
-export const tokenDefinition = {
+export interface Token {
+	accessToken: string;
+	accessTokenExpiresAt: Date;
+	refreshToken?: string;
+	refreshTokenExpiresAt?: Date;
+	clientId: string;
+	userId?: string;
+	scopeNames: string[];
+}
+
+export const tokenDefinition: JTDSchemaType<Token> = {
 	properties: {
 		accessToken: { type: 'string', metadata: { format: 'alnun' } },
 		accessTokenExpiresAt: { type: 'timestamp' },
@@ -24,10 +34,9 @@ export const tokenDefinition = {
 		refreshTokenExpiresAt: { type: 'timestamp' },
 		userId: userDefinition.properties.id,
 	},
-} as const
+}
 
-type T = JTDDataType<typeof tokenDefinition>
-export class TokenRepository extends BaseRepository<T> implements OAuthTokenRepository {
+export class TokenRepository extends BaseRepository<Token> implements OAuthTokenRepository {
 	#idgen: () => string
 	#index: string
 
@@ -59,7 +68,7 @@ export class TokenRepository extends BaseRepository<T> implements OAuthTokenRepo
 
 	async persist(accessToken: OAuthToken) {
 		// TODO: fix type cast
-		await this.add('upsert', accessToken as unknown as T)
+		await this.add('upsert', accessToken as unknown as Token)
 	}
 
 	async revoke(accessToken: OAuthToken) {

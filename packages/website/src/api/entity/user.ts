@@ -1,5 +1,5 @@
 import type {OAuthUser, OAuthUserRepository} from '@jmondi/oauth2-server'
-import type {JTDDataType} from '~/alias/jtd'
+import type {JTDSchemaType} from '~/alias/jtd'
 import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
@@ -9,17 +9,39 @@ import {escapeTag} from '~/api/plugins/redis'
 
 import {BaseRepository} from './base'
 
-export const userDefinition = {
+interface info {
+	value: string
+	mode: 'public' | 'private'
+}
+
+interface mfa_info extends info {
+	verified: boolean
+}
+
+export interface User {
+	id: string
+	password: string
+	follows: string[]
+	nick?: string
+	email?: mfa_info
+	phone?: mfa_info
+}
+
+export const userDefinition: JTDSchemaType<User> = {
 	properties: {
 		id: { type: 'string', metadata: { format: 'alnun' } },
+		password: { type: 'string' },
+		follows: {
+			elements: {
+				type: 'string',
+				metadata: { format: 'alnun' },
+			},
+		},
 	},
 	optionalProperties: {
 		nick: {
 			type: 'string',
 			metadata: { format: 'alnun' },
-		},
-		password: {
-			type: 'string',
 		},
 		email: {
 			properties: {
@@ -41,16 +63,10 @@ export const userDefinition = {
 				verified: { type: 'boolean' },
 			}
 		},
-		follows: {
-			elements: {
-				type: 'string',
-				metadata: { format: 'email' },
-			},
-		},
 	},
-} as const
+}
 
-export class UserRepository extends BaseRepository<JTDDataType<typeof userDefinition>> implements OAuthUserRepository {
+export class UserRepository extends BaseRepository<User> implements OAuthUserRepository {
 	#lock: string
 	#token_index: string
 	#token_data: string

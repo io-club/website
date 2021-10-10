@@ -1,5 +1,5 @@
 import type {GrantIdentifier, OAuthClient, OAuthClientRepository} from '@jmondi/oauth2-server'
-import type {JTDDataType} from '~/alias/jtd'
+import type {JTDSchemaType} from '~/alias/jtd'
 import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
@@ -10,7 +10,11 @@ import {escapeTag} from '~/api/plugins/redis'
 import {BaseRepository} from './base'
 import {scopeDefinition} from './scope'
 
-export const clientDefinition = {
+export interface Client extends OAuthClient {
+	description?: string
+}
+
+export const clientDefinition: JTDSchemaType<Client> = {
 	properties: {
 		id: { type: 'string', metadata: { format: 'alnun' } },
 		name: { type: 'string' },
@@ -24,10 +28,11 @@ export const clientDefinition = {
 	},
 	optionalProperties: {
 		secret: { type: 'string' },
+		description: { type: 'string' },
 	},
-} as const
+}
 
-export class ClientRepository extends BaseRepository<JTDDataType<typeof clientDefinition>> implements OAuthClientRepository {
+export class ClientRepository extends BaseRepository<Client> implements OAuthClientRepository {
 	#lock: string
 	#token_index: string
 	#token_data: string
@@ -38,7 +43,7 @@ export class ClientRepository extends BaseRepository<JTDDataType<typeof clientDe
 		super({
 			redis: app.redis,
 			data: join(cfg.prefix, 'client', 'data'),
-			id: (a: OAuthClient) => `${a.id}`,
+			id: (a: Client) => a.id,
 			parser: app.ajv.compileParser(clientDefinition),
 			serializer: app.ajv.compileSerializer(clientDefinition),
 		})

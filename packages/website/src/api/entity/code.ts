@@ -1,5 +1,5 @@
-import type {OAuthAuthCode, OAuthAuthCodeRepository, OAuthClient, OAuthScope, OAuthUser} from '@jmondi/oauth2-server'
-import type {JTDDataType} from '~/alias/jtd'
+import type {CodeChallengeMethod, OAuthAuthCode, OAuthAuthCodeRepository, OAuthClient, OAuthScope, OAuthUser} from '@jmondi/oauth2-server'
+import type {JTDSchemaType} from '~/alias/jtd'
 import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
@@ -11,7 +11,18 @@ import {clientDefinition} from './client'
 import {scopeDefinition} from './scope'
 import {userDefinition} from './user'
 
-export const codeDefinition = {
+export interface AuthCode {
+	code: string;
+	redirectUri?: string;
+	codeChallenge?: string;
+	codeChallengeMethod?: CodeChallengeMethod;
+	expiresAt: Date;
+	userId?: string;
+	clientId: string;
+	scopeNames: string[];
+}
+
+export const codeDefinition: JTDSchemaType<AuthCode> = {
 	properties: {
 		code: { type: 'string', metadata: { format: 'alnun' } },
 		expiresAt: { type: 'timestamp' },
@@ -24,10 +35,9 @@ export const codeDefinition = {
 		codeChallengeMethod: { enum: ['S256', 'plain'] },
 		userId: userDefinition.properties.id,
 	},
-} as const
+}
 
-type T = JTDDataType<typeof codeDefinition>
-export class CodeRepository extends BaseRepository<T> implements OAuthAuthCodeRepository {
+export class CodeRepository extends BaseRepository<AuthCode> implements OAuthAuthCodeRepository {
 	#idgen: () => string
 
 	constructor(app: FastifyInstance, cfg: Config) {
@@ -58,7 +68,7 @@ export class CodeRepository extends BaseRepository<T> implements OAuthAuthCodeRe
 
 	async persist(authCode: OAuthAuthCode) {
 		// TODO: fix type cast
-		return await this.add('upsert', authCode as unknown as T)
+		return await this.add('upsert', authCode as unknown as AuthCode)
 	}
 
 	async isRevoked(authCode: string) {

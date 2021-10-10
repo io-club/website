@@ -1,5 +1,5 @@
 import type {GrantIdentifier, OAuthClient, OAuthScope, OAuthScopeRepository} from '@jmondi/oauth2-server'
-import type {JTDDataType} from '~/alias/jtd'
+import type {JTDSchemaType} from '~/alias/jtd'
 import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
@@ -7,14 +7,21 @@ import {join} from 'pathe'
 
 import {BaseRepository} from './base'
 
-export const scopeDefinition = {
+export interface Scope {
+	name: string;
+	description?: string;
+}
+
+export const scopeDefinition: JTDSchemaType<Scope> = {
 	properties: {
 		name: { type: 'string', metadata: { format: 'alnun' } }
 	},
-	additionalProperties: true
-} as const
+	optionalProperties: {
+		description: { type: 'string' },
+	},
+}
 
-export class ScopeRepository extends BaseRepository<JTDDataType<typeof scopeDefinition>> implements OAuthScopeRepository {
+export class ScopeRepository extends BaseRepository<Scope> implements OAuthScopeRepository {
 	constructor(app: FastifyInstance, cfg: Config) {
 		super({
 			redis: app.redis,
