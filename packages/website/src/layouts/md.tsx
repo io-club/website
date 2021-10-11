@@ -22,8 +22,6 @@ export default defineComponent({
 		}
 		provide('md_update_meta', updateMeta)
 
-		const el_header = ref(null)
-		const el_footer = ref(null)
 		return () => {
 			const {header, title} = i18n.value.common
 			const ret = []
@@ -36,7 +34,7 @@ export default defineComponent({
 					w:flex="~ wrap"
 					w:justify="between"
 					w:align="items-center"
-					ref={el_header}
+					w:pos="sticky top-0"
 				>
 					<Link w:flex="~" w:align="items-center" to="/" >{() => [
 						<Logo w:text="2xl" />,
@@ -77,7 +75,7 @@ export default defineComponent({
 						{slots.default ? slots.default() : null}
 					</article>
 					<aside>
-						<div w:pos="sticky top-0">
+						<div w:pos="sticky top-14">
 							<span># Document Menu </span>
 							<MdMenu toc={{}} />
 						</div>
@@ -93,7 +91,6 @@ export default defineComponent({
 					w:flex="~"
 					w:align="items-center"
 					w:justify="center"
-					ref={el_footer}
 				>
 					<p>By &copy; 2021 I/O club All rights reserved</p>
 				</div>
