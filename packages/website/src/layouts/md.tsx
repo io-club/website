@@ -31,6 +31,7 @@ export default defineComponent({
 			ret.push(
 				<div
 					w:p="y-3 x-oi-6 x-os-5 x-o"
+					w:h="14"
 					w:bg="white"
 					w:flex="~ wrap"
 					w:justify="between"
@@ -38,11 +39,11 @@ export default defineComponent({
 					ref={el_header}
 				>
 					<Link w:flex="~" w:align="items-center" to="/" >{() => [
-						<Logo w:h="8" w:m="r-2" />,
+						<Logo w:text="2xl" />,
 						<span w:text="2xl" w:font="heavy">{title}</span>,
 					]}</Link>
 					<button w:display="md:hidden" type="button" onClick={() => show.value = !show.value}>
-						<Menu height="1.5rem" />
+						<Menu w:text="2xl" />
 					</button>
 					<nav w:w="full md:3/4" w:m="<md:t-2">
 						<ul
@@ -51,16 +52,16 @@ export default defineComponent({
 							w:children="border-b-2 transition-transform transform duration-100"
 						>
 							<li w:transform="hover:scale-110">
-								<a href="/#about">{header.about}</a>
+								<Link to="/#about">{() => header.about}</Link>
 							</li>
 							<li w:transform="hover:scale-110">
-								<a href="/t">{header.notice}</a>
+								<Link to="/t">{() => header.notice}</Link>
 							</li>
 							<li w:text="gray-400">
-								<a href="#">{header.forum}</a>
+								<Link to="#">{() => header.forum}</Link>
 							</li>
 							<li w:text="gray-400">
-								<a href="#">{header.login}</a>
+								<Link to="#">{() => header.login}</Link>
 							</li>
 						</ul>
 					</nav>
@@ -70,16 +71,16 @@ export default defineComponent({
 			ret.push(
 				<div
 					w:p="t-4"
-					w:grid="~ cols-[4fr,1fr] rows-1"
+					w:grid="~ cols-[4fr_1fr] rows-1"
 				>
 					<article class="prose mx-auto">
 						{slots.default ? slots.default() : null}
 					</article>
-					<aside class="sticky bg-gray-50 overflow-y-auto text-sm px-3 
-								rounded-md mb-4 p-4 max-w-sm w-full mx-auto"
-					style="top: 90px; bottom: 0px; right:0px">
-						<span># Document Menu </span>
-						<MdMenu toc={{}} />
+					<aside>
+						<div w:pos="sticky top-0">
+							<span># Document Menu </span>
+							<MdMenu toc={{}} />
+						</div>
 					</aside>
 				</div>
 			)

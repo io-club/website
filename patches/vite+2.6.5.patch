@@ -1,0 +1,13 @@
+diff --git a/node_modules/vite/dist/node/chunks/dep-8c389ab7.js b/node_modules/vite/dist/node/chunks/dep-8c389ab7.js
+index 31b191e..9ac3dc8 100644
+--- a/node_modules/vite/dist/node/chunks/dep-8c389ab7.js
++++ b/node_modules/vite/dist/node/chunks/dep-8c389ab7.js
+@@ -5878,7 +5878,7 @@ function checkPublicFile(url, { publicDir }) {
+     }
+ }
+ function fileToUrl(id, config, ctx) {
+-    if (config.command === 'serve') {
++    if (config.command === 'serve' || config.mode === 'development') {
+         return fileToDevUrl(id, config);
+     }
+     else {

@@ -1,0 +1,28 @@
+diff --git a/node_modules/@nuxt/vite-builder/dist/index.mjs b/node_modules/@nuxt/vite-builder/dist/index.mjs
+index fc27f8f..be2e7e7 100644
+--- a/node_modules/@nuxt/vite-builder/dist/index.mjs
++++ b/node_modules/@nuxt/vite-builder/dist/index.mjs
+@@ -165,7 +165,7 @@ async function transformRequest(viteServer, id) {
+   if (id && id.startsWith("/@id/")) {
+     id = id.slice("/@id/".length);
+   }
+-  if (builtinModules.includes(id) || id.includes("node_modules")) {
++  if (!id.includes('nuxt3/dist') && (builtinModules.includes(id) || id.includes("node_modules"))) {
+     return {
+       code: `(global, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) => import('${id.replace(/^\/@fs/, "")}').then(r => { ssrExportAll(r) })`,
+       deps: [],
+@@ -268,6 +268,14 @@ async function __instantiateModule__(url, urlStack) {
+             get() { return sourceModule[key] }
+           })
+         } catch (_err) { }
++      } else {
++        try {
++          Object.defineProperty(stubModule, key, {
++            enumerable: false,
++            configurable: false,
++            get() { return sourceModule.default }
++          })
++        } catch (_err) { }
+       }
+     }
+   }

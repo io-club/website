@@ -8,9 +8,13 @@
 	},
 	"repository": "https://github.com/xhebox/ioclub/ioclub",
 	"scripts": {
-		"dev": "concurrently -c 'yellow,reset' -k -n redis,nuxt 'redis-server --loadmodule RedisJSON/target/release/librejson.so --loadmodule RediSearch/build/redisearch.so' 'nu dev --no-clear'",
-		"build": "concurrently -c 'yellow,reset' -k -n redis,nuxt 'redis-server --loadmodule RedisJSON/target/release/librejson.so --loadmodule RediSearch/build/redisearch.so' 'nu build'",
-		"start": "concurrently -c 'yellow,reset' -k -n redis,nuxt 'redis-server --loadmodule RedisJSON/target/release/librejson.so --loadmodule RediSearch/build/redisearch.so' 'node .output/server/index.mjs'"
+		"redis": "redis-server --loadmodule RedisJSON/target/release/librejson.so --loadmodule RediSearch/build/redisearch.so",
+		"nuxt-dev": "nu dev --no-clear",
+		"nuxt-build": "nu build --no-clear",
+		"nuxt-start": "node ./output/server/index.mjs",
+		"dev": "run-p -r -l redis nuxt-dev",
+		"build": "run-p -r -l redis nuxt-build",
+		"start": "run-p -r -l redis nuxt-start"
 	},
 	"license": "MIT",
 	"devDependencies": {

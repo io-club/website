@@ -1,11 +1,9 @@
 import { defineComponent } from 'vue'
 
-import props from '@/utils/props'
 import screens from '@/utils/screens'
 
 export default defineComponent({
 	props: {
-		...props,
 		src: {
 			type: String,
 			required: true,
@@ -20,7 +18,7 @@ export default defineComponent({
 					src.push(<source srcset={`/api/service/image?url=${props.src}&width=${v.slice(0, v.length-2)}&format=${p}`} media={`(max-width: ${v})`} type={`image/${p}`} />)
 				}
 			}
-			return <picture {...props}>
+			return <picture>
 				{src}
 				<img src={props.src} alt={props.alt} />
 			</picture>
