@@ -6,16 +6,17 @@ import type {Config as redisConfig} from './plugins/redis'
 import Fastify from 'fastify'
 import FastifyCookie from 'fastify-cookie'
 
+import {entity} from './entity'
 //import FastifySession from '@mgcrea/fastify-session'
 //import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
-import OAuthRoutes from './oauth'
+import {oauth} from './oauth'
 import FastifyAjv from './plugins/ajv'
 import FastifyFetch from './plugins/fetch'
 import FastifyMailer from './plugins/mailer'
 import FastifyRedis from './plugins/redis'
 import FastifySharp from './plugins/sharp'
 //import service from './service'
-//import users from './users'
+import {user} from './user'
 
 export interface Options {
 	url: string
@@ -28,7 +29,7 @@ export interface Options {
 	mailer: MailerOptions
 	//auth: authConfig
 	//service: serviceConfig
-	oauth: oauthConfig
+	oauth: Omit<oauthConfig, 'prefix'>
 }
 
 function createApp() {
@@ -67,7 +68,6 @@ function createApp() {
 			},
 		},
 		oauth: {
-			prefix: '/oauth',
 			jwtSecret: 'ggg',
 			root: {
 				name: 'root',
@@ -106,7 +106,12 @@ function createApp() {
 
 	app.register(async function (app) {
 		app
-			.register(OAuthRoutes, options.oauth)
+			.register(entity, {prefix: '/entity'})
+			.register(oauth, {
+				...options.oauth,
+				prefix: '/oauth',
+			})
+			.register(user, {prefix: '/user'})
 
 		//.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 		//.register(auth, {prefix: '/auth', ...options.auth})

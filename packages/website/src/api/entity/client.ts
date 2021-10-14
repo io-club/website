@@ -1,6 +1,5 @@
 import type {GrantIdentifier, OAuthClient, OAuthClientRepository} from '@jmondi/oauth2-server'
 import type {JTDSchemaType} from '~/alias/jtd'
-import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
 import {join} from 'pathe'
@@ -39,19 +38,19 @@ export class ClientRepository extends BaseRepository<Client> implements OAuthCli
 	#code_index: string
 	#code_data: string
 
-	constructor(app: FastifyInstance, cfg: Config) {
+	constructor(app: FastifyInstance, prefix: string) {
 		super({
 			redis: app.redis,
-			data: join(cfg.prefix, 'client', 'data'),
+			data: join(prefix, 'client', 'data'),
 			id: (a: Client) => a.id,
 			parser: app.ajv.compileParser(clientDefinition),
 			serializer: app.ajv.compileSerializer(clientDefinition),
 		})
-		this.#lock = join(cfg.prefix, 'lock')
-		this.#token_index = join(cfg.prefix, 'token', 'index')
-		this.#token_data = join(cfg.prefix, 'token', 'data')
-		this.#code_index = join(cfg.prefix, 'code', 'index')
-		this.#code_data = join(cfg.prefix, 'code', 'data')
+		this.#lock = join(prefix, 'lock')
+		this.#token_index = join(prefix, 'token', 'index')
+		this.#token_data = join(prefix, 'token', 'data')
+		this.#code_index = join(prefix, 'code', 'index')
+		this.#code_data = join(prefix, 'code', 'data')
 	}
 
 	async del(...ids: string[]) {

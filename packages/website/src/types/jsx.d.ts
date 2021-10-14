@@ -52,8 +52,11 @@ declare namespace JSX {
 		'w:sr'?: string
 
 		'w:children'?: string
-		'w:md'?: string
 		'w:even'?: string
+
+		'w:md'?: string
+		'w:lg'?: string
+		'w:<lg'?: string
 	}
 
 	interface IntrinsicAttributes extends CustomAttributes {

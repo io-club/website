@@ -1,6 +1,5 @@
 import type {CodeChallengeMethod, OAuthAuthCode, OAuthAuthCodeRepository, OAuthClient, OAuthScope, OAuthUser} from '@jmondi/oauth2-server'
 import type {JTDSchemaType} from '~/alias/jtd'
-import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
 import {customAlphabet} from 'nanoid'
@@ -40,10 +39,10 @@ export const codeDefinition: JTDSchemaType<AuthCode> = {
 export class CodeRepository extends BaseRepository<AuthCode> implements OAuthAuthCodeRepository {
 	#idgen: () => string
 
-	constructor(app: FastifyInstance, cfg: Config) {
+	constructor(app: FastifyInstance, prefix: string) {
 		super({
 			redis: app.redis,
-			data: join(cfg.prefix, 'code', 'data'),
+			data: join(prefix, 'code', 'data'),
 			id: (a) => `${a.code}`,
 			parser: app.ajv.compileParser(codeDefinition),
 			serializer: app.ajv.compileSerializer(codeDefinition),

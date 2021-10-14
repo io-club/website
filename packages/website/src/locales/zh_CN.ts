@@ -7,6 +7,7 @@ const p = {
 		title: 'IO实验室',
 		loading_tip: '加载中...',
 		header: {
+			home: '首页',
 			about: '关于',
 			notice: '通知',
 			forum: '论坛',

@@ -1,6 +1,5 @@
 import type {OAuthClient, OAuthScope, OAuthToken, OAuthTokenRepository, OAuthUser} from '@jmondi/oauth2-server'
 import type {JTDSchemaType} from '~/alias/jtd'
-import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
 import dayjs from 'dayjs'
@@ -40,16 +39,16 @@ export class TokenRepository extends BaseRepository<Token> implements OAuthToken
 	#idgen: () => string
 	#index: string
 
-	constructor(app: FastifyInstance, cfg: Config) {
+	constructor(app: FastifyInstance, prefix: string) {
 		super({
 			redis: app.redis,
-			data: join(cfg.prefix, 'token', 'data'),
+			data: join(prefix, 'token', 'data'),
 			id: (a) => `${a.accessToken}`,
 			parser: app.ajv.compileParser(tokenDefinition),
 			serializer: app.ajv.compileSerializer(tokenDefinition),
 		})
 		this.#idgen = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 21)
-		this.#index = join(cfg.prefix, 'token', 'index')
+		this.#index = join(prefix, 'token', 'index')
 	}
 
 	async del(...ids: string[]) {

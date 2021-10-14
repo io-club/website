@@ -23,7 +23,6 @@
 		"@types/ioredis": "^4.27.6",
 		"@types/lodash": "^4.14.175",
 		"@types/nodemailer": "^6.4.4",
-		"@types/oidc-provider": "^7.6.1",
 		"@types/sharp": "^0.29.2",
 		"autoprefixer": "^10.3.7",
 		"babel-plugin-module-resolver": "^4.1.0",

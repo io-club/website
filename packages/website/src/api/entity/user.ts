@@ -1,6 +1,5 @@
 import type {OAuthUser, OAuthUserRepository} from '@jmondi/oauth2-server'
 import type {JTDSchemaType} from '~/alias/jtd'
-import type {Config} from '~/api/oauth'
 import type {FastifyInstance} from 'fastify'
 
 import {join} from 'pathe'
@@ -73,19 +72,19 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 	#code_index: string
 	#code_data: string
 
-	constructor(app: FastifyInstance, cfg: Config) {
+	constructor(app: FastifyInstance, prefix: string) {
 		super({
 			redis: app.redis,
-			data: join(cfg.prefix, 'user', 'data'),
+			data: join(prefix, 'user', 'data'),
 			id: (a) => `${a.id}`,
 			parser: app.ajv.compileParser(userDefinition),
 			serializer: app.ajv.compileSerializer(userDefinition),
 		})
-		this.#lock = join(cfg.prefix, 'lock')
-		this.#token_index = join(cfg.prefix, 'token', 'index')
-		this.#token_data = join(cfg.prefix, 'token', 'data')
-		this.#code_index = join(cfg.prefix, 'code', 'index')
-		this.#code_data = join(cfg.prefix, 'code', 'data')
+		this.#lock = join(prefix, 'lock')
+		this.#token_index = join(prefix, 'token', 'index')
+		this.#token_data = join(prefix, 'token', 'data')
+		this.#code_index = join(prefix, 'code', 'index')
+		this.#code_data = join(prefix, 'code', 'data')
 	}
 
 	async getUserByCredentials(identifier: string) {
