@@ -14,6 +14,10 @@ export default defineComponent({
 			type: Boolean,
 			default: false,
 		},
+		aside_show: {
+			type: Boolean,
+			default: false,
+		},
 		article: {
 			type: Boolean,
 			default: false,
@@ -22,7 +26,7 @@ export default defineComponent({
 	setup(props, {slots}) {
 		const {i18n} = useI18n()
 
-		const sidebar = ref(false)
+		const sidebar = ref(props.aside_show)
 		const meta = reactive<Meta>({})
 		const updateMeta = (n: Meta) => {
 			meta.frontmatter = n.frontmatter
@@ -60,7 +64,7 @@ export default defineComponent({
 			return <div>
 				<div w:pos="relative">
 					<aside
-						w:pos={`absolute ${sidebar.value ? 'left-0': '-left-full'}`}
+						w:pos={sidebar.value ? 'absolute left-0': 'absolute -left-full'}
 						w:transition="~ all duration-200"
 						w:w="3/5 sm:1/2 md:1/3"
 						w:h="full"

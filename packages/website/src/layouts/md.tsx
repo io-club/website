@@ -7,6 +7,7 @@ export default defineComponent({
 	setup(_, {slots}) {
 		return () => <Layout
 			aside={true}
+			aside_show={true}
 			article={true}
 		>{slots.default}</Layout>
 	},
