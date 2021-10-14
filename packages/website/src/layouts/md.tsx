@@ -5,6 +5,9 @@ import Layout from '~/components/layout'
 export default defineComponent({
 	props: {name: String},
 	setup(_, {slots}) {
-		return () => <Layout>{slots.default}</Layout>
+		return () => <Layout
+			aside={true}
+			article={true}
+		>{slots.default}</Layout>
 	},
 })

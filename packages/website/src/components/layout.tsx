@@ -10,7 +10,10 @@ import Logo from '~/components/logo'
 
 export default defineComponent({
 	props: {
-		aside: Boolean,
+		aside: {
+			type: Boolean,
+			default: false,
+		},
 		article: {
 			type: Boolean,
 			default: false,
