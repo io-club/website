@@ -6,7 +6,7 @@ import {createPool} from 'generic-pool'
 import IORedis, {Command} from 'ioredis'
 
 export function escapeTag(tag: string) {
-	return tag.replace(/[ \t,./(){}[]:;\\~!@#$%^&*-=%+|'`"<>%?_%z]/g, '\\$&')
+	return tag.replace(/[ \t,./(){}[\]:;\\~!@#$%^&*\-=+|'`"<>?_]/g, '\\$&')
 }
 
 export interface Config {
@@ -22,6 +22,7 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 			redis.addBuiltinCommand('ft.create')
 			redis.addBuiltinCommand('ft.search')
 			redis.addBuiltinCommand('ft.dropindex')
+			redis.addBuiltinCommand('ft.info')
 			return redis
 		},
 		async destroy(client) {

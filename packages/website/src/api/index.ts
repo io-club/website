@@ -1,3 +1,4 @@
+import type {Config as authConfig} from './auth'
 import type {Config as oauthConfig} from './oauth'
 import type {Config as ajvConfig} from './plugins/ajv'
 import type {Options as MailerOptions} from './plugins/mailer'
@@ -27,7 +28,7 @@ export interface Options {
 	ajv: ajvConfig
 	redis: redisConfig
 	mailer: MailerOptions
-	//auth: authConfig
+	auth: authConfig
 	//service: serviceConfig
 	oauth: Omit<oauthConfig, 'prefix'>
 }
@@ -56,7 +57,8 @@ function createApp() {
 			}
 		},
 		auth: {
-			mailTTL: 600,
+			TTL: 600,
+			mail_from: env['MAILER_USER'] ?? 'xx@x.com',
 		},
 		ajv: {
 		},

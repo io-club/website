@@ -23,6 +23,7 @@
 		"@types/ioredis": "^4.27.6",
 		"@types/lodash": "^4.14.175",
 		"@types/nodemailer": "^6.4.4",
+		"@types/redis-errors": "^1.2.1",
 		"@types/sharp": "^0.29.2",
 		"autoprefixer": "^10.3.7",
 		"babel-plugin-module-resolver": "^4.1.0",
@@ -64,6 +65,7 @@
 		"nuxt3": "3.0.0-27228388.2bf645b",
 		"ohmyfetch": "^0.3.1",
 		"pathe": "^0.2.0",
+		"redis-errors": "^1.2.0",
 		"sharp": "^0.29.1"
 	}
 }

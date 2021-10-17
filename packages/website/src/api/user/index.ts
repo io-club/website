@@ -1,3 +1,4 @@
+import type {JTDDataType} from '~/alias/jtd'
 import type {User} from '~/api/entity/user'
 import type {FastifyPluginCallback} from 'fastify'
 
@@ -13,7 +14,39 @@ export interface Config {
 
 export const user: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	app.register(async function (app) {
-	// self manipulation
+		// signup
+		const signup_schema = {
+			body: {
+				properties: {
+					username: {
+						type: 'string',
+					},
+					passwd: {
+						type: 'string',
+					},
+					email: {
+						type: 'string',
+					},
+				}
+			},
+		} as const
+		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+			method: 'POST',
+			url: '/signup',
+			schema: {
+				body: signup_schema.body,
+			},
+			handler: async function (req, res) {
+				await this.entity.user.signup({
+					id: req.body.username,
+					passwd: req.body.passwd,
+					email: req.body.email,
+				})
+				res.send('OK')
+			},
+		})
+
+		// self manipulation
 		const current_get_schema = {
 			response: userDefinition,
 		} as const
@@ -22,54 +55,55 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			url: '/',
 			schema: toFastifySchema(current_get_schema),
 			preHandler: app.handleAccessToken(),
-			handler: async function(req, res) {
+			handler: async function (req, res) {
 				if (!req.access_token)
 					return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
-				const uid = req.access_token.userId
-				const user = (await this.entity.user.getWithPath('$', uid))[0]
-				if (!user)
-					return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current user')
+				const user = await this.entity.user.getUserById(req.access_token.userId)
 				res.send(user)
 			},
 		})
 
 		const current_patch_schema = {
 			body: {
-				properties: {
-					email: userDefinition.optionalProperties.email,
-					phone: userDefinition.optionalProperties.phone,
+				optionalProperties: {
+					email: { type: 'string' },
+					phone: { type: 'string' },
 				},
 			},
-			response: { type: 'string' },
+			response: {type: 'string'},
 		} as const
 		app.route<{
-			Body: {email: User['email'], phone: User['phone']},
+			Body: JTDDataType<typeof current_patch_schema.body>,
 		}>({
 			method: 'PATCH',
 			url: '/',
 			schema: toFastifySchema(current_patch_schema),
 			preHandler: app.handleAccessToken(),
-			handler: async function(req, res) {
+			handler: async function (req, res) {
 				if (!req.access_token)
 					return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
-				await this.entity.user.add('patch', {
-					...req.body,
-					id: req.access_token.userId as string,
+				await this.entity.user.patch({
+					id: req.access_token.userId,
+					email: req.body.email,
+					phone: req.body.phone,
 				})
 				res.send('OK')
 			},
 		})
 
 		// other users
-		app.register(async function(app) {
+		app.register(async function (app) {
 			const get_schema = {
 				params: {
 					properties: {
-						id: { type: 'string' },
+						id: {type: 'string'},
 					},
 				},
 				response: {
-					optionalProperties: userDefinition.optionalProperties,
+					optionalProperties: {
+						email: { type: 'string' },
+						phone: { type: 'string' },
+					},
 				},
 			} as const
 			app.route<{
@@ -79,13 +113,16 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				url: '/:id',
 				schema: toFastifySchema(get_schema),
 				preHandler: app.handleAccessToken(),
-				handler: async function(req, res) {
+				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
-					const user = (await this.entity.user.getWithPath('$', req.params.id))[0]
-					if (!user)
+					let user
+					try {
+						user = await this.entity.user.getUserById(req.access_token.userId)
+					} catch (err) {
 						return res.status(status_code.BAD_REQUEST).send('can not find such user')
-					const ret: Record<string, unknown> = {}
+					}
+					const ret: JTDDataType<typeof get_schema.response> = {}
 					if (user.email?.mode === 'public') {
 						ret['email'] = user.email.value
 					}
@@ -100,12 +137,12 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			prefix: 'users',
 		})
 
-		// admin operation
-		app.register(async function(app) {
+		// agmin operation
+		app.register(async function (app) {
 			const update_schema = {
 				params: {
 					properties: {
-						op: { enum: ['create', 'modify'] },
+						op: {enum: ['create', 'modify']},
 					}
 				},
 				body: userDefinition,
@@ -118,18 +155,18 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				url: '/:op',
 				schema: toFastifySchema(update_schema),
 				preHandler: app.handleAccessToken('user_write'),
-				handler: async function(req, res) {
+				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
-					await this.entity.user.add(req.params.op, req.body)
-					res.send('OK')
+					const ret = await this.entity.user.add(req.params.op, req.body)
+					res.send(ret)
 				},
 			})
 
 			const get_schema = {
 				params: {
 					properties: {
-						id: { type: 'string' },
+						id: {type: 'string'},
 					},
 				},
 				response: userDefinition,
@@ -141,12 +178,15 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				url: '/:id',
 				schema: toFastifySchema(get_schema),
 				preHandler: app.handleAccessToken('user_read'),
-				handler: async function(req, res) {
+				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
-					const user = (await this.entity.user.getWithPath('$', req.params.id))[0]
-					if (!user)
+					let user
+					try {
+						user = await this.entity.user.getUserById(req.access_token.userId)
+					} catch (err) {
 						return res.status(status_code.BAD_REQUEST).send('can not find such user')
+					}
 					res.send(user)
 				},
 			})
@@ -154,10 +194,10 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			const delete_schema = {
 				params: {
 					properties: {
-						id: { type: 'string' },
+						id: {type: 'string'},
 					},
 				},
-				response: { type: 'string' },
+				response: {type: 'string'},
 			} as const
 			app.route<{
 				Params: {id: User['id']},
@@ -166,10 +206,10 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				url: '/:id',
 				schema: toFastifySchema(delete_schema),
 				preHandler: app.handleAccessToken('user_write'),
-				handler: async function(req, res) {
+				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
-					await this.entity.user.del('$', req.params.id)
+					await this.entity.user.del(req.params.id)
 					res.send('OK')
 				},
 			})

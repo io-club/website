@@ -34,6 +34,7 @@ declare module 'ioredis' {
 		'ft.create'(typ: 'json', opts: ft_create_opt, ...args: ft_create_arg[]): Promise<'OK'>
 		'ft.search'(name: string, filter: string, opts?: ft_search_opt): Promise<Record<string, [string, string]>>
 		'ft.dropindex'(name: string, dd?: boolean): Promise<'OK'>
+		'ft.info'(name: string): Promise<'unknown'>
 	}
 	interface Pipeline {
 		'json.set'(...arg: Parameters<Commands['json.set']>): Pipeline
@@ -41,5 +42,6 @@ declare module 'ioredis' {
 		'ft.create'(...arg: Parameters<Commands['ft.create']>): Pipeline
 		'ft.search'(...arg: Parameters<Commands['ft.search']>): Pipeline
 		'ft.dropindex'(...arg: Parameters<Commands['ft.dropindex']>): Pipeline
+		'ft.info'(...arg: Parameters<Commands['ft.info']>): Pipeline
 	}
 }

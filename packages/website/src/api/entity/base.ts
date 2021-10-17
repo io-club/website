@@ -1,44 +1,58 @@
-import type {OAuthUserIdentifier} from '@jmondi/oauth2-server'
 import type {JTDParser} from '~/alias/jtd'
 import type {FastifyInstance} from 'fastify'
-import type {Redis} from 'ioredis'
+import type {Pipeline, Redis} from 'ioredis'
 
 import {join} from 'pathe'
 
-export interface ConstructorOptions<T = unknown> {
+export interface ConstructorOptions<T> {
 	redis: FastifyInstance['redis']
-	data: string
-	id: (a: T) => string
+	prefix: string
 	parser: JTDParser<T>
 	serializer: (a: T) => string
 }
 
-export interface DelOptions {
-	lock?: string
-	addtional?: (redis: Redis, ...ids: string[]) => Promise<string[]>
+export type TransactionHandler = (redis: Pipeline) => Promise<void>
+export interface TransactionOption<T> {
+	handler: (redis: Pipeline, values?: T) => Promise<void>
+	precheck?: (redis: Redis) => Promise<boolean>
+	query?: (redis: Redis) => Promise<T>
+	watch?: string[]
 }
 
-export class BaseRepository<T = unknown> {
+export type QueryHandler = (redis: Pipeline) => Promise<void>
+
+export class BaseRepository<T> {
 	#redis: ConstructorOptions<T>['redis']
-	#data: ConstructorOptions<T>['data']
-	#id: ConstructorOptions<T>['id']
+	#prefix: ConstructorOptions<T>['prefix']
 	#parser: JTDParser<T>
 	#serializer: (a: T) => string
 
 	constructor(opts: ConstructorOptions<T>) {
 		this.#redis = opts.redis
-		this.#data = opts.data
-		this.#id = opts.id
+		this.#prefix = opts.prefix
 		this.#parser = opts.parser
 		this.#serializer = opts.serializer
 	}
 
-	get redis() {
-		return this.#redis
+	async init() {
+		await this.create_index()
+		return this
 	}
 
-	get data() {
-		return this.#data
+	async create_index() {
+		return
+	}
+
+	index() {
+		return join(this.#prefix, 'index')
+	}
+
+	data(...d: string[]) {
+		return join(this.#prefix, 'data', ...d)
+	}
+
+	txn() {
+		return join(this.#prefix, 'txn')
 	}
 
 	parse(json: string) {
@@ -52,110 +66,65 @@ ${json}`)
 		return this.#serializer(data)
 	}
 
-	// WARNING: this api does not prevent you from upserting partial object.
-	// You need to follow the contract of API.
-	// mode:
-	// 1. create: insert full object, only if not exist
-	// 2. modify: insert full object, only if exist
-	// 3. upsert: insert full object, exist or not
-	// 4. patch: partial object with id, only if exist
-	async add(mode: 'create' | 'modify' | 'upsert' | 'patch', ...entities: (T | Partial<T>)[]) {
+	async transaction<M>(_opt: TransactionHandler | TransactionOption<M>) {
+		const isHandler = typeof _opt === 'function'
+		let opt
+		if (!isHandler) {
+			opt = {
+				handler: _opt.handler,
+				watch: _opt.watch ?? [this.txn()],
+				query: _opt.query,
+				precheck: _opt.precheck,
+			}
+		} else {
+			opt = {
+				watch: [this.txn()],
+				handler: _opt,
+			}
+		}
+
 		const redis = await this.#redis.acquire()
 		try {
-			const keys = []
-			for (const entity of entities) {
-				const id = this.#id(entity as T)
-				if (!id) throw new Error('can not get id from partial entity')
-				keys.push(join(this.data, id))
+			await redis.watch(...opt.watch)
+
+			if (opt.precheck) {
+				if (!await opt.precheck(redis)) return []
 			}
 
-			await redis.watch(...keys)
+			let values
+			if (opt.query) {
+				values = await opt.query(redis)
+			}
+
 			const pipe = redis.multi()
-			for (const [i, u] of entities.entries()) {
-				switch (mode) {
-				case 'create':
-					pipe['json.set'](keys[i], '$', this.serialize(u as T), 'nx')
-					break
-				case 'modify':
-					pipe['json.set'](keys[i], '$', this.serialize(u as T), 'xx')
-					break
-				case 'upsert':
-					pipe['json.set'](keys[i], '$', this.serialize(u as T))
-					break
-				case 'patch':
-					for (const [k,v] of Object.entries(u as T))
-						pipe['json.set'](keys[i], `$.${k}`, this.serialize(v), 'xx')
-					break
-				}
-			}
+			await opt.handler(pipe, values)
+			if (isHandler) pipe.incr(opt.watch[0])
 			const res = await pipe.exec()
-			for (const [err,] of res) {
-				if (err) throw new Error(`can not execute transaction for entity ${err}`)
+
+			const ret = []
+			for (const [err,v] of res) {
+				if (err) throw new Error(`can not complete transaction ${err}`)
+				ret.push(v)
 			}
+			return ret
 		} finally {
 			await redis.unwatch()
 			await this.#redis.release(redis)
 		}
 	}
 
-	async getWithPath(...ids: OAuthUserIdentifier[]) {
-		const res = []
+	async query(handler: QueryHandler) {
 		const redis = await this.#redis.acquire()
 		try {
 			const pipe = redis.pipeline()
-			for (const id of ids) {
-				pipe['json.get'](join(this.data, id.toString()))
-			}
-			res.push(...await pipe.exec())
-		} finally {
-			await this.#redis.release(redis)
-		}
-		const ret = []
-		for (const [err,json] of res) {
-			if (err) throw new Error(`can not get entity ${err}`)
-			if (!json) continue
-			ret.push(this.parse(json))
-		}
-		return ret
-	}
-
-	async delWithOpts(opts: DelOptions, ...ids: string[]) {
-		const redis = await this.#redis.acquire()
-		try {
-			if (opts.lock) {
-				await redis.watch(opts.lock)
-			} else {
-				await redis.watch(...ids)
-			}
-
-			const keys = ids.map(id => join(this.data, id))
-
-			if (opts.addtional) {
-				keys.push(...await opts.addtional(redis, ...ids))
-			}
-
-			let val = false
-			if (opts.lock) {
-				val = (await redis.get(opts.lock)) === 'true'
-			}
-			const pipe = redis.multi().del(...keys)
-			if (opts.lock) {
-				pipe.set(opts.lock, val ? 'false' : 'true')
-			}
+			await handler(pipe)
 			const res = await pipe.exec()
-			for (const [err,] of res) {
+			const ret = []
+			for (const [err,v] of res) {
 				if (err) throw new Error(`can not delete entity ${err}`)
+				ret.push(v)
 			}
-		} finally {
-			await redis.unwatch()
-			await this.#redis.release(redis)
-		}
-	}
-
-	async exists(...ids: string[]) {
-		const redis = await this.#redis.acquire()
-		try {
-			return await redis.exists(...ids.map(e => join(this.data, e)))
+			return ret
 		} finally {
 			await this.#redis.release(redis)
 		}

@@ -60,7 +60,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 		{name: 'client_read'},
 		{name: 'client_write'},
 	]
-	await scope.add('create', ...built_in_scopes)
+	await scope.add(...built_in_scopes)
 
 	// add the super client
 	options.root.name = 'root'
@@ -70,7 +70,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 		if (options.root.scopeNames.every(e => e !== scope.name))
 			options.root.scopeNames.push(scope.name)
 	}
-	await client.add('create', options.root)
+	await client.add(options.root)
 
 	// validate function
 	const handleAccessToken: handleAccessTokenType = function (scopes) {
@@ -119,57 +119,23 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 
 	// setup routes
 	app.register(async function (app) {
-		const schemas = {
-			authorize: {
-				query: {
-					properties: {
-						response_type: { enum: ['code'] },
-						client_id: { type: 'string' },
-						redirect_uri: { type: 'string' },
-						state: { type: 'string' },
-						code_challenge: { type: 'string' },
-						code_challenge_method: { enum: ['plain', 'S256'] },
-					},
-				},
-			},
-			token: {
-				body: {
-					discriminator: 'grant_type',
-					mapping: {
-						'client_credentials': {
-							properties: {
-								client_id: { type: 'string' },
-								client_secret: { type: 'string' },
-								scope: { type: 'string' },
-							},
-						},
-						'authorization_code': {
-							properties: {
-								client_id: { type: 'string' },
-								client_secret: { type: 'string' },
-								scope: { type: 'string' },
-							},
-						},
-						'refresh_token': {
-							properties: {
-								client_id: { type: 'string' },
-								client_secret: { type: 'string' },
-								refresh_token: { type: 'string' },
-							},
-							optionalProperties: {
-								scope: { type: 'string' },
-							},
-						},
-					},
+		const authorize_schema = {
+			query: {
+				properties: {
+					response_type: { enum: ['code'] },
+					client_id: { type: 'string' },
+					redirect_uri: { type: 'string' },
+					state: { type: 'string' },
+					code_challenge: { type: 'string' },
+					code_challenge_method: { enum: ['plain', 'S256'] },
 				},
 			},
 		} as const
-
-		app.route<{ Querystring: JTDDataType<typeof schemas.authorize.query> }>({
+		app.route<{ Querystring: JTDDataType<typeof authorize_schema.query> }>({
 			method: 'GET',
 			url: '/authorize',
 			schema: {
-				querystring: schemas.authorize.query,
+				querystring: authorize_schema.query,
 			},
 			handler: async function (req, res) {
 				try {
@@ -211,11 +177,42 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 			},
 		})
 
-		app.route<{ Body: JTDDataType<typeof schemas.token.body> }>({
+		const token_schema = {
+			body: {
+				discriminator: 'grant_type',
+				mapping: {
+					'client_credentials': {
+						properties: {
+							client_id: { type: 'string' },
+							client_secret: { type: 'string' },
+							scope: { type: 'string' },
+						},
+					},
+					'authorization_code': {
+						properties: {
+							client_id: { type: 'string' },
+							client_secret: { type: 'string' },
+							scope: { type: 'string' },
+						},
+					},
+					'refresh_token': {
+						properties: {
+							client_id: { type: 'string' },
+							client_secret: { type: 'string' },
+							refresh_token: { type: 'string' },
+						},
+						optionalProperties: {
+							scope: { type: 'string' },
+						},
+					},
+				},
+			},
+		} as const
+		app.route<{ Body: JTDDataType<typeof token_schema.body> }>({
 			method: 'POST',
 			url: '/token',
 			schema: {
-				body: schemas.token.body,
+				body: token_schema.body,
 			},
 			handler: async function (req, res) {
 				try {
