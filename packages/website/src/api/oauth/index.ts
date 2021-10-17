@@ -1,17 +1,20 @@
 import type {JTDDataType} from '~/alias/jtd'
 import type {UserRepository} from '~/api/entity/user'
-import type {FastifyPluginCallback, FastifyReply, FastifyRequest} from 'fastify'
+import type {FastifyInstance, FastifyPluginCallback, FastifyReply, FastifyRequest} from 'fastify'
 import type {Secret} from 'jsonwebtoken'
 import type {JwtPayload} from 'jsonwebtoken'
 
 import {AuthorizationServer, DateInterval, OAuthClient, OAuthException, OAuthRequest, OAuthResponse, OAuthScope} from '@jmondi/oauth2-server'
+import {createHash} from 'crypto'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
 import jwt from 'jsonwebtoken'
+import {customAlphabet, nanoid} from 'nanoid'
 
 import {JwtService} from './jwt'
 
 export interface Config {
+	url: string
 	prefix: string
 	accessTokenTTL: string
 	jwtSecret: Secret
@@ -23,7 +26,7 @@ export interface Payload extends JwtPayload, Awaited<ReturnType<UserRepository['
 	cid: string
 	scope: string
 }
-export type handleAccessTokenType= (...scope: string[]) => (req: FastifyRequest, res: FastifyReply) => Promise<void>
+export type handleAccessTokenType= (redirect: boolean, ...scope: string[]) => (this: FastifyInstance, req: FastifyRequest, res: FastifyReply) => Promise<void>
 
 export const oauth: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	// setup context
@@ -73,11 +76,28 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 	await client.add(options.root)
 
 	// validate function
-	const handleAccessToken: handleAccessTokenType = function (scopes) {
+	const handleAccessToken: handleAccessTokenType = function (redirect, scopes) {
 		return async function (req, res) {
 			let authorization = req.headers.authorization
 			if (!authorization) {
-				res.status(status_code.UNAUTHORIZED).send('need authorization header')
+				if (!redirect) {
+					res.status(status_code.UNAUTHORIZED).send('need authorization header')
+					return
+				}
+
+				const verifier = code_verifier()
+				const state = nanoid()
+				const auth = new URL(`${options.prefix}/authorize`, options.url)
+				auth.searchParams.set('response_type', 'code')
+				auth.searchParams.set('client_id', this.root.id)
+				// FIXME: hard-linked user endpoint
+				auth.searchParams.set('redirect_uri', new URL('/user/login2', options.url).toString())
+				auth.searchParams.set('code_challenge', createHash('sha256').update(verifier).digest('hex'))
+				auth.searchParams.set('code_challenge_method', 'S256')
+				auth.searchParams.set('state', state)
+				req.session.set('state', state)
+				req.session.set('verifier', verifier)
+				res.redirect(status_code.MOVED_TEMPORARILY, auth.toString())
 				return
 			}
 			authorization = authorization.trim()

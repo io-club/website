@@ -2,14 +2,17 @@ import type {JTDDataType} from '~/alias/jtd'
 import type {User} from '~/api/entity/user'
 import type {FastifyPluginCallback} from 'fastify'
 
+import {createHash} from 'crypto'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
+import {customAlphabet, nanoid} from 'nanoid'
 
 import {userDefinition} from '~/api/entity/user'
 import {toFastifySchema} from '~/api/utils/schema'
 
 export interface Config {
 	prefix: string
+	url: string
 }
 
 export const user: FastifyPluginCallback<Config> = fp(async function (app, options) {
@@ -46,6 +49,60 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			},
 		})
 
+		// login
+		const code_verifier = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 43)
+		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+			method: 'POST',
+			url: '/login_begin',
+			schema: {
+				body: signup_schema.body,
+			},
+			handler: async function (req, res) {
+				const verifier = code_verifier()
+				const state = nanoid()
+				// FIXME: hard-linked endpoint
+				const auth = new URL('/oauth/authorize', options.url)
+				auth.searchParams.set('response_type', 'code')
+				auth.searchParams.set('client_id', this.root.id)
+				auth.searchParams.set('redirect_uri', new URL('/user/login2', options.url).toString())
+				auth.searchParams.set('code_challenge', createHash('sha256').update(verifier).digest('hex'))
+				auth.searchParams.set('code_challenge_method', 'S256')
+				auth.searchParams.set('state', state)
+				req.session.set('state', state)
+				req.session.set('verifier', verifier)
+			},
+		})
+
+		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+			method: 'POST',
+			url: '/login_auth',
+			schema: {
+				body: signup_schema.body,
+			},
+			handler: async function (req, res) {
+			},
+		})
+
+		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+			method: 'POST',
+			url: '/login_auth_2fa',
+			schema: {
+				body: signup_schema.body,
+			},
+			handler: async function (req, res) {
+			},
+		})
+
+		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+			method: 'POST',
+			url: '/login_complete',
+			schema: {
+				body: signup_schema.body,
+			},
+			handler: async function (req, res) {
+			},
+		})
+
 		// self manipulation
 		const current_get_schema = {
 			response: userDefinition,
@@ -54,7 +111,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			method: 'GET',
 			url: '/',
 			schema: toFastifySchema(current_get_schema),
-			preHandler: app.handleAccessToken(),
+			preHandler: app.handleAccessToken(true),
 			handler: async function (req, res) {
 				if (!req.access_token)
 					return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
@@ -78,7 +135,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			method: 'PATCH',
 			url: '/',
 			schema: toFastifySchema(current_patch_schema),
-			preHandler: app.handleAccessToken(),
+			preHandler: app.handleAccessToken(true),
 			handler: async function (req, res) {
 				if (!req.access_token)
 					return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
@@ -112,7 +169,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				method: 'GET',
 				url: '/:id',
 				schema: toFastifySchema(get_schema),
-				preHandler: app.handleAccessToken(),
+				preHandler: app.handleAccessToken(true),
 				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
@@ -154,7 +211,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				method: 'POST',
 				url: '/:op',
 				schema: toFastifySchema(update_schema),
-				preHandler: app.handleAccessToken('user_write'),
+				preHandler: app.handleAccessToken(false, 'user_write'),
 				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
@@ -177,7 +234,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				method: 'GET',
 				url: '/:id',
 				schema: toFastifySchema(get_schema),
-				preHandler: app.handleAccessToken('user_read'),
+				preHandler: app.handleAccessToken(false, 'user_read'),
 				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')
@@ -205,7 +262,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				method: 'DELETE',
 				url: '/:id',
 				schema: toFastifySchema(delete_schema),
-				preHandler: app.handleAccessToken('user_write'),
+				preHandler: app.handleAccessToken(false, 'user_write'),
 				handler: async function (req, res) {
 					if (!req.access_token)
 						return res.status(status_code.INTERNAL_SERVER_ERROR).send('can not get current token')

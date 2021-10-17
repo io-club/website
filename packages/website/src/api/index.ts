@@ -3,40 +3,37 @@ import type {Config as oauthConfig} from './oauth'
 import type {Config as ajvConfig} from './plugins/ajv'
 import type {Options as MailerOptions} from './plugins/mailer'
 import type {Config as redisConfig} from './plugins/redis'
+import type {Config as sessConfig} from './plugins/session'
 
 import Fastify from 'fastify'
 import FastifyCookie from 'fastify-cookie'
 
 import {entity} from './entity'
-//import FastifySession from '@mgcrea/fastify-session'
-//import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
 import {oauth} from './oauth'
 import FastifyAjv from './plugins/ajv'
 import FastifyFetch from './plugins/fetch'
 import FastifyMailer from './plugins/mailer'
 import FastifyRedis from './plugins/redis'
+import FastifySession from './plugins/session'
 import FastifySharp from './plugins/sharp'
 //import service from './service'
 import {user} from './user'
 
 export interface Options {
 	url: string
-	session: {
-		ttl: number
-		key: string
-	}
+	session: sessConfig
 	ajv: ajvConfig
 	redis: redisConfig
 	mailer: MailerOptions
 	auth: authConfig
 	//service: serviceConfig
-	oauth: Omit<oauthConfig, 'prefix'>
+	oauth: Omit<oauthConfig, 'prefix' | 'url'>
 }
 
 function createApp() {
 	const env = process.env
 
-	const url = env['SITE_URL'] ?? 'http://localhost:3000'
+	const url = env['SITE_URL'] ?? 'http://localhost:3000/api'
 
 	const options: Options = {
 		url,
@@ -45,7 +42,7 @@ function createApp() {
 		},
 		session: {
 			ttl: 86400,
-			key: 'a secret with minimum length of 32 characters',
+			key: env['SESSION_KEY'] ?? 'a secret with minimum length of 32 characters',
 		},
 		mailer: {
 			host: env['MAILER_HOST'] ?? 'x.com' ,
@@ -76,7 +73,7 @@ function createApp() {
 				id: env['OAUTH_ROOT_ID'] ?? 'test',
 				secret: env['OAUTH_ROOT_SECRET'] ?? '123456',
 				allowedGrants: ['client_credentials'],
-				redirectUris: [`${url}/oauth/token`],
+				redirectUris: [],
 				scopeNames: (env['OAUTH_ROOT_SCOPES'] ?? '').split(',').filter(e => e !== ''),
 			},
 			accessTokenTTL: env['OAUTH_ACCESS_TOKEN_TTL'] ?? '1h',
@@ -97,13 +94,7 @@ function createApp() {
 		.register(FastifyFetch)
 		.register(FastifySharp)
 		.register(FastifyCookie)
-	/*
-				.register(FastifySession, {
-					secret: options.session.key,
-					crypto: SODIUM_SECRETBOX,
-					cookie: {maxAge: options.session.ttl},
-				})
-				*/
+		.register(FastifySession, options.session)
 		.register(FastifyMailer, options.mailer)
 
 	app.register(async function (app) {
@@ -111,9 +102,10 @@ function createApp() {
 			.register(entity, {prefix: '/entity'})
 			.register(oauth, {
 				...options.oauth,
+				url,
 				prefix: '/oauth',
 			})
-			.register(user, {prefix: '/user'})
+			.register(user, {prefix: '/user', url})
 
 		//.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 		//.register(auth, {prefix: '/auth', ...options.auth})
