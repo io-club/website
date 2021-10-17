@@ -4,12 +4,14 @@ import type {FastifyInstance, FastifyPluginCallback, FastifyReply, FastifyReques
 import type {Secret} from 'jsonwebtoken'
 import type {JwtPayload} from 'jsonwebtoken'
 
-import {AuthorizationServer, DateInterval, OAuthClient, OAuthException, OAuthRequest, OAuthResponse, OAuthScope} from '@jmondi/oauth2-server'
+import OAuth2Server from '@jmondi/oauth2-server'
 import {createHash} from 'crypto'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
 import jwt from 'jsonwebtoken'
 import {customAlphabet, nanoid} from 'nanoid'
+
+const {AuthorizationServer, DateInterval, OAuthClient, OAuthException, OAuthRequest, OAuthResponse, OAuthScope} = OAuth2Server
 
 import {JwtService} from './jwt'
 

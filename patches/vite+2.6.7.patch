@@ -1,0 +1,52 @@
+diff --git a/node_modules/vite/dist/node/chunks/dep-1ee92c88.js b/node_modules/vite/dist/node/chunks/dep-1ee92c88.js
+index d3e4b5f..7cd232c 100644
+--- a/node_modules/vite/dist/node/chunks/dep-1ee92c88.js
++++ b/node_modules/vite/dist/node/chunks/dep-1ee92c88.js
+@@ -1082,7 +1082,7 @@ function checkPublicFile(url, { publicDir }) {
+     }
+ }
+ function fileToUrl(id, config, ctx) {
+-    if (config.command === 'serve') {
++    if (config.command === 'serve' || config.mode === 'development') {
+         return fileToDevUrl(id, config);
+     }
+     else {
+diff --git a/node_modules/vite/dist/node/chunks/dep-51d7aa64.js b/node_modules/vite/dist/node/chunks/dep-51d7aa64.js
+index 492dc2f..3817bde 100644
+--- a/node_modules/vite/dist/node/chunks/dep-51d7aa64.js
++++ b/node_modules/vite/dist/node/chunks/dep-51d7aa64.js
+@@ -1082,7 +1082,7 @@ function checkPublicFile(url, { publicDir }) {
+     }
+ }
+ function fileToUrl(id, config, ctx) {
+-    if (config.command === 'serve') {
++    if (config.command === 'serve' || config.mode === 'development') {
+         return fileToDevUrl(id, config);
+     }
+     else {
+diff --git a/node_modules/vite/dist/node/chunks/dep-713b45e1.js b/node_modules/vite/dist/node/chunks/dep-713b45e1.js
+index 16da860..c6b3dd9 100644
+--- a/node_modules/vite/dist/node/chunks/dep-713b45e1.js
++++ b/node_modules/vite/dist/node/chunks/dep-713b45e1.js
+@@ -5872,7 +5872,7 @@ function checkPublicFile(url, { publicDir }) {
+     }
+ }
+ function fileToUrl(id, config, ctx) {
+-    if (config.command === 'serve') {
++    if (config.command === 'serve' || config.mode === 'development') {
+         return fileToDevUrl(id, config);
+     }
+     else {
+diff --git a/node_modules/vite/dist/node/chunks/dep-e5804462.js b/node_modules/vite/dist/node/chunks/dep-e5804462.js
+index a3e3a94..0e28f44 100644
+--- a/node_modules/vite/dist/node/chunks/dep-e5804462.js
++++ b/node_modules/vite/dist/node/chunks/dep-e5804462.js
+@@ -1082,7 +1082,7 @@ function checkPublicFile(url, { publicDir }) {
+     }
+ }
+ function fileToUrl(id, config, ctx) {
+-    if (config.command === 'serve') {
++    if (config.command === 'serve' || config.mode === 'development') {
+         return fileToDevUrl(id, config);
+     }
+     else {

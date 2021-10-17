@@ -4,7 +4,7 @@ import {useI18n} from '@ioclub/composable'
 import Menu from 'virtual:icons/mdi-light/menu'
 import {defineComponent, provide, reactive, ref} from 'vue'
 
-import MdMenu from '~/components/generater/mdmenu'
+//import MdMenu from '~/components/generater/mdmenu'
 import Link from '~/components/link'
 import Logo from '~/components/logo'
 
@@ -49,17 +49,18 @@ export default defineComponent({
 				} else {
 					return <div>{slots.default ? slots.default() : null}</div>
 				}
-			}()
+			}
 
+			//<MdMenu toc={{}} />
 			const aside = function () {
 				if (props.aside) {
 					return <button type="button" onClick={() => sidebar.value = !sidebar.value}>
 						<Menu w:text="2xl" />
 					</button>
 				} else {
-					return <Link to="/">{() => header.home}</Link>
+					return <Link to="/">{header.home}</Link>
 				}
-			}()
+			}
 
 			return <div>
 				<div w:pos="relative">
@@ -74,7 +75,6 @@ export default defineComponent({
 								<li>
 								</li>
 								<li>
-									<MdMenu toc={{}} />
 								</li>
 							</ul>
 						</div>
@@ -96,26 +96,26 @@ export default defineComponent({
 								w:align="items-center"
 							>
 								<li>
-									{aside}
+									{aside()}
 								</li>
 								<li w:transform="hover:scale-110" w:display="<sm:hidden">
-									<Link to="/t">{() => header.notice}</Link>
+									<Link to="/t">{header.notice}</Link>
 								</li>
 								<li>
-									<Link w:flex="~" w:align="items-center" to="/" >{() => [
-										<Logo w:text="2xl" />,
-										<span w:text="2xl" w:font="heavy" w:display="<md:hidden">{title}</span>,
-									]}</Link>
+									<Link w:flex="~" w:align="items-center" to="/" >
+										<Logo w:text="2xl" />
+										<span w:text="2xl" w:font="heavy" w:display="<md:hidden">{title}</span>
+									</Link>
 								</li>
 								<li w:text="gray-400" w:display="<sm:hidden">
-									<Link to="#">{() => header.forum}</Link>
+									<Link to="#">{header.forum}</Link>
 								</li>
 								<li w:text="gray-400" w:display="<sm:hidden">
-									<Link to="#">{() => header.login}</Link>
+									<Link to="#">{header.login}</Link>
 								</li>
 							</ul>
 						</nav>
-						{content}
+						{content()}
 					</main>
 					<div
 						w:bg="gray-800"

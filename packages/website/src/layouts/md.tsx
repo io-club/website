@@ -9,6 +9,6 @@ export default defineComponent({
 			aside={true}
 			aside_show={true}
 			article={true}
-		>{slots.default}</Layout>
+		>{slots.default ? slots.default() : null}</Layout>
 	},
 })

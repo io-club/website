@@ -187,7 +187,7 @@ export default defineComponent({
 				</div>
 			)
 
-			return ret
+			return <div>{ret}</div>
 		}
 	},
 })

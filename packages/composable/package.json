@@ -18,7 +18,7 @@
 	"author": "xhe",
 	"license": "MIT",
 	"dependencies": {
-		"vue": "^3.2.19"
+		"vue": "^3.2.20"
 	},
 	"engines": {
 		"node": ">=14"

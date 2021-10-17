@@ -1,4 +1,3 @@
-// @ts-expect-error
 import hero from '@windicss/plugin-heropatterns'
 import { defineConfig } from 'windicss/helpers'
 import plugin from 'windicss/plugin'

@@ -1,8 +1,8 @@
 diff --git a/node_modules/@nuxt/nitro/dist/index.mjs b/node_modules/@nuxt/nitro/dist/index.mjs
-index 491c8c8..9d7cd0c 100644
+index 3ae7dd0..3148b47 100644
 --- a/node_modules/@nuxt/nitro/dist/index.mjs
 +++ b/node_modules/@nuxt/nitro/dist/index.mjs
-@@ -765,7 +765,7 @@ const getRollupConfig = (nitroContext) => {
+@@ -776,7 +776,7 @@ const getRollupConfig = (nitroContext) => {
      },
      treeshake: {
        moduleSideEffects(id) {
@@ -11,21 +11,19 @@ index 491c8c8..9d7cd0c 100644
        }
      }
    };
-@@ -841,7 +841,8 @@ const getRollupConfig = (nitroContext) => {
+@@ -854,6 +854,7 @@ const getRollupConfig = (nitroContext) => {
        "@/": nitroContext._nuxt.srcDir,
        "~~": nitroContext._nuxt.rootDir,
        "@@/": nitroContext._nuxt.rootDir,
--      ...env.alias
-+      ...env.alias,
-+			...nitroContext.__alias,
++      ...nitroContext.__alias,
+       ...env.alias
      }
    }));
-   const moduleDirectories = [
-@@ -1526,6 +1527,7 @@ function getNitroContext(nuxtOptions, input) {
+@@ -1568,6 +1569,7 @@ function getNitroContext(nuxtOptions, input) {
        inline: !nuxtOptions.dev,
        dirs: {}
      },
-+		__alias: nuxtOptions.alias || {},
++     __alias: nuxtOptions.alias || {},
      _nuxt: {
        majorVersion: nuxtOptions._majorVersion || 2,
        dev: nuxtOptions.dev,
