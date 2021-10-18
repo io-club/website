@@ -15,9 +15,7 @@ export default defineComponent({
 		>
 			<button
 				w:w='full'
-				w:bg="gradient-to-r 
-				hover:(gradient-to-br) active:(gradient-to-l)
-				"
+				w:bg="gradient-to-r hover:(gradient-to-br) active:(gradient-to-l)"
 				w:gradient="from-fuchsia-400 to-blue-400"
 				w:p="1 x-20"
 				w:border="~ rounded-1xl light-blue-400"
