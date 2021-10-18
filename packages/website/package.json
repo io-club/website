@@ -18,7 +18,7 @@
 	},
 	"license": "MIT",
 	"devDependencies": {
-		"@iconify/json": "^1.1.415",
+		"@iconify/json": "^1.1.416",
 		"@ioclub/mdvue": "^0.1.0",
 		"@types/ioredis": "^4.27.7",
 		"@types/lodash": "^4.14.175",
@@ -62,7 +62,7 @@
 		"nanoid": "^3.1.30",
 		"node-fetch": "^3.0.0",
 		"nodemailer": "^6.7.0",
-		"nuxt3": "3.0.0-27238235.a1bcc53",
+		"nuxt3": "3.0.0-27242747.0ab477c",
 		"ohmyfetch": "^0.3.1",
 		"pathe": "^0.2.0",
 		"redis-errors": "^1.2.0",
