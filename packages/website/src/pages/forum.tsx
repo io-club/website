@@ -11,8 +11,14 @@ export default defineComponent({
 				let i = 0
 				for (i; i < 10; i++) {
 					ret.push(
-						<div class="grid grid-cols-[6fr,1fr,1fr,1fr,1fr] grid-rows-1 place-content-center justify-center align-center">
-							<div class="topic my-auto p-5 justify-center align-center">
+						<div 
+							w:grid="~ cols-[6fr_1fr_1fr_1fr_1fr] rows-1 "
+							w:justify="center"
+							w:align="center"
+							w:place="content-center"
+							w:children="my-auto p-5 justify-center align-center"
+						>
+							<div>
 								<div class="title">这是一个话题</div>
 								<div class="tag font">
 									<span class="text-blue-300">■ </span>
@@ -21,16 +27,16 @@ export default defineComponent({
 									<span class="text-gray-400">libs</span>
 								</div>
 							</div>
-							<div class="author m-auto justify-center align-center">
+							<div>
 								<span class="text-gray-400">发起人</span>
 							</div>
-							<div class="replies m-auto justify-center align-center  font-weight-800">
+							<div class="font-weight-800">
 								<span class="text-gray-400">回复量</span>
 							</div>
-							<div class="views m-auto justify-center align-center">
+							<div>
 								<span class="text-gray-400">查看量</span>
 							</div>
-							<div class="activity m-auto justify-center align-center">
+							<div>
 								<span class="text-gray-400">上次更新时间</span>
 							</div>
 						</div>
