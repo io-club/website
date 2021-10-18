@@ -10,9 +10,11 @@ export default defineComponent({
 	},
 	setup(props, {slots}) {
 		return () => <div
+			w:w='full'
 			w:children="transition-transform transform duration-500"
 		>
 			<button
+				w:w='full'
 				w:bg="gradient-to-r 
 				hover:(gradient-to-br) active:(gradient-to-l)
 				"
@@ -21,7 +23,7 @@ export default defineComponent({
 				w:border="~ rounded-1xl light-blue-400"
 				w:text="14 white"
 				w:outline="none focus:(none)"
-				onClick={() => {console.log('点击按钮')}}
+				// onClick={() => {console.log('点击按钮')}}
 			>
 				<div 
 					w:flex="~ row"

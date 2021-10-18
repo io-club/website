@@ -1,32 +1,33 @@
-import { defineComponent, ref } from 'vue'
+import type {HTMLAttributes} from '@vue/runtime-dom'
 
+import { defineComponent, ref } from 'vue'
 export default defineComponent({
 	props: {
 		placeholder: {
 			type: String,
 			default: '',
 		},
-		value: String,
-		label: String,
-		required: {
-			type: Boolean,
-			default: false,
+		value: {
+			type: String,
+			default: '',
 		},
+		label: String,
 		msg: String,
-		
+		onChange: Function as HTMLAttributes['onChange'],
 	},
 	setup(props, {slots}) {
-		const el = ref<HTMLElement | null>(null)
-		const hidden = ref(true)
-		const updateValue = inject('updateValue')
-		return () =>
-			<div 
+		return () => {
+			const hidden = props.value ? props.value.length !== 0 : false
+			console.log(props.msg, slots);
+			
+			return <div 
+				w:w='full'
 				w:m="b-2"
 				w:children="mb-1 text-sm"
-			>
+			>	
 				<div>
 					<span>{props.label} </span>
-					{!props.required ? null :<span w:text="red-500" w:display={hidden.value ? 'hidden' : ''}>∗</span>}
+					{!props.msg ? null :<span w:text="red-500" w:display={hidden ? 'hidden' : ''}>∗</span>}
 				</div>
 				<div
 					w:flex="~ row"
@@ -36,23 +37,21 @@ export default defineComponent({
 					w:transform="duration-200 hover:(border-green-300)"
 					w:align="items-center"
 				>
-					<span w:pos="inline">{slots.default ? slots.default() : null}</span>
+					<span w:pos="inline">{slots.icon ? slots.icon() : null}</span>
 					<input
-						ref={el}
+						w:w="full"
 						w:p="l-2"
 						w:outline="none"
 						w:caret="green-500"
-						onChange={(e) => {
-							if (e.target.value == '') {
-								hidden.value = false		
-							} else {
-								hidden.value = true
-							}
-							updateValue(e.target.value)
-						}}
+						onChange={props.onChange}
 						type="text" value={props.value} placeholder={props.placeholder} />
+					<span>
+						{slots.rightbutton ? slots.rightbutton() : null}
+					</span>
+					
 				</div>
-				<div w:text="red-500" w:display={hidden.value ? 'hidden' : ''}>{props.msg}</div>
+				{/* {!props.msg ? null :<div w:text="red-500" w:display={hidden ? 'hidden' : ''}>{props.msg}</div>} */}
 			</div>
+		}
 	},
 })
