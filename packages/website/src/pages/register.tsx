@@ -5,6 +5,7 @@ import IPassword from 'virtual:icons/ri/lock-password-line'
 import IKey from 'virtual:icons/wpf/password1'
 import { defineComponent, reactive,ref } from 'vue'
 
+import { useFetch } from '#app'
 import Link from '~/components/link'
 import NButton from '~/components/login/nbutton'
 import NInput from '~/components/login/ninput'
@@ -43,6 +44,9 @@ export default defineComponent({
 						label="Username" 
 						msg="请填写用户名" 
 						placeholder="Type your username"
+						onChange={(e) => {
+							input.username = e.target.value
+						}}
 					>
 						{{
 							icon: () => <IAlien/>
@@ -54,6 +58,9 @@ export default defineComponent({
 						label="Password" 
 						msg="请填写密码" 
 						placeholder="Type your password" 
+						onChange={(e) => {
+							input.password = e.target.value
+						}}
 					>
 						{{
 							icon: () => <IPassword/>
@@ -65,6 +72,9 @@ export default defineComponent({
 						label="Ensure Password" 
 						msg="密码不一致" 
 						placeholder="Type your password again" 
+						onChange={(e) => {
+							input.password2 = e.target.value
+						}}
 					>
 						{{
 							icon: () => <IKey/>
@@ -77,6 +87,9 @@ export default defineComponent({
 						label="Email" 
 						msg="请填写邮箱" 
 						placeholder="Type your email"
+						onChange={(e) => {
+							input.email = e.target.value
+						}}
 					>
 						{{
 							icon: () => <IEmail/>,
@@ -93,8 +106,16 @@ export default defineComponent({
 					></NSixinput>
 
 					<NButton p="1 x-20" type="button" value='注册' 
-						onClick={() => {
+						onClick={async () => {
 							console.log(input);
+							const {res} = useFetch('/api/user/signup', {
+								method: 'POST',
+								body: {
+									username: input.username,
+									passwd: input.password,
+									email: input.email
+								}
+							})
 						}}
 					/>
 				</div>

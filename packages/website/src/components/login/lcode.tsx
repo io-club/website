@@ -28,6 +28,9 @@ export default defineComponent({
 					label="Phone" 
 					msg="请填写手机号" 
 					placeholder="Type your phone"
+					onChange={(e) => {
+						phone.value = e.target.value
+					}}
 				>
 					{{
 						icon: () => <IPhone/>,
