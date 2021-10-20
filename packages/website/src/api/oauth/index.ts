@@ -1,3 +1,4 @@
+import type {OAuthClient, OAuthScope} from '@jmondi/oauth2-server'
 import type {JTDDataType} from '~/alias/jtd'
 import type {UserRepository} from '~/api/entity/user'
 import type {FastifyInstance, FastifyPluginCallback, FastifyReply, FastifyRequest} from 'fastify'
@@ -5,22 +6,22 @@ import type {Secret} from 'jsonwebtoken'
 import type {JwtPayload} from 'jsonwebtoken'
 
 import OAuth2Server from '@jmondi/oauth2-server'
-import {createHash} from 'crypto'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
 import jwt from 'jsonwebtoken'
-import {customAlphabet, nanoid} from 'nanoid'
 
-const {AuthorizationServer, DateInterval, OAuthClient, OAuthException, OAuthRequest, OAuthResponse, OAuthScope} = OAuth2Server
+const {AuthorizationServer, DateInterval, OAuthRequest, OAuthResponse, OAuthException} = OAuth2Server
 
 import {JwtService} from './jwt'
 
 export interface Config {
-	url: string
 	prefix: string
+	url_api: string
+	url_login: string
 	accessTokenTTL: string
 	jwtSecret: Secret
 	root: OAuthClient
+	web: OAuthClient
 }
 
 type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
@@ -87,19 +88,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 					return
 				}
 
-				const verifier = code_verifier()
-				const state = nanoid()
-				const auth = new URL(`${options.prefix}/authorize`, options.url)
-				auth.searchParams.set('response_type', 'code')
-				auth.searchParams.set('client_id', this.root.id)
-				// FIXME: hard-linked user endpoint
-				auth.searchParams.set('redirect_uri', new URL('/user/login2', options.url).toString())
-				auth.searchParams.set('code_challenge', createHash('sha256').update(verifier).digest('hex'))
-				auth.searchParams.set('code_challenge_method', 'S256')
-				auth.searchParams.set('state', state)
-				req.session.set('state', state)
-				req.session.set('verifier', verifier)
-				res.redirect(status_code.MOVED_TEMPORARILY, auth.toString())
+				res.redirect(status_code.MOVED_TEMPORARILY, options.url_login)
 				return
 			}
 			authorization = authorization.trim()

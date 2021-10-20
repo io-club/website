@@ -27,13 +27,15 @@ export interface Options {
 	mailer: MailerOptions
 	auth: authConfig
 	//service: serviceConfig
-	oauth: Omit<oauthConfig, 'prefix' | 'url'>
+	oauth: Omit<oauthConfig, 'prefix' | 'url_api' | 'url_login'>
 }
 
 function createApp() {
 	const env = process.env
 
-	const url = env['SITE_URL'] ?? 'http://localhost:3000/api'
+	const url = env['SITE_URL'] ?? 'http://localhost:3000'
+	const url_api = new URL(env['API_URL'] ?? '/api', url).toString()
+	const url_login = new URL(env['LOGIN_URL'] ?? '/login', url).toString()
 
 	const options: Options = {
 		url,
@@ -59,22 +61,22 @@ function createApp() {
 		},
 		ajv: {
 		},
-		service: {
-			image: {
-				maxSize: 1000,
-				maxAge: Infinity,
-				_url: url,
-			},
-		},
 		oauth: {
 			jwtSecret: 'ggg',
 			root: {
 				name: 'root',
-				id: env['OAUTH_ROOT_ID'] ?? 'test',
+				id: env['OAUTH_ROOT_ID'] ?? 'root',
 				secret: env['OAUTH_ROOT_SECRET'] ?? '123456',
 				allowedGrants: ['client_credentials'],
 				redirectUris: [],
 				scopeNames: (env['OAUTH_ROOT_SCOPES'] ?? '').split(',').filter(e => e !== ''),
+			},
+			web: {
+				name: 'web',
+				id: env['OAUTH_WEB_ID'] ?? 'web',
+				allowedGrants: ['authorization_code'],
+				redirectUris: [url_login],
+				scopeNames: [],
 			},
 			accessTokenTTL: env['OAUTH_ACCESS_TOKEN_TTL'] ?? '1h',
 		},
@@ -102,10 +104,11 @@ function createApp() {
 			.register(entity, {prefix: '/entity'})
 			.register(oauth, {
 				...options.oauth,
-				url,
 				prefix: '/oauth',
+				url_api,
+				url_login,
 			})
-			.register(user, {prefix: '/user', url})
+			.register(user, {prefix: '/user', url_api})
 
 		//.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 		//.register(auth, {prefix: '/auth', ...options.auth})

@@ -12,7 +12,7 @@ import {toFastifySchema} from '~/api/utils/schema'
 
 export interface Config {
 	prefix: string
-	url: string
+	url_api: string
 }
 
 export const user: FastifyPluginCallback<Config> = fp(async function (app, options) {
@@ -61,10 +61,10 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				const verifier = code_verifier()
 				const state = nanoid()
 				// FIXME: hard-linked endpoint
-				const auth = new URL('/oauth/authorize', options.url)
+				const auth = new URL('/oauth/authorize', options.url_api)
 				auth.searchParams.set('response_type', 'code')
 				auth.searchParams.set('client_id', this.root.id)
-				auth.searchParams.set('redirect_uri', new URL('/user/login2', options.url).toString())
+				auth.searchParams.set('redirect_uri', new URL('/user/login2', options.url_api).toString())
 				auth.searchParams.set('code_challenge', createHash('sha256').update(verifier).digest('hex'))
 				auth.searchParams.set('code_challenge_method', 'S256')
 				auth.searchParams.set('state', state)

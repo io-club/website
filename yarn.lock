@@ -1272,15 +1272,6 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@jmondi/oauth2-server@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmmirror.com/@jmondi/oauth2-server/download/@jmondi/oauth2-server-2.1.0.tgz#ffa10dd8b9c5c8b480824bf0ecf104d5d00ec4a7"
-  integrity sha1-/6EN2LnFyLSAgkvw7PEE1dAOxKc=
-  dependencies:
-    jsonwebtoken "^8.5.1"
-    ms "^2.1.3"
-    uri-js "^4.4.1"
-
 "@mapbox/node-pre-gyp@^1.0.5":
   version "1.0.5"
   resolved "https://registry.npmmirror.com/@mapbox/node-pre-gyp/download/@mapbox/node-pre-gyp-1.0.5.tgz#2a0b32fcb416fb3f2250fd24cb2a81421a4f5950"
