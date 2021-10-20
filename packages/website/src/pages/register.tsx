@@ -1,11 +1,12 @@
 
+import { $fetch } from 'ohmyfetch'
 import IAlien from 'virtual:icons/mdi/alien-outline'
 import IEmail from 'virtual:icons/mdi/email'
 import IPassword from 'virtual:icons/ri/lock-password-line'
 import IKey from 'virtual:icons/wpf/password1'
 import { defineComponent, reactive,ref } from 'vue'
 
-import { useFetch } from '#app'
+// import { useFetch } from '#app'
 import Link from '~/components/link'
 import NButton from '~/components/login/nbutton'
 import NInput from '~/components/login/ninput'
@@ -19,11 +20,10 @@ export default defineComponent({
 			password: '',
 			password2: '',
 			email: '',
-			sixinput: null
+			sixinput: ['', '', '', '', '', ''],
 		})
 
 		return () => {
-
 			return <div
 				w:w="100"
 				w:m="20"
@@ -40,7 +40,7 @@ export default defineComponent({
 					w:justify="around"
 				>
 					<NInput type="text" 
-						ref={input.username}
+						value={input.username}
 						label="Username" 
 						msg="请填写用户名" 
 						placeholder="Type your username"
@@ -54,7 +54,7 @@ export default defineComponent({
 					</NInput>
 
 					<NInput type="text"
-						ref={input.password}
+						value={input.password}
 						label="Password" 
 						msg="请填写密码" 
 						placeholder="Type your password" 
@@ -68,7 +68,7 @@ export default defineComponent({
 					</NInput>
 
 					<NInput type="text" 
-						ref={input.password2}
+						value={input.password2}
 						label="Ensure Password" 
 						msg="密码不一致" 
 						placeholder="Type your password again" 
@@ -82,7 +82,7 @@ export default defineComponent({
 					</NInput>
 
 					<NInput 
-						ref={input.email}
+						value={input.email}
 						type="text" 
 						label="Email" 
 						msg="请填写邮箱" 
@@ -102,19 +102,26 @@ export default defineComponent({
 					</NInput>
 
 					<NSixinput
-						ref={input.sixinput}
+						value={input.sixinput}
+						msg='请填写验证码'
+						label='Varifization code'
+						onChange={(e) => {
+							input.sixinput[e.target.id] = e.target.value
+						}}
 					></NSixinput>
 
 					<NButton p="1 x-20" type="button" value='注册' 
 						onClick={async () => {
-							console.log(input);
-							const {res} = useFetch('/api/user/signup', {
+							const body = {
+								username: input.username,
+								passwd: input.password,
+								email: input.email
+							}
+							console.log('按下注册按钮')
+							console.log(body);
+							const {res} = $fetch('/api/user/signup', {
 								method: 'POST',
-								body: {
-									username: input.username,
-									passwd: input.password,
-									email: input.email
-								}
+								body
 							})
 						}}
 					/>

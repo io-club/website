@@ -1,28 +1,25 @@
+import type {HTMLAttributes} from '@vue/runtime-dom'
 
 import NVarification from 'virtual:icons/ic/baseline-domain-verification'
 import { defineComponent, ref } from 'vue'
 export default defineComponent({
+	inheritAttrs: false,
 	props: {
 		label: String,
 		msg: String,
+		onChange: Function as HTMLAttributes['onChange']
 	},
 	setup(props, context) {
 		const hidden = props.value ? props.value.length !== 0 : false
 		// toastify-js
 		return () => {
 			const ret = []
+			// 为六个框准备的
 			const inputs = []
-
 			const els = ref<HTMLElement[]>([])
-			
 			const pushInput = (el: HTMLElement) => {
 				els.value.push(el)
 			}
-			context.expose({
-				getValue: () => {
-					return els.value.map((x) => { return x.value}).join('')
-				}
-			})
 			for (let i = 0; i < 6; i++) {
 				inputs.push(
 					<div
@@ -41,7 +38,8 @@ export default defineComponent({
 									els.value[i + 1].focus()
 								}
 							}}
-							type="text" id={`${i}`} maxlength='1'/>
+							onChange={props.onChange}
+							type='tel' id={`${i}`} maxlength='1'/>
 					</div>
 				)
 			}

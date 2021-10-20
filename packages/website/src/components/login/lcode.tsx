@@ -7,13 +7,12 @@ import NButton from '~/components/login/nbutton'
 import NInput from '~/components/login/ninput'
 import NSixinput from '~/components/login/nsixinput'
 export default defineComponent({
-	props: {
-
-	},
-	setup(props) {
+	setup() {
 		const { i18n } = useI18n()
-		const phone = ref('')
-		const varifycode = ref('')
+		const input = {
+			phone: '',
+			sixinput: ['', '', '', '', '', '']
+		}
 		// toastify-js
 		return () => {
 			return <div
@@ -23,13 +22,13 @@ export default defineComponent({
 				w:justify="around"
 			>
 				<NInput 
-					ref={phone} 
+					value={input.phone} 
 					type="number" 
 					label="Phone" 
 					msg="请填写手机号" 
 					placeholder="Type your phone"
 					onChange={(e) => {
-						phone.value = e.target.value
+						input.phone = e.target.value
 					}}
 				>
 					{{
@@ -42,16 +41,23 @@ export default defineComponent({
 					}}
 				</NInput>
 
-				<NSixinput 
-					ref={varifycode.value}
-					msg="required"
-					label="Verification"
+				<NSixinput
+					value={input.sixinput}
+					msg='请填写验证码'
+					label='Varifization code'
+					onChange={(e) => {
+						input.sixinput[e.target.id] = e.target.value
+					}}
 				></NSixinput>
 
 				<NButton p="1 x-20" type="button" value={i18n.value.login}
 					onClick={() => {
-						console.log(varifycode.value);
-						console.log(phone.value);
+						const body = {
+							phone: input.phone,
+							sixinput: input.sixinput.join('')
+						}
+						console.log(body);
+						
 					}}
 				/>
 			</div>

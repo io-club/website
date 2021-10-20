@@ -9,7 +9,7 @@ export default defineComponent({
 		},
 		value: {
 			type: String,
-			default: '',
+			required: true,
 		},
 		label: String,
 		msg: String,
@@ -17,16 +17,14 @@ export default defineComponent({
 	},
 	setup(props, {slots}) {
 		return () => {
-			const hidden = props.value ? props.value.length !== 0 : false
-			console.log(props.msg, slots);
-			
+			const hidden = props.value.length !== 0
 			return <div 
 				w:w='full'
 				w:m="b-2"
 				w:children="mb-1 text-sm"
 			>	
 				<div>
-					<span>{props.label} </span>
+					<span>{props.label}</span>
 					{!props.msg ? null :<span w:text="red-500" w:display={hidden ? 'hidden' : ''}>∗</span>}
 				</div>
 				<div
