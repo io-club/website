@@ -11,6 +11,7 @@ export default <NuxtConfig>{
 		{path: '/api', handler: '~/api/index'},
 	],
 	vite: {
+		envPrefix: 'IO_',
 		plugins: [
 			windi({
 				root: __dirname,

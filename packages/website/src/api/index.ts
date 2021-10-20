@@ -33,31 +33,31 @@ export interface Options {
 function createApp() {
 	const env = process.env
 
-	const url = env['SITE_URL'] ?? 'http://localhost:3000'
-	const url_api = new URL(env['API_URL'] ?? '/api', url).toString()
-	const url_login = new URL(env['LOGIN_URL'] ?? '/login', url).toString()
+	const url = env['IO_SITE_URL'] ?? 'http://localhost:3000'
+	const url_api = new URL(env['IO_API_URL'] ?? '/api', url).toString()
+	const url_login = new URL(env['IO_LOGIN_URL'] ?? '/login', url).toString()
 
 	const options: Options = {
 		url,
 		redis: {
-			url: env['REDIS_URL'] ?? 'redis://:@localhost:6379/0',
+			url: env['IO_REDIS_URL'] ?? 'redis://:@localhost:6379/0',
 		},
 		session: {
 			ttl: 86400,
-			key: env['SESSION_KEY'] ?? 'a secret with minimum length of 32 characters',
+			key: env['IO_SESSION_KEY'] ?? 'a secret with minimum length of 32 characters',
 		},
 		mailer: {
-			host: env['MAILER_HOST'] ?? 'x.com' ,
-			port: parseInt(env['MAILER_PORT'] ?? '456'),
+			host: env['IO_MAILER_HOST'] ?? 'x.com' ,
+			port: parseInt(env['IO_MAILER_PORT'] ?? '456'),
 			secure: true,
 			auth: {
-				user: env['MAILER_USER'] ?? 'xx@x.com',
-				pass: env['MAILER_PASS'] ?? '123456',
+				user: env['IO_MAILER_USER'] ?? 'xx@x.com',
+				pass: env['IO_MAILER_PASS'] ?? '123456',
 			}
 		},
 		auth: {
 			TTL: 600,
-			mail_from: env['MAILER_USER'] ?? 'xx@x.com',
+			mail_from: env['IO_MAILER_USER'] ?? 'xx@x.com',
 		},
 		ajv: {
 		},
@@ -65,20 +65,20 @@ function createApp() {
 			jwtSecret: 'ggg',
 			root: {
 				name: 'root',
-				id: env['OAUTH_ROOT_ID'] ?? 'root',
-				secret: env['OAUTH_ROOT_SECRET'] ?? '123456',
+				id: env['IO_OAUTH_ROOT_ID'] ?? 'root',
+				secret: env['IO_OAUTH_ROOT_SECRET'] ?? '123456',
 				allowedGrants: ['client_credentials'],
 				redirectUris: [],
-				scopeNames: (env['OAUTH_ROOT_SCOPES'] ?? '').split(',').filter(e => e !== ''),
+				scopeNames: (env['IO_OAUTH_ROOT_SCOPES'] ?? '').split(',').filter(e => e !== ''),
 			},
 			web: {
 				name: 'web',
-				id: env['OAUTH_WEB_ID'] ?? 'web',
+				id: env['IO_OAUTH_WEB_ID'] ?? 'web',
 				allowedGrants: ['authorization_code'],
 				redirectUris: [url_login],
 				scopeNames: [],
 			},
-			accessTokenTTL: env['OAUTH_ACCESS_TOKEN_TTL'] ?? '1h',
+			accessTokenTTL: env['IO_OAUTH_ACCESS_TOKEN_TTL'] ?? '1h',
 		},
 	}
 
