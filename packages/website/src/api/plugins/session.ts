@@ -1,7 +1,7 @@
 import type {FastifyPluginCallback} from 'fastify'
 
 import FastifySession from '@mgcrea/fastify-session'
-import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
+//import {SODIUM_SECRETBOX} from '@mgcrea/fastify-session-sodium-crypto'
 import fp from 'fastify-plugin'
 
 export interface Config {
@@ -12,7 +12,7 @@ export interface Config {
 const plugin: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	app.register(FastifySession, {
 		secret: options.key,
-		crypto: SODIUM_SECRETBOX,
+		//crypto: SODIUM_SECRETBOX,
 		cookie: {maxAge: options.ttl},
 	})
 }, {

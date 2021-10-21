@@ -1,4 +1,3 @@
-import LoadingCirclr from 'virtual:icons/eos-icons/loading'
 import { defineComponent } from 'vue'
 export default defineComponent({
 	props: {
@@ -31,7 +30,6 @@ export default defineComponent({
 					w:children="pl-1"
 				>
 					<span w:pos="inline">
-						<LoadingCirclr/>
 						{slots.default ? slots.default() : null}
 					</span>
 					<span>

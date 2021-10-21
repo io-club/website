@@ -1,5 +1,5 @@
-
 import { useI18n } from '@ioclub/composable'
+import { method } from 'lodash'
 import IPhone from 'virtual:icons/flat-color-icons/iphone'
 import { defineComponent, ref } from 'vue'
 
@@ -10,7 +10,7 @@ export default defineComponent({
 	setup() {
 		const { i18n } = useI18n()
 		const input = {
-			phone: '',
+			field: '',
 			sixinput: ['', '', '', '', '', '']
 		}
 		// toastify-js
@@ -22,13 +22,13 @@ export default defineComponent({
 				w:justify="around"
 			>
 				<NInput 
-					value={input.phone} 
-					type="number" 
-					label="Phone" 
-					msg="请填写手机号" 
-					placeholder="Type your phone"
+					value={input.field} 
+					type="text" 
+					label="Email / Phone" 
+					msg="请填写邮箱 / 手机号" 
+					placeholder="Type your email / phone"
 					onChange={(e) => {
-						input.phone = e.target.value
+						input.field = e.target.value
 					}}
 				>
 					{{
@@ -37,6 +37,15 @@ export default defineComponent({
 							w:outline="none focus:(none)"
 							w:border="~ l-green-400 r-0 t-0 b-0"
 							w:p='l-2'
+							onClick={async () => {
+								const res = await $fetch('/api/user/login_begin', {
+									method: 'POST',
+									body: {
+										type: 'email',
+										email: input.field,
+									}
+								})
+							}}
 						>获取验证码</button>
 					}}
 				</NInput>
@@ -52,12 +61,6 @@ export default defineComponent({
 
 				<NButton p="1 x-20" type="button" value={i18n.value.login}
 					onClick={() => {
-						const body = {
-							phone: input.phone,
-							sixinput: input.sixinput.join('')
-						}
-						console.log(body);
-						
 					}}
 				/>
 			</div>

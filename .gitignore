@@ -112,3 +112,4 @@ io
 .vercel_build_output
 *.rdb
 .output
+.yarnrc

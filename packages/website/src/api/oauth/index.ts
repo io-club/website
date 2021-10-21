@@ -69,14 +69,13 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 	await scope.add(...built_in_scopes)
 
 	// add the super client
-	options.root.name = 'root'
-	options.root.allowedGrants = ['client_credentials']
 	// add built-in scopes if not present
 	for (const scope of built_in_scopes) {
 		if (options.root.scopeNames.every(e => e !== scope.name))
 			options.root.scopeNames.push(scope.name)
 	}
 	await client.add(options.root)
+	await client.add(options.web)
 
 	// validate function
 	const handleAccessToken: handleAccessTokenType = function (redirect, scopes) {
@@ -140,6 +139,9 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 					code_challenge: { type: 'string' },
 					code_challenge_method: { enum: ['plain', 'S256'] },
 				},
+				optionalProperties: {
+					scope: { type: 'string' },
+				},
 			},
 		} as const
 		app.route<{ Querystring: JTDDataType<typeof authorize_schema.query> }>({
@@ -152,12 +154,12 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				try {
 					const authRequest = await authServer.validateAuthorizationRequest(new OAuthRequest({query: req.query}))
 
-					// The auth request object can be serialized and saved into a user's session.
-					// You will probably want to redirect the user at this point to a login endpoint.
 
-					// Once the user has logged in set the user on the AuthorizationRequest
-					console.log('Once the user has logged in set the user on the AuthorizationRequest')
-					authRequest.user = { id: 'abc', email: 'user@example.com' }
+					if (!req.session.get('user')) {
+						res.status(status_code.MOVED_TEMPORARILY).redirect(options.url_login)
+						return
+					}
+					authRequest.user = req.session.get('user')
 
 					// At this point you should redirect the user to an authorization page.
 					// This form will ask the user to approve the client and the scopes requested.
@@ -195,25 +197,31 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 					'client_credentials': {
 						properties: {
 							client_id: { type: 'string' },
-							client_secret: { type: 'string' },
 							scope: { type: 'string' },
+						},
+						optionalProperties: {
+							client_secret: { type: 'string' },
 						},
 					},
 					'authorization_code': {
 						properties: {
 							client_id: { type: 'string' },
+							code: { type: 'string' },
+							code_verifier: { type: 'string' },
+							redirect_uri: { type: 'string' },
+						},
+						optionalProperties: {
 							client_secret: { type: 'string' },
-							scope: { type: 'string' },
 						},
 					},
 					'refresh_token': {
 						properties: {
 							client_id: { type: 'string' },
-							client_secret: { type: 'string' },
 							refresh_token: { type: 'string' },
+							scope: { type: 'string' },
 						},
 						optionalProperties: {
-							scope: { type: 'string' },
+							client_secret: { type: 'string' },
 						},
 					},
 				},
@@ -226,7 +234,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				body: token_schema.body,
 			},
 			handler: async function (req, res) {
-				try {
+				try {				
 					const response = await authServer.respondToAccessTokenRequest(
 						new OAuthRequest({body: req.body}),
 						new OAuthResponse(),

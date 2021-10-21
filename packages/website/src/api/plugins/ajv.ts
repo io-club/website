@@ -64,7 +64,10 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 			const parser = ajv.compileParser(schema)
 			return (data) => {
 				const value = parser(data)
-				return {value, error: value ? undefined : new Error(`${parser.message} at ${parser.position}`)} 
+				return {value, error: value ? undefined : new Error(`${parser.message} at ${parser.position}\n${new String(data).slice(
+					parser.position <= 10 ? 0 : parser.position - 10,
+					parser.position + 10,
+				)}`)} 
 			}
 		} else {
 			const validate = ajv.compile(schema)

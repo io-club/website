@@ -8,6 +8,7 @@ import type {Config as sessConfig} from './plugins/session'
 import Fastify from 'fastify'
 import FastifyCookie from 'fastify-cookie'
 
+import {auth} from './auth'
 import {entity} from './entity'
 import {oauth} from './oauth'
 import FastifyAjv from './plugins/ajv'
@@ -102,6 +103,7 @@ function createApp() {
 	app.register(async function (app) {
 		app
 			.register(entity, {prefix: '/entity'})
+			.register(auth, options.auth)
 			.register(oauth, {
 				...options.oauth,
 				prefix: '/oauth',

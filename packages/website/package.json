@@ -65,7 +65,9 @@
 		"nuxt3": "3.0.0-27242747.0ab477c",
 		"ohmyfetch": "^0.3.1",
 		"pathe": "^0.2.0",
+		"query-string": "^7.0.1",
 		"redis-errors": "^1.2.0",
-		"sharp": "^0.29.1"
+		"sharp": "^0.29.1",
+		"unstorage": "^0.2.9"
 	}
 }

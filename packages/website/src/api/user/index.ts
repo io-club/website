@@ -1,14 +1,14 @@
-import type {JTDDataType} from '~/alias/jtd'
-import type {User} from '~/api/entity/user'
-import type {FastifyPluginCallback} from 'fastify'
+import type { JTDDataType } from '~/alias/jtd'
+import type { User } from '~/api/entity/user'
+import type { FastifyPluginCallback } from 'fastify'
 
-import {createHash} from 'crypto'
+import { createHash } from 'crypto'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
-import {customAlphabet, nanoid} from 'nanoid'
+import { customAlphabet, nanoid } from 'nanoid'
 
-import {userDefinition} from '~/api/entity/user'
-import {toFastifySchema} from '~/api/utils/schema'
+import { userDefinition } from '~/api/entity/user'
+import { toFastifySchema } from '~/api/utils/schema'
 
 export interface Config {
 	prefix: string
@@ -50,26 +50,81 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 		})
 
 		// login
-		const code_verifier = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 43)
-		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+		const login_begin_schema = {
+			body: {
+				discriminator: 'type',
+				mapping: {
+					'passwd': {
+						properties: {
+							username: { type: 'string' },
+							passwd: { type: 'string' },
+						},
+					},
+					'email': {
+						properties: {
+							email: {
+								type: 'string',
+								metadata: { format: 'email' },
+							},
+						},
+					},
+				},
+			},
+		} as const
+		app.route<{ Body: JTDDataType<typeof login_begin_schema.body> }>({
 			method: 'POST',
 			url: '/login_begin',
 			schema: {
-				body: signup_schema.body,
+				body: login_begin_schema.body,
 			},
 			handler: async function (req, res) {
-				const verifier = code_verifier()
-				const state = nanoid()
-				// FIXME: hard-linked endpoint
-				const auth = new URL('/oauth/authorize', options.url_api)
-				auth.searchParams.set('response_type', 'code')
-				auth.searchParams.set('client_id', this.root.id)
-				auth.searchParams.set('redirect_uri', new URL('/user/login2', options.url_api).toString())
-				auth.searchParams.set('code_challenge', createHash('sha256').update(verifier).digest('hex'))
-				auth.searchParams.set('code_challenge_method', 'S256')
-				auth.searchParams.set('state', state)
-				req.session.set('state', state)
-				req.session.set('verifier', verifier)
+				let user: User				
+				switch (req.body.type) {
+				case 'passwd':
+					try {
+						user = await this.entity.user.getUserById(req.body.username)
+					} catch (err) {
+						this.log.error({err, body: req.body})
+						res.status(status_code.BAD_REQUEST).send('can not find user')
+						return
+					}
+					if (user.password !== req.body.passwd) {
+						res.status(status_code.BAD_REQUEST).send('incorrect password')
+						return
+					}
+					break
+				case 'email':
+					try {
+						const users = await this.entity.user.getUserByField('email', req.body.email)
+						if (users.length > 1) {
+							res.status(status_code.BAD_REQUEST).send('more than one user')
+							return
+						}
+						user = users[0]
+					} catch (err) {
+						this.log.error({err, body: req.body})
+						res.status(status_code.BAD_REQUEST).send('can not find user')
+						return
+					}
+					try {
+						await this.auth.send_mail({
+							id: req.session.id,
+							mail: user.email.value,
+							text: '',
+							subject: '',
+						})
+					} catch (err) {
+						this.log.error({err, body: req.body})
+						res.status(status_code.BAD_REQUEST).send('can not send mail')
+						return
+					}
+					break
+				default:
+					res.status(status_code.BAD_REQUEST).send('invalid login type')
+					return
+				}
+				req.session.set('user', user)
+				res.send('OK')
 			},
 		})
 
@@ -127,7 +182,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 					phone: { type: 'string' },
 				},
 			},
-			response: {type: 'string'},
+			response: { type: 'string' },
 		} as const
 		app.route<{
 			Body: JTDDataType<typeof current_patch_schema.body>,
@@ -153,7 +208,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			const get_schema = {
 				params: {
 					properties: {
-						id: {type: 'string'},
+						id: { type: 'string' },
 					},
 				},
 				response: {
@@ -164,7 +219,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				},
 			} as const
 			app.route<{
-				Params: {id: User['id']},
+				Params: { id: User['id'] },
 			}>({
 				method: 'GET',
 				url: '/:id',
@@ -199,13 +254,13 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			const update_schema = {
 				params: {
 					properties: {
-						op: {enum: ['create', 'modify']},
+						op: { enum: ['create', 'modify'] },
 					}
 				},
 				body: userDefinition,
 			} as const
 			app.route<{
-				Params: {op: 'create' | 'modify'},
+				Params: { op: 'create' | 'modify' },
 				Body: User,
 			}>({
 				method: 'POST',
@@ -223,13 +278,13 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			const get_schema = {
 				params: {
 					properties: {
-						id: {type: 'string'},
+						id: { type: 'string' },
 					},
 				},
 				response: userDefinition,
 			} as const
 			app.route<{
-				Params: {id: User['id']},
+				Params: { id: User['id'] },
 			}>({
 				method: 'GET',
 				url: '/:id',
@@ -251,13 +306,13 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			const delete_schema = {
 				params: {
 					properties: {
-						id: {type: 'string'},
+						id: { type: 'string' },
 					},
 				},
-				response: {type: 'string'},
+				response: { type: 'string' },
 			} as const
 			app.route<{
-				Params: {id: User['id']},
+				Params: { id: User['id'] },
 			}>({
 				method: 'DELETE',
 				url: '/:id',

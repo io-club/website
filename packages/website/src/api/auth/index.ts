@@ -7,17 +7,14 @@ export interface Config {
 	mail_from: string
 }
 
-interface BaseOptions {
+export interface CheckOptions {
 	id: string
-	sess: string
-}
-
-export interface CheckOptions extends BaseOptions {
 	code: string
 }
 
-export interface MailOptions extends BaseOptions {
-	to: string
+export interface MailOptions {
+	id: string
+	mail: string
 	subject: string
 	text: string
 	ttl?: number
@@ -28,21 +25,20 @@ export interface Auth {
 	send_mail: (opt: MailOptions) => Promise<void>
 }
 
-const routes: FastifyPluginCallback<Config> = fp(async function (app, options) {
+export const auth: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	const auth: Auth = {
 		async check (opt) {
 			const c = await app.entity.auth_code.consume(opt.id)
-			return c?.sess === opt.sess && c?.code === opt.code
+			return c?.code === opt.code
 		},
 		async send_mail (opt) {
-			const id = opt.id
-			const sess = opt.sess
-			const mail = opt.to
+			const mail = opt.mail
+			const sess = opt.id
 			const ttl = opt.ttl ?? options.TTL
 
 			let code
 			try {
-				code = await app.entity.auth_code.issue(id, sess, ttl)
+				code = await app.entity.auth_code.issue(mail, sess, ttl)
 			} catch (error) {
 				app.log.error({mail, error}, 'can not issue new code')
 				throw new Error('can not issue new code')
@@ -67,5 +63,3 @@ const routes: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	name: 'auth',
 	dependencies: ['entity', 'mailer'],
 })
-
-export default routes

@@ -11,6 +11,7 @@ import {BaseRepository} from './base'
 import {OAuthClientDefinition} from './oauth_client'
 import {OAuthScopeDefinition} from './oauth_scope'
 import {userDefinition} from './user'
+import { escapeTag } from '../plugins/redis'
 
 export interface Token {
 	accessToken: string;
@@ -38,6 +39,8 @@ export const tokenDefinition: JTDSchemaType<Token> = {
 
 export class OAuthTokenRepository extends BaseRepository<Token> implements tokenRepository {
 	#idgen: () => string
+	#refreshToken_serialize: (a: string) => string
+	#refreshTokenExpireAt_serialize: (a: Date) => string
 
 	constructor(app: FastifyInstance, prefix: string) {
 		super({
@@ -47,6 +50,8 @@ export class OAuthTokenRepository extends BaseRepository<Token> implements token
 			serializer: app.ajv.compileSerializer(tokenDefinition),
 		})
 		this.#idgen = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 21)
+		this.#refreshToken_serialize = app.ajv.compileSerializer(tokenDefinition.optionalProperties.refreshToken)
+		this.#refreshTokenExpireAt_serialize = app.ajv.compileSerializer(tokenDefinition.optionalProperties.refreshTokenExpiresAt)
 	}
 
 	async create_index() {
@@ -147,7 +152,7 @@ export class OAuthTokenRepository extends BaseRepository<Token> implements token
 	async getByRefreshToken(refreshToken: string) {
 		const key = this.index()
 		const res = await this.query(async (pipe) => {
-			pipe['ft.search'](key, `@refresh:{${refreshToken}}`)
+			pipe['ft.search'](key, `@refresh:{${escapeTag(refreshToken)}}`)
 		})
 		if (res.length !== 1 || !res[0]) return null
 		return this.parse(res[0])
@@ -165,8 +170,8 @@ export class OAuthTokenRepository extends BaseRepository<Token> implements token
 		await this.transaction({
 			watch: [key],
 			handler: async (pipe) => {
-				pipe['json.set'](key, '$.refreshToken', token.refreshToken, 'xx')
-				pipe['json.set'](key, '$.refreshTokenExpiresAt', token.refreshTokenExpiresAt, 'xx')
+				pipe['json.set'](key, '$.refreshToken', this.#refreshToken_serialize(token.refreshToken), 'xx')
+				pipe['json.set'](key, '$.refreshTokenExpiresAt', this.#refreshTokenExpireAt_serialize(token.refreshTokenExpiresAt), 'xx')
 			},
 		})
 		return token

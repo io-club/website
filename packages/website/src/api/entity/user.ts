@@ -164,6 +164,16 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 		return this.parse(res[0])
 	}
 
+	async getUserByField(field: 'email' | 'phone', value: string) {
+		const res = await this.query(async (pipe) => {
+			pipe['ft.search'](
+				this.index(),
+				`@${field}:{${escapeTag(value)}}`,
+			)
+		})
+		return Object.values(res[0]).map(([,v]) => this.parse(v))
+	}
+
 	async signup(opt: SignUpOptions) {
 		await this.transaction({
 			query: async (redis) => {
