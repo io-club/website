@@ -1,3 +1,5 @@
+import type {PropType} from 'vue'
+
 import { defineComponent } from 'vue'
 export default defineComponent({
 	props: {
@@ -5,7 +7,9 @@ export default defineComponent({
 			type: String,
 			default: '',
 		},
+		type: String,
 		p: String,
+		onChange: Function as PropType<(ev: Event) => void>,
 	},
 	setup(props, {slots}) {
 		return () => <div
@@ -14,13 +18,15 @@ export default defineComponent({
 		>
 			<button
 				w:w='full'
-				w:bg="gradient-to-r hover:(gradient-to-br) active:(gradient-to-l)"
-				w:gradient="from-fuchsia-400 to-blue-400"
+				class="hover:(scale-103) "
+				w:bg="gradient-to-r hover:(scale-110) active:(gradient-to-l)"
+				w:gradient="from-green-400 via-cyan-400 to-blue-400"
+				w:opacity='90'
 				w:p="1 x-20"
 				w:border="~ rounded-1xl light-blue-400"
 				w:text="14 white"
 				w:outline="none focus:(none)"
-				// onClick={() => {console.log('点击按钮')}}
+				onClick={props.onChange}
 			>
 				<div 
 					w:flex="~ row"
@@ -34,9 +40,6 @@ export default defineComponent({
 					</span>
 					<span>
 						{props.value}
-					</span>
-					<span>
-						{/* Loading */}
 					</span>
 				</div>
 			</button>

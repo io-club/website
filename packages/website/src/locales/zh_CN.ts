@@ -16,6 +16,52 @@ const p = {
 		footer: {
 		},
 	},
+	login: {
+		button: {
+			login: '登录',
+			register: '注册',
+			sendcode: '发送验证码',
+		},
+		phone: {
+			label: 'Phone',
+			msg: '请填写手机号' ,
+			placeholder: 'Type your phone',
+		},
+		email: {
+			label: 'Email',
+			msg: '邮箱' ,
+			placeholder: 'Type your email',
+		},
+		id: {
+			label: 'ID',
+			msg: '请填写用户名' ,
+			placeholder: 'Type your ID',
+		},
+		emailorphone: {
+			label: 'Email / Phone',
+			msg: '请填写邮箱 / 手机号' ,
+			placeholder: 'Type your email / phone',
+		},
+		idoremail: {
+			label: 'Username / Email',
+			msg: '请填写用户名 / 邮箱' ,
+			placeholder: 'Type your username or email',
+		},
+		passwd: {
+			lable: 'Password',
+			msg: '请填写密码',
+			placeholder: 'Type your password',
+		},
+		ensurepasswd: {
+			lable: 'Ensure your password',
+			msg: '请重新填写密码',
+			placeholder: 'Type your password again',
+		},
+		sixinput: {
+			msg: '请填写验证码',
+			label: 'Verification code',
+		}
+	},
 	home: {
 		join_us: '加入我们',
 		cube: [
@@ -88,7 +134,6 @@ const p = {
 	'pastebin': '便利贴',
 	'more': '更多',
 	'user': '用户',
-	'login': '登录',
 	'last_modified': '最后修改',
 	'description': '简介',
 	'are_you_sure': '确定吗?',

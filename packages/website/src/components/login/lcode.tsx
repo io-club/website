@@ -1,20 +1,20 @@
-import { useI18n } from '@ioclub/composable'
-import { method } from 'lodash'
 import IPhone from 'virtual:icons/flat-color-icons/iphone'
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 import NButton from '~/components/login/nbutton'
 import NInput from '~/components/login/ninput'
 import NSixinput from '~/components/login/nsixinput'
+import { useI18n } from '~/plugins/i18n'
+
 export default defineComponent({
 	setup() {
 		const { i18n } = useI18n()
 		const input = {
 			field: '',
-			sixinput: ['', '', '', '', '', '']
+			sixinput: '      '
 		}
-		// toastify-js
 		return () => {
+			const { emailorphone, sixinput, button } = i18n.value.login
 			return <div
 				w:flex="~ col"
 				w:w="full"
@@ -24,11 +24,11 @@ export default defineComponent({
 				<NInput 
 					value={input.field} 
 					type="text" 
-					label="Email / Phone" 
-					msg="请填写邮箱 / 手机号" 
-					placeholder="Type your email / phone"
+					label={emailorphone.label}
+					msg={emailorphone.msg}
+					placeholder={emailorphone.placeholder}
 					onChange={(e) => {
-						input.field = e.target.value
+						input.field = (e.target as HTMLInputElement).value
 					}}
 				>
 					{{
@@ -46,21 +46,23 @@ export default defineComponent({
 									}
 								})
 							}}
-						>获取验证码</button>
+						>{button.sendcode}</button>
 					}}
 				</NInput>
 
 				<NSixinput
 					value={input.sixinput}
-					msg='请填写验证码'
-					label='Varifization code'
+					msg={sixinput.msg}
+					label={sixinput.label}
 					onChange={(e) => {
-						input.sixinput[e.target.id] = e.target.value
+						console.log(e);
+						// input.sixinput = (e.target as HTMLInputElement).value
 					}}
 				></NSixinput>
 
-				<NButton p="1 x-20" type="button" value={i18n.value.login}
+				<NButton p="1 x-20" type="button" value={button.login}
 					onClick={() => {
+						console.log('按下登录按钮');
 					}}
 				/>
 			</div>

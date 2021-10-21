@@ -1,12 +1,12 @@
 import type {Meta} from '@ioclub/mdvue'
 
-import {useI18n} from '@ioclub/composable'
 import Menu from 'virtual:icons/mdi-light/menu'
 import {defineComponent, provide, reactive, ref} from 'vue'
 
 //import MdMenu from '~/components/generater/mdmenu'
 import Link from '~/components/link'
 import Logo from '~/components/logo'
+import {useI18n} from '~/plugins/i18n'
 
 export default defineComponent({
 	props: {

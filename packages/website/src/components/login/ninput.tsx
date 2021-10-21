@@ -1,6 +1,6 @@
-import type {HTMLAttributes} from '@vue/runtime-dom'
+import type {PropType} from 'vue'
 
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 export default defineComponent({
 	props: {
 		placeholder: {
@@ -11,9 +11,10 @@ export default defineComponent({
 			type: String,
 			required: true,
 		},
+		type: String,
 		label: String,
 		msg: String,
-		onChange: Function as HTMLAttributes['onChange'],
+		onChange: Function as PropType<(ev: Event) => void>,
 	},
 	setup(props, {slots}) {
 		return () => {
@@ -42,7 +43,7 @@ export default defineComponent({
 						w:outline="none"
 						w:caret="green-500"
 						onChange={props.onChange}
-						type="text" value={props.value} placeholder={props.placeholder} />
+						type={props.type} value={props.value} placeholder={props.placeholder} />
 					<span>
 						{slots.rightbutton ? slots.rightbutton() : null}
 					</span>

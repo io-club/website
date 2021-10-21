@@ -1,4 +1,3 @@
-import { useI18n } from '@ioclub/composable'
 import { customAlphabet, nanoid } from 'nanoid'
 import { $fetch } from 'ohmyfetch'
 import queryString from 'query-string'
@@ -10,11 +9,12 @@ import IPassword from 'virtual:icons/ri/lock-password-line'
 import { defineComponent, reactive} from 'vue'
 import {useRoute} from 'vue-router'
 
-import { useState } from '#app'
 import NButton from '~/components/login/nbutton'
 import NInput from '~/components/login/ninput'
+import { useI18n } from '~/plugins/i18n'
 
 enum LoginState {
+	Idle,
 	FromClient,
 	FromSelf,
 	SelfCode,
@@ -25,6 +25,7 @@ enum LoginState {
 
 export default defineComponent({
 	setup() {
+		const {i18n} = useI18n()
 		const input = reactive ({
 			username: '',
 			passwd: ''
@@ -34,9 +35,9 @@ export default defineComponent({
 			driver: process.client ? localStorageDriver({ base: 'app:' }) : undefined,
 		})
 		const customed_nanoid = customAlphabet('1234567890abcdef', 80)
-		// toastify-js
 		return () => {
-			let loginstate = null
+			const { idoremail, passwd, button} = i18n.value.login
+			let loginstate = LoginState.Idle
 			if (route.query.response_type === 'code') {
 				loginstate = LoginState.FromClient
 			} else if (route.query.code) {
@@ -65,11 +66,11 @@ export default defineComponent({
 			>
 				<NInput type="text" 
 					value={input.username}
-					label="Username / Email" 
-					msg="请填写用户名 / 邮箱" 
-					placeholder="Type your username or email"
+					label={idoremail.label}
+					msg={idoremail.msg} 
+					placeholder={idoremail.placeholder}
 					onChange={(e) => {
-						input.username = e.target.value
+						input.username = (e.target as HTMLInputElement).value
 					}}
 				>
 					{{ 
@@ -78,11 +79,12 @@ export default defineComponent({
 				</NInput>
 				<NInput type="text" 
 					value={input.passwd}
-					label="Password" 
-					msg="请填写密码" 
-					placeholder="Type your password" 
+					label={passwd.lable}
+					msg={passwd.msg} 
+					placeholder={passwd.placeholder}
 					onChange={(e) => {
-						input.passwd = e.target.value
+						console.log(e.target);
+						input.passwd = (e.target as HTMLInputElement).value
 					}}
 				>
 					{{ 
@@ -92,7 +94,7 @@ export default defineComponent({
 				<div w:w='full' w:m="b-2" w:text="sm right gray-400"><span>forget password?</span></div>
 				<NButton p="1 x-20" 
 					type="button" 
-					value={'登录'}
+					value={button.login}
 					onClick={async () => {
 						const state = nanoid()
 						const code_challenge = customed_nanoid()
@@ -128,7 +130,7 @@ export default defineComponent({
 							// window.location.href = url
 						}
 					}}>
-					{loginstate == LoginState.SelfCode ? <NLoadingCirclr/> : null}
+					<NLoadingCirclr/>
 				</NButton>
 			</div>
 		}

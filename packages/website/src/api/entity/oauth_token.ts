@@ -11,7 +11,7 @@ import {BaseRepository} from './base'
 import {OAuthClientDefinition} from './oauth_client'
 import {OAuthScopeDefinition} from './oauth_scope'
 import {userDefinition} from './user'
-import { escapeTag } from '../plugins/redis'
+import { escapeTag } from '~/api/plugins/redis'
 
 export interface Token {
 	accessToken: string;

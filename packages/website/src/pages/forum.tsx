@@ -1,4 +1,4 @@
-import {useI18n} from '@ioclub/composable'
+import {useI18n} from '~/plugins/i18n'
 import {defineComponent} from 'vue'
 
 export default defineComponent({

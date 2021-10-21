@@ -234,7 +234,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				body: token_schema.body,
 			},
 			handler: async function (req, res) {
-				try {				
+				try {
 					const response = await authServer.respondToAccessTokenRequest(
 						new OAuthRequest({body: req.body}),
 						new OAuthResponse(),

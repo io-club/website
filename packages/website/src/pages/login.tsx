@@ -1,5 +1,5 @@
 
-import { useI18n } from '@ioclub/composable'
+import { useI18n } from '~/plugins/i18n'
 import NQQ from 'virtual:icons/icon-park-outline/tencent-qq'
 import NGithub from 'virtual:icons/uim/github-alt'
 import { defineComponent, ref } from 'vue'

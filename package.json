@@ -8,7 +8,6 @@
 		"build-submodule": "git submodule update --init",
 		"build-pkg-oauth": "yarn workspace @jmondi/oauth2-server run build",
 		"build-pkg-mdvue": "yarn workspace @ioclub/mdvue run build",
-		"build-pkg-composable": "yarn workspace @ioclub/composable run build",
 		"build-pkgs": "run-p -l build-pkg-*",
 		"build-redis": "cd packages/website && ./build.sh",
 		"build-tasks": "run-p -l build-redis build-pkgs",

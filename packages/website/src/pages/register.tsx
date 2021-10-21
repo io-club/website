@@ -1,4 +1,3 @@
-
 import { $fetch } from 'ohmyfetch'
 import IAlien from 'virtual:icons/mdi/alien-outline'
 import IEmail from 'virtual:icons/mdi/email'
@@ -6,15 +5,15 @@ import IPassword from 'virtual:icons/ri/lock-password-line'
 import IKey from 'virtual:icons/wpf/password1'
 import { defineComponent, reactive,ref } from 'vue'
 
-// import { useFetch } from '#app'
 import Link from '~/components/link'
 import NButton from '~/components/login/nbutton'
 import NInput from '~/components/login/ninput'
 import NSixinput from '~/components/login/nsixinput'
+import { useI18n } from '~/plugins/i18n'
 export default defineComponent({
 
 	setup() {
-
+		const {i18n} = useI18n()
 		const input = reactive({
 			username: '',
 			password: '',
@@ -24,6 +23,7 @@ export default defineComponent({
 		})
 
 		return () => {
+			const {button, id, email, passwd, ensurepasswd, sixinput} = i18n.value.login
 			return <div
 				w:w="100"
 				w:m="20"
@@ -41,11 +41,11 @@ export default defineComponent({
 				>
 					<NInput type="text" 
 						value={input.username}
-						label="Username" 
-						msg="请填写用户名" 
-						placeholder="Type your username"
+						label={id.label} 
+						msg={id.msg} 
+						placeholder={id.placeholder}
 						onChange={(e) => {
-							input.username = e.target.value
+							input.username = (e.target as HTMLInputElement).value
 						}}
 					>
 						{{
@@ -55,11 +55,11 @@ export default defineComponent({
 
 					<NInput type="text"
 						value={input.password}
-						label="Password" 
-						msg="请填写密码" 
-						placeholder="Type your password" 
+						label={passwd.lable}
+						msg={passwd.msg}
+						placeholder={passwd.placeholder} 
 						onChange={(e) => {
-							input.password = e.target.value
+							input.password = (e.target as HTMLInputElement).value
 						}}
 					>
 						{{
@@ -69,11 +69,11 @@ export default defineComponent({
 
 					<NInput type="text" 
 						value={input.password2}
-						label="Ensure Password" 
-						msg="密码不一致" 
-						placeholder="Type your password again" 
+						label={ensurepasswd.lable} 
+						msg={ensurepasswd.msg}
+						placeholder={ensurepasswd.placeholder} 
 						onChange={(e) => {
-							input.password2 = e.target.value
+							input.password2 = (e.target as HTMLInputElement).value
 						}}
 					>
 						{{
@@ -84,11 +84,11 @@ export default defineComponent({
 					<NInput 
 						value={input.email}
 						type="text" 
-						label="Email" 
-						msg="请填写邮箱" 
-						placeholder="Type your email"
+						label={email.label}
+						msg={email.msg}
+						placeholder={email.placeholder}
 						onChange={(e) => {
-							input.email = e.target.value
+							input.email = (e.target as HTMLInputElement).value
 						}}
 					>
 						{{
@@ -97,32 +97,31 @@ export default defineComponent({
 								w:outline="none focus:(none)"
 								w:border="~ l-green-400 r-0 t-0 b-0"
 								w:p='l-2'
-							>获取验证码</button>
+							>{button.sendcode}</button>
 						}}
 					</NInput>
 
 					<NSixinput
 						value={input.sixinput}
-						msg='请填写验证码'
-						label='Varifization code'
+						label={sixinput.label}
+						msg={sixinput.msg}
 						onChange={(e) => {
-							input.sixinput[e.target.id] = e.target.value
+							input.sixinput[e.target.id] = (e.target as HTMLInputElement).value
 						}}
 					></NSixinput>
 
-					<NButton p="1 x-20" type="button" value='注册' 
+					<NButton p="1 x-20" type="button" value={button.register}
 						onClick={async () => {
 							const body = {
 								username: input.username,
 								passwd: input.password,
 								email: input.email
 							}
-							console.log('按下注册按钮')
-							console.log(body);
-							const {res} = $fetch('/api/user/signup', {
+							const res = await $fetch('/api/user/signup', {
 								method: 'POST',
 								body
 							})
+							console.log(res);
 						}}
 					/>
 				</div>
