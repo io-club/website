@@ -1,7 +1,7 @@
 import {defineComponent} from 'vue'
 
-import Image from '@/components/image'
-import Link from '@/components/link'
+import Image from '~/components/image'
+import Link from '~/components/link'
 import {useI18n} from '~/plugins/i18n'
 
 export default defineComponent({

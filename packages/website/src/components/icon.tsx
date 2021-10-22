@@ -9,7 +9,7 @@ export default defineComponent({
 	},
 	setup(props, {slots}) {
 		return () => <div
-			w:flex="~ col "
+			w:flex="~ col"
 			w:text="center"
 			w:align="items-center"
 		>

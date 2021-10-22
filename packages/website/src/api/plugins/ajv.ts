@@ -1,9 +1,9 @@
-import type {JTDOptions} from '@/alias/jtd'
+import type {JTDOptions} from '~/alias/jtd'
 import type {FastifyPluginCallback} from 'fastify'
 
 import fp from 'fastify-plugin'
 
-import Ajv from '@/alias/jtd'
+import Ajv from '~/alias/jtd'
 
 export interface Config extends JTDOptions {
 }

@@ -1,12 +1,17 @@
 import type {Meta} from '@ioclub/mdvue'
 
-import Menu from 'virtual:icons/mdi-light/menu'
+import '~/css/windi.css'
+import 'virtual:windi.css'
+
 import {defineComponent, provide, reactive, ref} from 'vue'
 
 //import MdMenu from '~/components/generater/mdmenu'
 import Link from '~/components/link'
 import Logo from '~/components/logo'
 import {useI18n} from '~/plugins/i18n'
+//import Menu from 'virtual:icons/mdi-light/menu'
+
+const Menu = () => <span>3</span>
 
 export default defineComponent({
 	props: {

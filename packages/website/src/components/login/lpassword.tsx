@@ -1,17 +1,17 @@
-import { customAlphabet, nanoid } from 'nanoid'
-import { $fetch } from 'ohmyfetch'
+import {customAlphabet, nanoid} from 'nanoid'
+import {$fetch} from 'ohmyfetch'
 import queryString from 'query-string'
 import {createStorage} from 'unstorage'
 import localStorageDriver from 'unstorage/drivers/localstorage'
 import NLoadingCirclr from 'virtual:icons/eos-icons/loading'
 import IAlien from 'virtual:icons/mdi/alien-outline'
 import IPassword from 'virtual:icons/ri/lock-password-line'
-import { defineComponent, reactive} from 'vue'
+import {defineComponent, reactive} from 'vue'
 import {useRoute} from 'vue-router'
 
 import NButton from '~/components/login/nbutton'
 import NInput from '~/components/login/ninput'
-import { useI18n } from '~/plugins/i18n'
+import {useI18n} from '~/plugins/i18n'
 
 enum LoginState {
 	Idle,
@@ -26,17 +26,17 @@ enum LoginState {
 export default defineComponent({
 	setup() {
 		const {i18n} = useI18n()
-		const input = reactive ({
+		const input = reactive({
 			username: '',
 			passwd: ''
 		})
 		const route = useRoute()
 		const storage = createStorage({
-			driver: process.client ? localStorageDriver({ base: 'app:' }) : undefined,
+			driver: process.client ? localStorageDriver({base: 'app:'}) : undefined,
 		})
 		const customed_nanoid = customAlphabet('1234567890abcdef', 80)
 		return () => {
-			const { idoremail, passwd, button} = i18n.value.login
+			const {idoremail, passwd, button} = i18n.value.login
 			let loginstate = LoginState.Idle
 			if (route.query.response_type === 'code') {
 				loginstate = LoginState.FromClient
@@ -54,7 +54,7 @@ export default defineComponent({
 						})
 					})
 				}
-				exchange_ff()	
+				exchange_ff()
 			} else {
 				loginstate = LoginState.FromSelf
 			}
@@ -64,36 +64,36 @@ export default defineComponent({
 				w:align="items-center"
 				w:justify="around"
 			>
-				<NInput type="text" 
+				<NInput type="text"
 					value={input.username}
 					label={idoremail.label}
-					msg={idoremail.msg} 
+					msg={idoremail.msg}
 					placeholder={idoremail.placeholder}
 					onChange={(e) => {
 						input.username = (e.target as HTMLInputElement).value
 					}}
 				>
-					{{ 
-						icon: () => <IAlien/>,
+					{{
+						icon: () => <IAlien />,
 					}}
 				</NInput>
-				<NInput type="text" 
+				<NInput type="text"
 					value={input.passwd}
 					label={passwd.lable}
-					msg={passwd.msg} 
+					msg={passwd.msg}
 					placeholder={passwd.placeholder}
 					onChange={(e) => {
 						console.log(e.target);
 						input.passwd = (e.target as HTMLInputElement).value
 					}}
 				>
-					{{ 
-						icon: () => <IPassword/>,
+					{{
+						icon: () => <IPassword />,
 					}}
 				</NInput>
 				<div w:w='full' w:m="b-2" w:text="sm right gray-400"><span>forget password?</span></div>
-				<NButton p="1 x-20" 
-					type="button" 
+				<NButton p="1 x-20"
+					type="button"
 					value={button.login}
 					onClick={async () => {
 						const state = nanoid()
@@ -108,14 +108,16 @@ export default defineComponent({
 							}
 						})
 						if (loginstate === LoginState.FromSelf) {
-							const url = queryString.stringifyUrl({url: '/api/oauth/authorize', query: {
-								response_type: 'code',
-								client_id: process.env['IO_OAUTH_WEB_ID'],
-								redirect_uri: 'http://localhost:3000/login',
-								state,
-								code_challenge,
-								code_challenge_method: 'plain'
-							}});
+							const url = queryString.stringifyUrl({
+								url: '/api/oauth/authorize', query: {
+									response_type: 'code',
+									client_id: process.env['IO_OAUTH_WEB_ID'],
+									redirect_uri: 'http://localhost:3000/login',
+									state,
+									code_challenge,
+									code_challenge_method: 'plain'
+								}
+							});
 							window.location.href = url
 						} else {
 							console.log('third part tring to get code from server');
@@ -130,7 +132,7 @@ export default defineComponent({
 							// window.location.href = url
 						}
 					}}>
-					<NLoadingCirclr/>
+					<NLoadingCirclr />
 				</NButton>
 			</div>
 		}

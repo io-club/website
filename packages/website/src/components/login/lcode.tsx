@@ -1,9 +1,10 @@
+import type { DefineComponent } from 'vue'
+
 import IPhone from 'virtual:icons/flat-color-icons/iphone'
 import { defineComponent } from 'vue'
 
 import NButton from '~/components/login/nbutton'
-import NInput from '~/components/login/ninput'
-import NSixinput from '~/components/login/nsixinput'
+import Input from '~/components/login/ninput'
 import { useI18n } from '~/plugins/i18n'
 
 export default defineComponent({
@@ -21,15 +22,13 @@ export default defineComponent({
 				w:align="items-center"
 				w:justify="around"
 			>
-				<NInput 
+				<Input 
 					value={input.field} 
 					type="text" 
 					label={emailorphone.label}
 					msg={emailorphone.msg}
 					placeholder={emailorphone.placeholder}
-					onChange={(e) => {
-						input.field = (e.target as HTMLInputElement).value
-					}}
+					onChange={(e) => input.field}
 				>
 					{{
 						icon: () => <IPhone/>,
@@ -48,17 +47,16 @@ export default defineComponent({
 							}}
 						>{button.sendcode}</button>
 					}}
-				</NInput>
+				</Input>
 
-				<NSixinput
+				<Input
 					value={input.sixinput}
 					msg={sixinput.msg}
 					label={sixinput.label}
-					onChange={(e) => {
-						console.log(e);
-						// input.sixinput = (e.target as HTMLInputElement).value
-					}}
-				></NSixinput>
+					class="tracking-2.5em"
+					w:bg="digit sz-digit repeat-x bottom"
+					onChange={(e) => input.sixinput = e}
+				/>
 
 				<NButton p="1 x-20" type="button" value={button.login}
 					onClick={() => {

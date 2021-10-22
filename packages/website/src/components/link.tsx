@@ -1,5 +1,5 @@
-import { defineComponent } from 'vue'
-import { RouterLink } from 'vue-router'
+import {defineComponent} from 'vue'
+import {RouterLink} from 'vue-router'
 
 export default defineComponent({
 	props: {

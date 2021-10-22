@@ -97,7 +97,7 @@ function createApp() {
 		.register(FastifyFetch)
 		.register(FastifySharp)
 		.register(FastifyCookie)
-		.register(FastifySession, options.session)
+		//.register(FastifySession, options.session)
 		.register(FastifyMailer, options.mailer)
 
 	app.register(async function (app) {

@@ -1,6 +1,6 @@
 import type {PropType} from 'vue'
 
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 export default defineComponent({
 	props: {
 		value: {
@@ -10,6 +10,7 @@ export default defineComponent({
 		type: String,
 		p: String,
 		onChange: Function as PropType<(ev: Event) => void>,
+		onClick: Function as PropType<(ev: Event) => void>,
 	},
 	setup(props, {slots}) {
 		return () => <div
@@ -28,7 +29,7 @@ export default defineComponent({
 				w:outline="none focus:(none)"
 				onClick={props.onChange}
 			>
-				<div 
+				<div
 					w:flex="~ row"
 					w:text="center"
 					w:align="items-center"

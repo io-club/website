@@ -1,12 +1,12 @@
 import type {PropType, Ref} from 'vue'
 
-import { defineComponent, ref } from 'vue'
+import {defineComponent, ref} from 'vue'
 export default defineComponent({
 	props: {
-		value: String,
 		label: String,
 		msg: String,
-		onChange: Function as PropType<(ev: Event) => void>,
+		value: String,
+		onChange: Function as PropType<(e: string) => void>,
 	},
 	setup(props) {
 		const els: Ref<HTMLInputElement>[] = []
@@ -20,20 +20,19 @@ export default defineComponent({
 						w:p="1"
 						w:border="1 solid gray-200 rounded"
 					>
-						<input 
+						<input
 							ref={els[i]}
-							w:w="6" 
-							w:h="6" 
+							w:w="6"
+							w:h="6"
 							w:outline="none"
 							w:caret="green-500"
 							w:text="center"
-							onInput={() => {
-								if (i != 5 && els[i].value.value != '') {
+							onChange={(e) => {
+								if (i != 5 && e.target?.value != '') {
 									els[i + 1].value.focus()
 								}
 							}}
-							onChange={props.onChange}
-							type='tel' id={`${i}`} maxlength='1'/>
+							type='tel' maxlength='1' />
 					</div>
 				)
 			}
@@ -45,7 +44,7 @@ export default defineComponent({
 				>
 					<div>
 						<span>{props.label} </span>
-						{!props.msg ? null :<span w:text="red-500">∗</span>}
+						{!props.msg ? null : <span w:text="red-500">∗</span>}
 					</div>
 					<div
 						w:w="full"
