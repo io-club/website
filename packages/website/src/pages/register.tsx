@@ -3,7 +3,7 @@ import IAlien from 'virtual:icons/mdi/alien-outline'
 import IEmail from 'virtual:icons/mdi/email'
 import IPassword from 'virtual:icons/ri/lock-password-line'
 import IKey from 'virtual:icons/wpf/password1'
-import { defineComponent, reactive,ref } from 'vue'
+import { defineComponent, reactive} from 'vue'
 
 import Link from '~/components/link'
 import NButton from '~/components/login/nbutton'
@@ -23,7 +23,7 @@ export default defineComponent({
 		})
 
 		return () => {
-			const {button, id, email, passwd, ensurepasswd, sixinput} = i18n.value.login
+			const {button, id, email, passwd, ensurepasswd, sixinput, hintinfo} = i18n.value.login
 			return <div
 				w:w="100"
 				w:m="20"
@@ -31,7 +31,7 @@ export default defineComponent({
 				w:border="1 rounded"
 				w:children='mt-4'
 			>
-				<div w:text="center"><span w:text="2xl stroke-1">Register</span></div>
+				<div w:text="center"><span w:text="2xl stroke-1">{button.register}</span></div>
 
 				<div
 					w:flex="~ col"
@@ -129,7 +129,7 @@ export default defineComponent({
 					w:m='b-2'
 					w:text="center"
 				>
-					<span w:text="xs gray-500">already have an account ? </span>
+					<span w:text="xs gray-500">{hintinfo.guide.pushlogin}</span>
 					<span w:text='xs green-800' w:cursor='pointer'><Link to='/login'>Login</Link></span>
 				</div>
 			</div>

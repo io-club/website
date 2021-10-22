@@ -7,11 +7,12 @@ import {customAlphabet} from 'nanoid'
 import {join} from 'pathe'
 import RedisErrors from 'redis-errors'
 
+import { escapeTag } from '~/api/plugins/redis'
+
 import {BaseRepository} from './base'
 import {OAuthClientDefinition} from './oauth_client'
 import {OAuthScopeDefinition} from './oauth_scope'
 import {userDefinition} from './user'
-import { escapeTag } from '~/api/plugins/redis'
 
 export interface Token {
 	accessToken: string;

@@ -9,7 +9,6 @@ export default defineComponent({
 		},
 		type: String,
 		p: String,
-		onChange: Function as PropType<(ev: Event) => void>,
 		onClick: Function as PropType<(ev: Event) => void>,
 	},
 	setup(props, {slots}) {

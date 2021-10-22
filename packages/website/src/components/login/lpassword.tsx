@@ -34,12 +34,14 @@ export default defineComponent({
 		const storage = createStorage({
 			driver: process.client ? localStorageDriver({base: 'app:'}) : undefined,
 		})
-		const customed_nanoid = customAlphabet('1234567890abcdef', 80)
+		const customed_nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 80)
 		return () => {
 			const {idoremail, passwd, button} = i18n.value.login
 			let loginstate = LoginState.Idle
 			if (route.query.response_type === 'code') {
 				loginstate = LoginState.FromClient
+
+
 			} else if (route.query.code) {
 				const exchange_ff = async function () {
 					const code_verifier = await storage.getItem('code_challenge')
@@ -53,6 +55,7 @@ export default defineComponent({
 							code_verifier: code_verifier,
 						})
 					})
+					console.log(await res.text());
 				}
 				exchange_ff()
 			} else {
@@ -121,15 +124,15 @@ export default defineComponent({
 							window.location.href = url
 						} else {
 							console.log('third part tring to get code from server');
-							// const url = queryString.stringifyUrl({url: '/api/oauth/authorize', query: {
-							// 	response_type: 'code',
-							// 	client_id: process.env['IO_OAUTH_WEB_ID'],
-							// 	redirect_uri: route.query.redirect_url,
-							// 	state: route.query.state,
-							// 	code_challenge: route.query.code_challenge,
-							// 	code_challenge_method: 'plain'
-							// }});
-							// window.location.href = url
+							const url = queryString.stringifyUrl({url: '/api/oauth/authorize', query: {
+								response_type: 'code',
+								client_id: process.env['IO_OAUTH_WEB_ID'],
+								redirect_uri: route.query.redirect_url,
+								state: route.query.state,
+								code_challenge: route.query.code_challenge,
+								code_challenge_method: 'plain'
+							}});
+							window.location.href = url
 						}
 					}}>
 					<NLoadingCirclr />

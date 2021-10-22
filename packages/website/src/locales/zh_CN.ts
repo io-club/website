@@ -17,6 +17,18 @@ const p = {
 		},
 	},
 	login: {
+		hintinfo: {
+			loginways: {
+				withpasswd: '密码登录',
+				nopasswd: '免密登录',
+			},
+			guide: {
+				pushlogin: 'don\'t have an account ?',
+				pushregister: 'already have an account ?',
+				thirdpartlogin: '―――   or sign up using  ―――',
+				thirdpartregister: '―――   or register using  ―――',
+			}
+		},
 		button: {
 			login: '登录',
 			register: '注册',
