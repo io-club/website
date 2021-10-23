@@ -1,9 +1,9 @@
-import type { User } from '~/api/entity/user';
+import type {Session} from '~/api/plugins/session'
 
-import '@mgcrea/fastify-session'
+import 'fastify'
 
-declare module '@mgcrea/fastify-session' {
-	interface SessionData {
-		user?: User
+declare module 'fastify' {
+	interface FastifyRequest {
+		session: Session;
 	}
 }

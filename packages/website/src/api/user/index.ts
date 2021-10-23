@@ -2,10 +2,8 @@ import type { JTDDataType } from '~/alias/jtd'
 import type { User } from '~/api/entity/user'
 import type { FastifyPluginCallback } from 'fastify'
 
-import { createHash } from 'crypto'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
-import { customAlphabet, nanoid } from 'nanoid'
 
 import { userDefinition } from '~/api/entity/user'
 import { toFastifySchema } from '~/api/utils/schema'
@@ -100,6 +98,10 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 							res.status(status_code.BAD_REQUEST).send('more than one user')
 							return
 						}
+						if (users.length < 1) {
+							res.status(status_code.BAD_REQUEST).send('can not find user')
+							return
+						}
 						user = users[0]
 					} catch (err) {
 						this.log.error({err, body: req.body})
@@ -108,7 +110,6 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 					}
 					try {
 						await this.auth.send_mail({
-							id: req.session.id,
 							mail: user.email.value,
 							text: '',
 							subject: '',

@@ -9,14 +9,12 @@ import {BaseRepository} from './base'
 export interface AuthCode {
 	id: string
 	code: string
-	sess: string
 }
 
 export const codeDefinition: JTDSchemaType<AuthCode> = {
 	properties: {
 		id: { type: 'string' },
 		code: { type: 'string', metadata: { format: 'alnun' } },
-		sess: { type: 'string' },
 	},
 }
 
@@ -33,8 +31,8 @@ export class AuthCodeRepository extends BaseRepository<AuthCode> {
 		this.#idgen = customAlphabet('0123456789', 6)
 	}
 
-	async issue(id: string, sess: string, expires: number) {
-		const code = {id, code: this.#idgen(), sess}
+	async issue(id: string, expires: number) {
+		const code = {id, code: this.#idgen()}
 		const key = this.data(code.id)
 		await this.transaction({
 			watch: [key],

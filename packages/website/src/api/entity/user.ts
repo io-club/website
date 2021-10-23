@@ -124,13 +124,13 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 						case_sensitive: true,
 					},
 					{
-						ident: '$.email',
+						ident: '$.email.value',
 						as: 'email',
 						type: 'tag',
 						case_sensitive: true,
 					},
 					{
-						ident: '$.phone',
+						ident: '$.phone.value',
 						as: 'phone',
 						type: 'tag',
 						case_sensitive: true,
@@ -171,7 +171,8 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 				`@${field}:{${escapeTag(value)}}`,
 			)
 		})
-		return Object.values(res[0]).map(([,v]) => this.parse(v))
+		const v: [string, string][] = Object.values(res[0])
+		return v.map(([,v]) => this.parse(v))
 	}
 
 	async signup(opt: SignUpOptions) {

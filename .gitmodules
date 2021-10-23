@@ -6,7 +6,7 @@
 	url = https://github.com/RustPython/RustPython
 [submodule "packages/RediSearch"]
 	path = packages/website/RediSearch/
-	url = https://github.com/RediSearch/RediSearch
+	url = https://github.com/xhebox/RediSearch
 [submodule "packages/RedisJson"]
 	path = packages/website/RedisJSON
 	url = https://github.com/RedisJSON/RedisJSON

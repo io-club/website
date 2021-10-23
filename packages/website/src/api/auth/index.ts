@@ -13,7 +13,6 @@ export interface CheckOptions {
 }
 
 export interface MailOptions {
-	id: string
 	mail: string
 	subject: string
 	text: string
@@ -33,12 +32,11 @@ export const auth: FastifyPluginCallback<Config> = fp(async function (app, optio
 		},
 		async send_mail (opt) {
 			const mail = opt.mail
-			const sess = opt.id
 			const ttl = opt.ttl ?? options.TTL
 
 			let code
 			try {
-				code = await app.entity.auth_code.issue(mail, sess, ttl)
+				code = await app.entity.auth_code.issue(mail, ttl)
 			} catch (error) {
 				app.log.error({mail, error}, 'can not issue new code')
 				throw new Error('can not issue new code')

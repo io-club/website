@@ -5,6 +5,7 @@ import type {Options as MailerOptions} from './plugins/mailer'
 import type {Config as redisConfig} from './plugins/redis'
 import type {Config as sessConfig} from './plugins/session'
 
+import destr from 'destr'
 import Fastify from 'fastify'
 import FastifyCookie from 'fastify-cookie'
 
@@ -44,8 +45,8 @@ function createApp() {
 			url: env['IO_REDIS_URL'] ?? 'redis://:@localhost:6379/0',
 		},
 		session: {
-			ttl: 86400,
-			key: env['IO_SESSION_KEY'] ?? 'a secret with minimum length of 32 characters',
+			cookieName: 'session',
+			keys: destr((env['IO_SESSION_KEYS'] ?? '[{"kty":"EC","crv":"P-256","x":"FTbWoF7IDoVuST7MROTj96YdJfCDv22pwWUI3qX3O_4","y":"adf1brnz86vJuwo0PdxzUp6t-s-HWm1jibe5iui56dM","alg":"ECDH-ES+A256KW"},{"kty":"EC","crv":"P-256","x":"FTbWoF7IDoVuST7MROTj96YdJfCDv22pwWUI3qX3O_4","y":"adf1brnz86vJuwo0PdxzUp6t-s-HWm1jibe5iui56dM","d":"oUOaJGdVSOlkQzUUIfDzSdbl1ENRmXIm1Hn1rYTkkyI","alg":"ECDH-ES+A256KW"}]')),
 		},
 		mailer: {
 			host: env['IO_MAILER_HOST'] ?? 'x.com' ,
@@ -85,19 +86,19 @@ function createApp() {
 
 	// global plugins
 	const app = Fastify({
-		pluginTimeout: 12000,
+		pluginTimeout: 120000,
 		logger: {
-			level: 'warn',
+			level: 'debug',
 		},
 		// @ts-expect-error
 		jsonShorthand: false,
 	})
 		.register(FastifyRedis, options.redis)
 		.register(FastifyAjv, options.ajv)
+		.register(FastifyCookie)
 		.register(FastifyFetch)
 		.register(FastifySharp)
-		.register(FastifyCookie)
-		//.register(FastifySession, options.session)
+		.register(FastifySession, options.session)
 		.register(FastifyMailer, options.mailer)
 
 	app.register(async function (app) {
