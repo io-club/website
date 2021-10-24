@@ -11,6 +11,7 @@ import { toFastifySchema } from '~/api/utils/schema'
 export interface Config {
 	prefix: string
 	url_api: string
+	mail_from: string
 }
 
 export const user: FastifyPluginCallback<Config> = fp(async function (app, options) {
@@ -91,7 +92,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return
 					}
 					break
-				case 'email':
+				case 'email': {
 					try {
 						const users = await this.entity.user.getUserByField('email', req.body.email)
 						if (users.length > 1) {
@@ -108,18 +109,35 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						res.status(status_code.BAD_REQUEST).send('can not find user')
 						return
 					}
+
+					const mail = user.email.value
+
+					let code
 					try {
-						await this.auth.send_mail({
-							mail: user.email.value,
-							text: '',
-							subject: '',
+						code = await app.auth.issue({
+							id: mail,
 						})
+					} catch (error) {
+						this.log.error({mail, error}, 'can not issue new code')
+						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not issue new code')
+						return
+					}
+
+					try {
+						const info = await app.mailer.sendMail({
+							from: options.mail_from,
+							to: mail,
+							subject: 'ioclub 验证码',
+							text: `你好, 本次验证码为${code.code}, ${code.ttl}秒后过期.`
+						})
+						app.log.info({info}, 'sent mail')
 					} catch (err) {
 						this.log.error({err, body: req.body})
 						res.status(status_code.BAD_REQUEST).send('can not send mail')
 						return
 					}
 					break
+				}
 				default:
 					res.status(status_code.BAD_REQUEST).send('invalid login type')
 					return
