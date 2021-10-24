@@ -39,6 +39,8 @@ function createApp() {
 	const url_api = new URL(env['IO_API_URL'] ?? '/api', url).toString()
 	const url_login = new URL(env['IO_LOGIN_URL'] ?? '/login', url).toString()
 
+	const mail_from = env['IO_MAILER_USER'] ?? 'xx@x.com'
+
 	const options: Options = {
 		url,
 		redis: {
@@ -59,7 +61,7 @@ function createApp() {
 		},
 		auth: {
 			TTL: 600,
-			mail_from: env['IO_MAILER_USER'] ?? 'xx@x.com',
+			mail_from,
 		},
 		ajv: {
 		},
@@ -111,7 +113,11 @@ function createApp() {
 				url_api,
 				url_login,
 			})
-			.register(user, {prefix: '/user', url_api})
+			.register(user, {
+				prefix: '/user',
+				url_api,
+				mail_from,
+			})
 
 		//.register(users, {prefix: '/users', sessionTTL: options.session.ttl, auth: options.auth})
 		//.register(auth, {prefix: '/auth', ...options.auth})
