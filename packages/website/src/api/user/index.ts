@@ -77,7 +77,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				body: login_begin_schema.body,
 			},
 			handler: async function (req, res) {
-				let user: User				
+				let user: User
 				switch (req.body.type) {
 				case 'passwd':
 					try {

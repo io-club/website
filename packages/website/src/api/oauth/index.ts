@@ -154,7 +154,6 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				try {
 					const authRequest = await authServer.validateAuthorizationRequest(new OAuthRequest({query: req.query}))
 
-
 					if (!req.session.get('user')) {
 						res.status(status_code.MOVED_TEMPORARILY).redirect(options.url_login)
 						return

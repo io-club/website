@@ -84,8 +84,9 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (app, options) {
 			for (const key of keys) {
 				if (key.type !== 'private') continue
 				try {
-					session = await jwtDecrypt(cookie, key, {
+					const res = await jwtDecrypt(cookie, key, {
 					})
+					session = res.payload
 					break
 				} catch (err) {
 					this.log.debug({key}, 'can not decrypt jwt')
