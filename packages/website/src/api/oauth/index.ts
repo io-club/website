@@ -134,12 +134,12 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				properties: {
 					response_type: { enum: ['code'] },
 					client_id: { type: 'string' },
-					redirect_uri: { type: 'string' },
 					state: { type: 'string' },
 					code_challenge: { type: 'string' },
 					code_challenge_method: { enum: ['plain', 'S256'] },
 				},
 				optionalProperties: {
+					redirect_uri: { type: 'string' },
 					scope: { type: 'string' },
 				},
 			},
