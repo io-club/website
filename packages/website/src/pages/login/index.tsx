@@ -34,7 +34,7 @@ export default defineComponent({
 					<NButton
 						icon={<ILArrow/>}
 						value={login.loginway.eorp}
-						onClick={() => router.push('/login/nopasswd')}
+						onClick={() => router.push('/login/nopassword')}
 					/>
 					<div w:m='t-4' w:text='2xl true-gray-900' w:font='medium'>{login.common.login}</div>
 					<Ninput placeholder={login.placeholder.username} value={username.value} onChange={e => username.value = e}/>
@@ -57,12 +57,11 @@ export default defineComponent({
 												username: username.value,
 											}
 										})
-										console.log(res);
+										router.push(`/login/${res}`)
 									} catch(e) {
 										toast(`${login.errormsg.nouser} ${e.data}`)
 										return
 									}
-									router.push('/login/passwd')
 								} else {
 									toast(login.illegal.username)
 								}

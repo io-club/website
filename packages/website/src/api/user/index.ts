@@ -310,7 +310,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not check code')
 						return
 					}
-					
+
 					if (!check) {
 						res.status(status_code.BAD_REQUEST).send('invalid code')
 						return

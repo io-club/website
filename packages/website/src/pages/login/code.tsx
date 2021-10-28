@@ -33,7 +33,7 @@ export default defineComponent({
 					<NButton
 						icon={<ILArrow/>}
 						value={login.laststep.changeeorp}
-						onClick={() => router.push('/login/nopasswd')}
+						onClick={() => router.push('/login/nopassword')}
 					/>
 					<div w:m='t-2' w:text='2xl true-gray-900' w:font='medium'>{login.title.inputcode}</div>
 					<NInput

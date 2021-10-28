@@ -20,8 +20,8 @@ export default defineComponent({
 		const state = ref(1)
 		const inputs = reactive({
 			username: '',
-			passwd: '',
-			passwd2: '',
+			password: '',
+			password2: '',
 			email: '',
 			code: ''
 		})
@@ -45,16 +45,16 @@ export default defineComponent({
 							value={login.laststep.changeusername}
 							onClick={() => state.value -= 1}
 						/>
-						<div w:m='t-4' w:text='2xl true-gray-900' w:font='medium'>{login.title.inputpasswd}</div>
-						<Ninput placeholder={login.placeholder.passwd} value={inputs.passwd} onChange={e => inputs.passwd = e}/>
-						<Ninput placeholder={login.placeholder.passwd2} value={inputs.passwd2} onChange={e => inputs.passwd2 = e}/>
+						<div w:m='t-4' w:text='2xl true-gray-900' w:font='medium'>{login.title.inputpassword}</div>
+						<Ninput placeholder={login.placeholder.password} value={inputs.password} onChange={e => inputs.password = e}/>
+						<Ninput placeholder={login.placeholder.password2} value={inputs.password2} onChange={e => inputs.password2 = e}/>
 					</div>
 				} else {
 					return <div>
 						<NButton
 							icon={<ILArrow/>}
 							onClick={() => state.value -= 1}
-							value={login.laststep.changepasswd}
+							value={login.laststep.changepassword}
 						/>
 						<div w:m='t-4' w:text='2xl true-gray-900' w:font='medium'>{login.title.inputemail}</div>
 						<Ninput placeholder={login.placeholder.email} value={inputs.email} onChange={e => inputs.email = e}/>
@@ -93,10 +93,10 @@ export default defineComponent({
 									}
 									break
 								case 2:
-									if (!inputs.passwd) {
-										toast(login.illegal.passwd)
-									} else if (inputs.passwd !== inputs.passwd2) {
-										toast(login.illegal.samepasswd)
+									if (!inputs.password) {
+										toast(login.illegal.password)
+									} else if (inputs.password !== inputs.password2) {
+										toast(login.illegal.samepassword)
 									} else {
 										state.value += 1
 									}
@@ -108,7 +108,7 @@ export default defineComponent({
 												method: 'POST',
 												body: {
 													username: inputs.username,
-													password: inputs.passwd,
+													password: inputs.password,
 													email: inputs.email
 												}
 											})

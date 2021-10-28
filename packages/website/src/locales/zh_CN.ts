@@ -33,19 +33,19 @@ const p = {
 			hasaccount: '已有账号？',
 			noaccount: '没有帐号？',
 			nocode: '没有收到验证码？',
-			forgetpasswd: '忘记密码？',
+			forgetpassword: '忘记密码？',
 		},
 		illegal: {
 			username: '用户名格式不符',
 			eorp: '邮箱或手机号格式不符',
-			passwd: '密码不能为空',
-			samepasswd: '两次密码不一致',
+			password: '密码不能为空',
+			samepassword: '两次密码不一致',
 			email: '邮箱格式不符'
 		},
 		loginway: {
 			choose: '选择您的登录方式',
 			change: '改用其他登录方式',
-			passwd: '使用密码登录',
+			password: '使用密码登录',
 			eorp: '使用邮箱或手机号登录'
 		},
 		common: {
@@ -57,7 +57,7 @@ const p = {
 			changeaccount: '换用其他帐号',
 			changeeorp: '修改邮箱/手机号',
 			changeusername: '修改用户名',
-			changepasswd: '修改密码',
+			changepassword: '修改密码',
 		},
 		nextstep: {
 			nextstep: '下一步',
@@ -67,13 +67,13 @@ const p = {
 			eorp: '输一手邮箱或手机号',
 			username: '输一手用户名',
 			code: '输一手验证码',
-			passwd: '输一手密码',
-			passwd2: '再输一手密码',
+			password: '输一手密码',
+			password2: '再输一手密码',
 			email: '输一手邮箱',
 		},
 		title: {
 			inputcode: '输入验证码',
-			inputpasswd: '输入密码',
+			inputpassword: '输入密码',
 			inputemail: '填写邮箱',
 		}
 	},
