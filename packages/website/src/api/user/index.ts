@@ -275,6 +275,19 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			prefix: '/login',
 		})
 
+		// logout
+		const logout_schema = {
+		} as const
+		app.route({
+			method: 'POST',
+			url: '/logout',
+			schema: {},
+			handler: async function (req, res) {
+				req.session.delete()
+				res.send('OK')
+			},
+		})
+
 		// self manipulation
 		const current_get_schema = {
 			response: userDefinition,
