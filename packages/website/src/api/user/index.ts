@@ -132,7 +132,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				},
 			})
 
-			function preHandler(phase: verifyFactor) {
+			function preHandler(phase: verifyFactor | verifyFactor[]) {
 				return function(req: FastifyRequest, res: FastifyReply) {
 					const state = req.session.get('state')
 					if (state !== 'login') {
@@ -146,7 +146,13 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return
 					}
 
-					if (login.method[login.phase] !== phase) {
+					let pass
+					if (phase instanceof Array) {
+						pass = phase.includes(login.method[login.phase])
+					} else {
+						pass = login.method[login.phase] === phase
+					}
+					if (!pass) {
 						res.status(status_code.BAD_REQUEST).send(`invalid login phase ${phase}, expect ${login.method[login.phase]}`)
 						return
 					}
@@ -162,8 +168,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						req.session.set('state', 'logged')
 						return 'OK'
 					} else {
+						const method = sess.method[sess.phase]
 						req.session.set('login', sess)
-						return sess.method[sess.phase]
+						return method
 					}
 				}
 			}
@@ -184,8 +191,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				preHandler: preHandler('password'),
 				onSend,
 				handler: async function (req, res) {
+					const sess = req.session.get('login') as LoginData
 					try {
-						const user = await this.entity.user.getUserById(req.body.password)
+						const user = await this.entity.user.getUserById(sess.id)
 						if (user.password !== req.body.password) {
 							res.status(status_code.BAD_REQUEST).send('incorrect password')
 							return
@@ -196,79 +204,119 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return
 					}
 					res.send('OK')
-					/*
-						break
-					case 'email': {
-						try {
-							const users = await this.entity.user.getUserByField('email', req.body.email)
-							if (users.length > 1) {
-								res.status(status_code.BAD_REQUEST).send('more than one user')
-								return
-							}
-							if (users.length < 1) {
-								res.status(status_code.BAD_REQUEST).send('can not find user')
-								return
-							}
-							user = users[0]
-						} catch (err) {
-							this.log.error({err, body: req.body})
-							res.status(status_code.BAD_REQUEST).send('can not find user')
-							return
-						}
+				},
+			})
 
-						const mail = user.email.value
+			app.route({
+				method: 'GET',
+				url: '/email',
+				preHandler: preHandler('email'),
+				handler: async function (req, res) {
+					const sess = req.session.get('login') as LoginData
 
-						let code
-						try {
-							code = await app.auth.issue({
-								id: mail,
-							})
-						} catch (error) {
-							this.log.error({mail, error}, 'can not issue new code')
-							res.status(status_code.INTERNAL_SERVER_ERROR).send('can not issue new code')
-							return
-						}
-
-						try {
-							const info = await app.mailer.sendMail({
-								from: options.mail_from,
-								to: mail,
-								subject: 'ioclub 验证码',
-								text: `你好, 本次验证码为${code.code}, ${code.ttl}秒后过期.`
-							})
-							app.log.info({info}, 'sent mail')
-						} catch (err) {
-							this.log.error({err, body: req.body})
-							res.status(status_code.BAD_REQUEST).send('can not send mail')
-							return
-						}
-						break
-					}
-					default:
-						res.status(status_code.BAD_REQUEST).send('invalid login type')
+					let user: User
+					try {
+						user = await this.entity.user.getUserById(sess.id)
+					} catch (err) {
+						this.log.error({err, body: req.body})
+						res.status(status_code.BAD_REQUEST).send('can not find user')
 						return
 					}
-					*/
+
+					const mail = user.email.value
+
+					let code
+					try {
+						code = await app.auth.issue({
+							id: mail,
+						})
+					} catch (error) {
+						this.log.error({mail, error}, 'can not issue new code')
+						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not issue new code')
+						return
+					}
+
+					try {
+						const info = await app.mailer.sendMail({
+							from: options.mail_from,
+							to: mail,
+							subject: 'ioclub 验证码',
+							text: `你好, 本次验证码为${code.code}, ${code.ttl}秒后过期.`
+						})
+						app.log.info({info}, 'sent mail')
+					} catch (err) {
+						this.log.error({err, body: req.body})
+						res.status(status_code.BAD_REQUEST).send('can not send mail')
+						return
+					}
+					res.send('OK')
 				},
 			})
 
-			app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+			const mfa_schema = {
+				body: {
+					properties: {
+						type: { enum: ['email', 'phone'] },
+						code: { type: 'string' },
+					},
+				},
+			} as const
+			app.route<{ Body: JTDDataType<typeof mfa_schema.body> }>({
 				method: 'POST',
-				url: '/email',
+				url: '/code',
 				schema: {
-					body: signup_schema.body,
+					body: mfa_schema.body,
 				},
+				preHandler: preHandler(['email', 'phone']),
+				onSend,
 				handler: async function (req, res) {
-				},
-			})
+					const sess = req.session.get('login') as LoginData
 
-			app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
-				method: 'POST',
-				url: '/phone',
-				schema: {
-					body: signup_schema.body,
-				},
-				handler: async function (req, res) {
+					let user: User
+					try {
+						user = await this.entity.user.getUserById(sess.id)
+					} catch (err) {
+						this.log.error({err, body: req.body})
+						res.status(status_code.BAD_REQUEST).send('can not find user')
+						return
+					}
+
+					let id: string
+					switch (req.body.type) {
+					case 'email':
+						if (!user.email.verified) {
+							res.status(status_code.BAD_REQUEST).send('email not exist, or verified')
+							return
+						}
+						id = user.email.value
+						break
+					case 'phone':
+						if (!user.phone || !user.phone.verified) {
+							res.status(status_code.BAD_REQUEST).send('phone not exist, or verified')
+							return
+						}
+						id = user.phone.value
+						break
+					}
+
+					let check: boolean
+					try {
+						check = await app.auth.check({
+							id,
+							code: req.body.code,
+						})
+					} catch (error) {
+						this.log.error({id, error}, 'can not check code')
+						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not check code')
+						return
+					}
+					
+					if (!check) {
+						res.status(status_code.BAD_REQUEST).send('invalid code')
+						return
+					}
+
+					res.send('OK')
 				},
 			})
 		}, {
