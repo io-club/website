@@ -20,6 +20,8 @@ interface mfa_info extends info {
 	verified: boolean
 }
 
+export type verifyFactor = 'password' | 'email' | 'phone'
+
 export interface User {
 	id: string
 	password: string
@@ -27,6 +29,7 @@ export interface User {
 	follows: string[]
 	nick?: string
 	phone?: mfa_info
+	login_method: verifyFactor[]
 }
 
 export interface SignUpOptions {
@@ -59,6 +62,15 @@ export const userDefinition: JTDSchemaType<User> = {
 			elements: {
 				type: 'string',
 				metadata: { format: 'alnun' },
+			},
+		},
+		login_method: {
+			elements: {
+				enum: [
+					'password',
+					'email',
+					'phone',
+				],
 			},
 		},
 	},
@@ -207,6 +219,7 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 						verified: false,
 					},
 					follows: [],
+					login_method: ['password'],
 				}
 
 				pipe['json.set'](key, '$', this.serialize(user))

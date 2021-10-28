@@ -1,12 +1,18 @@
 import type { JTDDataType } from '~/alias/jtd'
-import type { User } from '~/api/entity/user'
-import type { FastifyPluginCallback } from 'fastify'
+import type { User, verifyFactor } from '~/api/entity/user'
+import type { FastifyPluginCallback, FastifyReply, FastifyRequest } from 'fastify'
 
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
 
 import { userDefinition } from '~/api/entity/user'
 import { toFastifySchema } from '~/api/utils/schema'
+
+export interface LoginData {
+	id: string
+	method: User['login_method']
+	phase: number
+}
 
 export interface Config {
 	prefix: string
@@ -49,132 +55,224 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 		})
 
 		// login
-		const login_begin_schema = {
-			body: {
-				discriminator: 'type',
-				mapping: {
-					'passwd': {
-						properties: {
-							username: { type: 'string' },
-							passwd: { type: 'string' },
+		app.register(async function (app) {
+			const begin_schema = {
+				body: {
+					discriminator: 'type',
+					mapping: {
+						'passwd': {
+							properties: {
+								username: { type: 'string' },
+							},
 						},
-					},
-					'email': {
-						properties: {
-							email: {
-								type: 'string',
-								metadata: { format: 'email' },
+						'email': {
+							properties: {
+								email: {
+									type: 'string',
+									metadata: { format: 'email' },
+								},
 							},
 						},
 					},
 				},
-			},
-		} as const
-		app.route<{ Body: JTDDataType<typeof login_begin_schema.body> }>({
-			method: 'POST',
-			url: '/login_begin',
-			schema: {
-				body: login_begin_schema.body,
-			},
-			handler: async function (req, res) {
-				let user: User
-				switch (req.body.type) {
-				case 'passwd':
-					try {
-						user = await this.entity.user.getUserById(req.body.username)
-					} catch (err) {
-						this.log.error({err, body: req.body})
-						res.status(status_code.BAD_REQUEST).send('can not find user')
+			} as const
+			app.route<{ Body: JTDDataType<typeof begin_schema.body> }>({
+				method: 'POST',
+				url: '/',
+				schema: {
+					body: begin_schema.body,
+				},
+				handler: async function (req, res) {
+					const state = req.session.get('state')
+					if (state) {
+						res.status(status_code.BAD_REQUEST).send('logout first to login')
 						return
 					}
-					if (user.password !== req.body.passwd) {
-						res.status(status_code.BAD_REQUEST).send('incorrect password')
-						return
-					}
-					break
-				case 'email': {
-					try {
-						const users = await this.entity.user.getUserByField('email', req.body.email)
-						if (users.length > 1) {
-							res.status(status_code.BAD_REQUEST).send('more than one user')
-							return
-						}
-						if (users.length < 1) {
+
+					let user: User
+					switch (req.body.type) {
+					case 'passwd':
+						try {
+							user = await this.entity.user.getUserById(req.body.username)
+						} catch (err) {
+							this.log.error({err, body: req.body})
 							res.status(status_code.BAD_REQUEST).send('can not find user')
 							return
 						}
-						user = users[0]
+						break
+					case 'email':
+						try {
+							const users = await this.entity.user.getUserByField('email', req.body.email)
+							if (users.length > 1) {
+								res.status(status_code.BAD_REQUEST).send('more than one user')
+								return
+							}
+							if (users.length < 1) {
+								res.status(status_code.BAD_REQUEST).send('can not find user')
+								return
+							}
+							user = users[0]
+						} catch (err) {
+							this.log.error({err, body: req.body})
+							res.status(status_code.BAD_REQUEST).send('can not find user')
+							return
+						}
+						break
+					default:
+						res.status(status_code.BAD_REQUEST).send('invalid login type')
+						return
+					}
+					req.session.set('state', 'login')
+					req.session.set('login', {
+						id: user.id,
+						method: user.login_method,
+						phase: 0,
+					})
+					res.send(user.login_method[0])
+				},
+			})
+
+			function preHandler(phase: verifyFactor) {
+				return function(req: FastifyRequest, res: FastifyReply) {
+					const state = req.session.get('state')
+					if (state !== 'login') {
+						res.status(status_code.BAD_REQUEST).send('must begin a login process')
+						return
+					}
+
+					const login = req.session.get('login')
+					if (!login) {
+						res.status(status_code.BAD_REQUEST).send('invalid login session')
+						return
+					}
+
+					if (login.method[login.phase] !== phase) {
+						res.status(status_code.BAD_REQUEST).send(`invalid login phase ${phase}, expect ${login.method[login.phase]}`)
+						return
+					}
+				}
+			}
+
+			async function onSend(req: FastifyRequest, res: FastifyReply) {
+				if (res.statusCode === status_code.OK) {
+					const sess = req.session.get('login') as LoginData
+					sess.phase += 1
+					if (sess.phase === sess.method.length) {
+						req.session.set('login', undefined)
+						req.session.set('state', 'logged')
+						return 'OK'
+					} else {
+						req.session.set('login', sess)
+						return sess.method[sess.phase]
+					}
+				}
+			}
+
+			const password_schema = {
+				body: {
+					properties: {
+						password: { type: 'string' },
+					},
+				},
+			} as const
+			app.route<{ Body: JTDDataType<typeof password_schema.body> }>({
+				method: 'POST',
+				url: '/password',
+				schema: {
+					body: password_schema.body,
+				},
+				preHandler: preHandler('password'),
+				onSend,
+				handler: async function (req, res) {
+					try {
+						const user = await this.entity.user.getUserById(req.body.password)
+						if (user.password !== req.body.password) {
+							res.status(status_code.BAD_REQUEST).send('incorrect password')
+							return
+						}
 					} catch (err) {
 						this.log.error({err, body: req.body})
 						res.status(status_code.BAD_REQUEST).send('can not find user')
 						return
 					}
+					res.send('OK')
+					/*
+						break
+					case 'email': {
+						try {
+							const users = await this.entity.user.getUserByField('email', req.body.email)
+							if (users.length > 1) {
+								res.status(status_code.BAD_REQUEST).send('more than one user')
+								return
+							}
+							if (users.length < 1) {
+								res.status(status_code.BAD_REQUEST).send('can not find user')
+								return
+							}
+							user = users[0]
+						} catch (err) {
+							this.log.error({err, body: req.body})
+							res.status(status_code.BAD_REQUEST).send('can not find user')
+							return
+						}
 
-					const mail = user.email.value
+						const mail = user.email.value
 
-					let code
-					try {
-						code = await app.auth.issue({
-							id: mail,
-						})
-					} catch (error) {
-						this.log.error({mail, error}, 'can not issue new code')
-						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not issue new code')
+						let code
+						try {
+							code = await app.auth.issue({
+								id: mail,
+							})
+						} catch (error) {
+							this.log.error({mail, error}, 'can not issue new code')
+							res.status(status_code.INTERNAL_SERVER_ERROR).send('can not issue new code')
+							return
+						}
+
+						try {
+							const info = await app.mailer.sendMail({
+								from: options.mail_from,
+								to: mail,
+								subject: 'ioclub 验证码',
+								text: `你好, 本次验证码为${code.code}, ${code.ttl}秒后过期.`
+							})
+							app.log.info({info}, 'sent mail')
+						} catch (err) {
+							this.log.error({err, body: req.body})
+							res.status(status_code.BAD_REQUEST).send('can not send mail')
+							return
+						}
+						break
+					}
+					default:
+						res.status(status_code.BAD_REQUEST).send('invalid login type')
 						return
 					}
+					*/
+				},
+			})
 
-					try {
-						const info = await app.mailer.sendMail({
-							from: options.mail_from,
-							to: mail,
-							subject: 'ioclub 验证码',
-							text: `你好, 本次验证码为${code.code}, ${code.ttl}秒后过期.`
-						})
-						app.log.info({info}, 'sent mail')
-					} catch (err) {
-						this.log.error({err, body: req.body})
-						res.status(status_code.BAD_REQUEST).send('can not send mail')
-						return
-					}
-					break
-				}
-				default:
-					res.status(status_code.BAD_REQUEST).send('invalid login type')
-					return
-				}
-				req.session.set('user', user)
-				res.send('OK')
-			},
-		})
+			app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+				method: 'POST',
+				url: '/email',
+				schema: {
+					body: signup_schema.body,
+				},
+				handler: async function (req, res) {
+				},
+			})
 
-		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
-			method: 'POST',
-			url: '/login_auth',
-			schema: {
-				body: signup_schema.body,
-			},
-			handler: async function (req, res) {
-			},
-		})
-
-		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
-			method: 'POST',
-			url: '/login_auth_2fa',
-			schema: {
-				body: signup_schema.body,
-			},
-			handler: async function (req, res) {
-			},
-		})
-
-		app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
-			method: 'POST',
-			url: '/login_complete',
-			schema: {
-				body: signup_schema.body,
-			},
-			handler: async function (req, res) {
-			},
+			app.route<{ Body: JTDDataType<typeof signup_schema.body> }>({
+				method: 'POST',
+				url: '/phone',
+				schema: {
+					body: signup_schema.body,
+				},
+				handler: async function (req, res) {
+				},
+			})
+		}, {
+			prefix: '/login',
 		})
 
 		// self manipulation

@@ -1,3 +1,4 @@
+import type {LoginData} from '~/api/user'
 import type {FastifyPluginCallback} from 'fastify'
 import type {CookieSerializeOptions} from 'fastify-cookie'
 import type {JWK, KeyLike} from 'jose'
@@ -12,7 +13,10 @@ export interface Config {
 	cookieOptions?: CookieSerializeOptions
 }
 
+
 export interface SessionData extends Record<string, unknown> {
+	state?: 'login' | 'register' | 'logged'
+	login?: LoginData
 	user?: import('~/api/entity/user').User
 }
 
