@@ -23,7 +23,7 @@ export default defineComponent({
 		})
 
 		return () => {
-			const {button, id, email, passwd, ensurepasswd, sixinput, hintinfo} = i18n.value.login
+			const {button, id, email, password, ensurepassword, sixinput, hintinfo} = i18n.value.login
 			return <div
 				w:w="100"
 				w:m="20"
@@ -55,9 +55,9 @@ export default defineComponent({
 
 					<NInput type="text"
 						value={input.password}
-						label={passwd.lable}
-						msg={passwd.msg}
-						placeholder={passwd.placeholder} 
+						label={password.lable}
+						msg={password.msg}
+						placeholder={password.placeholder} 
 						onChange={(e) => {
 							input.password = (e.target as HTMLInputElement).value
 						}}
@@ -69,9 +69,9 @@ export default defineComponent({
 
 					<NInput type="text" 
 						value={input.password2}
-						label={ensurepasswd.lable} 
-						msg={ensurepasswd.msg}
-						placeholder={ensurepasswd.placeholder} 
+						label={ensurepassword.lable} 
+						msg={ensurepassword.msg}
+						placeholder={ensurepassword.placeholder} 
 						onChange={(e) => {
 							input.password2 = (e.target as HTMLInputElement).value
 						}}
@@ -114,7 +114,7 @@ export default defineComponent({
 						onClick={async () => {
 							const body = {
 								username: input.username,
-								passwd: input.password,
+								password: input.password,
 								email: input.email
 							}
 							const res = await $fetch('/api/user/signup', {
@@ -136,6 +136,3 @@ export default defineComponent({
 		}
 	}
 })
-
-
-

@@ -19,8 +19,8 @@ const p = {
 	login: {
 		hintinfo: {
 			loginways: {
-				withpasswd: '密码登录',
-				nopasswd: '免密登录',
+				withpassword: '密码登录',
+				nopassword: '免密登录',
 			},
 			guide: {
 				pushlogin: 'don\'t have an account ?',
@@ -59,12 +59,12 @@ const p = {
 			msg: '请填写用户名 / 邮箱' ,
 			placeholder: 'Type your username or email',
 		},
-		passwd: {
+		password: {
 			lable: 'Password',
 			msg: '请填写密码',
 			placeholder: 'Type your password',
 		},
-		ensurepasswd: {
+		ensurepassword: {
 			lable: 'Ensure your password',
 			msg: '请重新填写密码',
 			placeholder: 'Type your password again',

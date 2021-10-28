@@ -28,7 +28,7 @@ export default defineComponent({
 		const {i18n} = useI18n()
 		const input = reactive({
 			username: '',
-			passwd: ''
+			password: ''
 		})
 		const route = useRoute()
 		const storage = createStorage({
@@ -36,7 +36,7 @@ export default defineComponent({
 		})
 		const customed_nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 80)
 		return () => {
-			const {idoremail, passwd, button} = i18n.value.login
+			const {idoremail, password, button} = i18n.value.login
 			let loginstate = LoginState.Idle
 			if (route.query.response_type === 'code') {
 				loginstate = LoginState.FromClient
@@ -81,13 +81,13 @@ export default defineComponent({
 					}}
 				</NInput>
 				<NInput type="text"
-					value={input.passwd}
-					label={passwd.lable}
-					msg={passwd.msg}
-					placeholder={passwd.placeholder}
+					value={input.password}
+					label={password.lable}
+					msg={password.msg}
+					placeholder={password.placeholder}
 					onChange={(e) => {
 						console.log(e.target);
-						input.passwd = (e.target as HTMLInputElement).value
+						input.password = (e.target as HTMLInputElement).value
 					}}
 				>
 					{{
@@ -105,9 +105,9 @@ export default defineComponent({
 						const res = await $fetch('/api/user/login_begin', {
 							method: 'POST',
 							body: {
-								type: 'passwd',
+								type: 'password',
 								username: input.username,
-								passwd: input.passwd,
+								password: input.password,
 							}
 						})
 						if (loginstate === LoginState.FromSelf) {

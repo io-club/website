@@ -34,7 +34,7 @@ export interface User {
 
 export interface SignUpOptions {
 	id: string
-	passwd: string
+	password: string
 	email: string
 }
 
@@ -212,7 +212,7 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 
 				const user: User = {
 					id: opt.id,
-					password: opt.passwd,
+					password: opt.password,
 					email: {
 						value: opt.email,
 						mode: 'public',

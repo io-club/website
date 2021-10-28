@@ -29,7 +29,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 					username: {
 						type: 'string',
 					},
-					passwd: {
+					password: {
 						type: 'string',
 					},
 					email: {
@@ -47,7 +47,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			handler: async function (req, res) {
 				await this.entity.user.signup({
 					id: req.body.username,
-					passwd: req.body.passwd,
+					password: req.body.password,
 					email: req.body.email,
 				})
 				res.send('OK')
@@ -60,7 +60,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				body: {
 					discriminator: 'type',
 					mapping: {
-						'passwd': {
+						'password': {
 							properties: {
 								username: { type: 'string' },
 							},
@@ -91,7 +91,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 
 					let user: User
 					switch (req.body.type) {
-					case 'passwd':
+					case 'password':
 						try {
 							user = await this.entity.user.getUserById(req.body.username)
 						} catch (err) {

@@ -17,11 +17,11 @@ export default defineComponent({
 			const loginways = [
 				{
 					id: 0,
-					title: hintinfo.loginways.withpasswd,
+					title: hintinfo.loginways.withpassword,
 					slot: <LoginPassword/>
 				}, {
 					id: 1,
-					title: hintinfo.loginways.nopasswd,
+					title: hintinfo.loginways.nopassword,
 					slot: <LoginCode/>
 				}
 			]
