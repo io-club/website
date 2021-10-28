@@ -78,7 +78,7 @@ export class OAuthScopeRepository extends BaseRepository<Scope> implements scope
 		const res = await this.query(async function (pipe) {
 			pipe['ft.search'](
 				key,
-				`@name:{${scopeNames.map(id => escapeTag(id)).join(' | ')}}`,
+				`@id:{${scopeNames.map(id => escapeTag(id)).join(' | ')}}`,
 			)
 		})
 		const ret = []

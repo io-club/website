@@ -53,7 +53,7 @@ export default defineComponent({
 							onClick={async () => {
 								if (is_email.test(field.value)) {
 									try {
-										await $fetch('/api/user/login_begin', {
+										const res = await $fetch('/api/user/login', {
 											method: 'POST',
 											body: {
 												type: 'email',
@@ -65,11 +65,18 @@ export default defineComponent({
 										toast(`${login.errormsg.sendcode}: ${e.data}`)
 										return
 									}
+									try {
+										const res = await $fetch('/api/user/login/email')
+										console.log(res);
+									} catch (e) {
+										toast(`${login.errormsg.sendcode}: ${e.data}`)
+										return
+									}
 									const url = queryString.stringifyUrl({url: '/login/code', query: {
 										type: 'email',
 										field: field.value
 									}});
-x									router.push(url)
+									router.push(url)
 								} else if (is_phone.test(field.value)) {
 									const url = queryString.stringifyUrl({url: '/login/code', query: {
 										type: 'phone',

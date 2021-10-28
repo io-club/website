@@ -15,7 +15,7 @@ export default defineComponent({
 		const { login } = useI18n().i18n.value
 		const alnon = /^[a-zA-Z0-9_]*$/
 		return () => {
-			const username = ref('')
+			const code = ref('')
 			return <div
 				w:flex='~ grow'
 				w:justify='center'
@@ -38,7 +38,7 @@ export default defineComponent({
 					<div w:m='t-2' w:text='2xl true-gray-900' w:font='medium'>{login.title.inputcode}</div>
 					<NInput
 						placeholder={login.placeholder.code}
-						onChange={e => username.value = e}
+						onChange={e => code.value = e}
 						class="tracking-1em"
 						maxlength='6'
 						w:text='placeholder-opacity-50 indent-xs'
@@ -62,13 +62,25 @@ export default defineComponent({
 							w:bg='gray-700'
 							w:p='x-5 y-2'
 							w:transform='~ active:(scale-90)'
-							onClick={() => {
-								if (alnon.test(username.value)) {
+							onClick={async () => {
+								if (alnon.test(code.value)) {
 									console.log('尝试登录')
+									try {
+										const res = await $fetch('/api/user/login/code', {
+											method: 'POST',
+											body: {
+												type: 'email',
+												code: code.value
+											}
+										})
+										toast(res)
+									} catch (e) {
+										toast(e, e.data)
+									}
 								} else {
 									toast(login.errormsg.codeerror)
 								}
-							}}>{login.nextstep.nextstep}</button>
+							}}>{login.common.login}</button>
 					</div>
 
 				</div>

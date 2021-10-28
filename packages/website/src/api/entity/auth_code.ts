@@ -47,7 +47,7 @@ export class AuthCodeRepository extends BaseRepository<AuthCode> {
 	async consume(id: string) {
 		const key = this.data(id)
 		const res = await this.transaction(async (pipe) => {
-			pipe['json.get'](key, '$')
+			pipe['json.get'](key)
 			pipe['del'](key)
 		})
 		if (!res[0]) return null

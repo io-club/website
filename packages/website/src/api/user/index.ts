@@ -306,7 +306,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 							code: req.body.code,
 						})
 					} catch (error) {
-						this.log.error({id, error}, 'can not check code')
+						this.log.error({id, error: `${error}`}, 'can not check code')
 						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not check code')
 						return
 					}
