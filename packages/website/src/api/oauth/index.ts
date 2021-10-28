@@ -8,7 +8,6 @@ import type {JwtPayload} from 'jsonwebtoken'
 import OAuth2Server from '@jmondi/oauth2-server'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
-import jwt from 'jsonwebtoken'
 
 const {AuthorizationServer, DateInterval, OAuthRequest, OAuthResponse, OAuthException} = OAuth2Server
 
@@ -95,10 +94,9 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				res.status(status_code.UNAUTHORIZED).send('invalid authorization header')
 				return
 			}
-			const payload = jwt.decode(
+			const payload = await jwtService.verify(
 				authorization.substring(6).trimLeft(),
 				{
-					json: true,
 				},
 			) as Payload
 			if (!payload) {

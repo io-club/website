@@ -133,7 +133,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 			})
 
 			function preHandler(phase: verifyFactor | verifyFactor[]) {
-				return function(req: FastifyRequest, res: FastifyReply) {
+				return async function(req: FastifyRequest, res: FastifyReply) {
 					const state = req.session.get('state')
 					if (state !== 'login') {
 						res.status(status_code.BAD_REQUEST).send('must begin a login process')
