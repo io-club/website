@@ -9,7 +9,7 @@
 	"type": "module",
 	"repository": "https://github.com/xhebox/ioclub/ioclub",
 	"scripts": {
-		"redis": "redis-server --loadmodule RedisJSON/target/release/librejson.so --loadmodule RediSearch/build/redisearch.so",
+		"redis": "redis-server --save '' --appendonly no --loadmodule RedisJSON/target/release/librejson.so --loadmodule RediSearch/build/redisearch.so",
 		"nuxt-dev": "nu dev --no-clear",
 		"nuxt-build": "nu build --no-clear",
 		"nuxt-start": "node ./output/server/index.mjs",
@@ -42,10 +42,12 @@
 	},
 	"dependencies": {
 		"@jmondi/oauth2-server": "^2.1.0",
+		"@types/toastify-js": "^1.9.2",
 		"ajv": "^8.6.3",
 		"ajv-formats": "^2.1.1",
 		"dayjs": "^1.10.7",
 		"destr": "^1.1.0",
+		"easytimer.js": "^4.5.1",
 		"fastify": "^3.22.1",
 		"fastify-cookie": "^5.3.1",
 		"fastify-plugin": "^3.0.0",
@@ -63,6 +65,7 @@
 		"query-string": "^7.0.1",
 		"redis-errors": "^1.2.0",
 		"sharp": "^0.29.2",
+		"toastify-js": "^1.11.2",
 		"unstorage": "^0.2.9"
 	}
 }

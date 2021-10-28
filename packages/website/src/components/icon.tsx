@@ -8,11 +8,7 @@ export default defineComponent({
 		},
 	},
 	setup(props, {slots}) {
-		return () => <div
-			w:flex="~ col"
-			w:text="center"
-			w:align="items-center"
-		>
+		return () => <div>
 			<div 
 				w:flex="~"
 				w:justify="center"
@@ -24,7 +20,9 @@ export default defineComponent({
 				w:text="white center">
 				{slots.default ? slots.default() : null}
 			</div>
-			<span w:text="gray-800 sm" w:p="r-2">{props.desc}</span>
+			<div w:text="gray-800 sm center">
+				<span>{props.desc}</span>
+			</div>
 		</div>
 	},
 })

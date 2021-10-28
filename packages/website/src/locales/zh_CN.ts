@@ -17,61 +17,64 @@ const p = {
 		},
 	},
 	login: {
-		hintinfo: {
-			loginways: {
-				withpassword: '密码登录',
-				nopassword: '免密登录',
-			},
-			guide: {
-				pushlogin: 'don\'t have an account ?',
-				pushregister: 'already have an account ?',
-				thirdpartlogin: '―――   or sign up using  ―――',
-				thirdpartregister: '―――   or register using  ―――',
-			}
+		errormsg: {
+			nouser: '没有该用户',
+			loginerror: '登录失败',
+			registererror: '注册失败',
+			codeerror: '验证码错误',
+			network: '网络异常',
+			sendcode: '发送验证码失败',
+			resend: '重新发送',
+			hassend: '验证码以发送至',
+			checkEP: '请检查你的邮箱或手机号',
+			checkIP: '请检查你的ID或邮箱'
 		},
-		button: {
+		problem: {
+			hasaccount: '已有账号？',
+			noaccount: '没有帐号？',
+			nocode: '没有收到验证码？',
+			forgetpasswd: '忘记密码？',
+		},
+		illegal: {
+			username: '用户名格式不符',
+			eorp: '邮箱或手机号格式不符',
+			passwd: '密码不能为空',
+			samepasswd: '两次密码不一致',
+			email: '邮箱格式不符'
+		},
+		loginway: {
+			choose: '选择您的登录方式',
+			change: '改用其他登录方式',
+			passwd: '使用密码登录',
+			eorp: '使用邮箱或手机号登录'
+		},
+		common: {
 			login: '登录',
-			register: '注册',
+			register: '注册'
+		},
+		laststep: {
+			laststep: '上一步',
+			changeaccount: '换用其他帐号',
+			changeeorp: '修改邮箱/手机号',
+			changeusername: '修改用户名',
+			changepasswd: '修改密码',
+		},
+		nextstep: {
+			nextstep: '下一步',
 			sendcode: '发送验证码',
 		},
-		phone: {
-			label: 'Phone',
-			msg: '请填写手机号' ,
-			placeholder: 'Type your phone',
+		placeholder: {
+			eorp: '输一手邮箱或手机号',
+			username: '输一手用户名',
+			code: '输一手验证码',
+			passwd: '输一手密码',
+			passwd2: '再输一手密码',
+			email: '输一手邮箱',
 		},
-		email: {
-			label: 'Email',
-			msg: '邮箱' ,
-			placeholder: 'Type your email',
-		},
-		id: {
-			label: 'ID',
-			msg: '请填写用户名' ,
-			placeholder: 'Type your ID',
-		},
-		emailorphone: {
-			label: 'Email / Phone',
-			msg: '请填写邮箱 / 手机号' ,
-			placeholder: 'Type your email / phone',
-		},
-		idoremail: {
-			label: 'Username / Email',
-			msg: '请填写用户名 / 邮箱' ,
-			placeholder: 'Type your username or email',
-		},
-		password: {
-			lable: 'Password',
-			msg: '请填写密码',
-			placeholder: 'Type your password',
-		},
-		ensurepassword: {
-			lable: 'Ensure your password',
-			msg: '请重新填写密码',
-			placeholder: 'Type your password again',
-		},
-		sixinput: {
-			msg: '请填写验证码',
-			label: 'Verification code',
+		title: {
+			inputcode: '输入验证码',
+			inputpasswd: '输入密码',
+			inputemail: '填写邮箱',
 		}
 	},
 	home: {

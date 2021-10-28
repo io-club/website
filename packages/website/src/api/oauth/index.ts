@@ -241,6 +241,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 					for (const [k,v] of Object.entries(response.headers)) {
 						res.header(k, v)
 					}
+
 					if (response.status === 302) {
 						if (!response.headers.location) throw new Error('missing redirect location');
 						res.redirect(response.headers.location)

@@ -92,10 +92,10 @@ export default defineConfig({
 			},
 			backgroundImage: {
 				'rainbow': 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-				'digit': 'linear-gradient(to left, black 70%, rgba(255, 255, 255, 0) 0%)',
+				'digit': 'linear-gradient(to right, black 70%, transparent 70%)',
 			},
 			backgroundSize: {
-				'sz-digit': '3em 4px',
+				'sz-digit': '3.8em 2px',
 				'400': '400% 400%',
 			},
 			spacing: {
