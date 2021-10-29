@@ -79,13 +79,12 @@ export class OAuthScopeRepository extends BaseRepository<Scope> implements scope
 			pipe['ft.search'](
 				key,
 				`@name:{${scopeNames.map(id => escapeTag(id)).join(' | ')}}`,
-				{
-					return: '$.code',
-				},
 			)
 		})
-		for (let i=0;i<res.length;i++) res[i] = this.parse(res[i])
-		return res
+		const ret = []
+		const v: [string, string][] = Object.values(res[0])
+		for (let i=0;i<v.length;i++) ret.push(this.parse(v[i][1]))
+		return ret
 	}
 
 	async finalize(

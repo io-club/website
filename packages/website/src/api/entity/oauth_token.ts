@@ -155,8 +155,9 @@ export class OAuthTokenRepository extends BaseRepository<Token> implements token
 		const res = await this.query(async (pipe) => {
 			pipe['ft.search'](key, `@refresh:{${escapeTag(refreshToken)}}`)
 		})
-		if (res.length !== 1 || !res[0]) return null
-		return this.parse(res[0])
+		const v: [string, string][] = Object.values(res[0])
+		if (v.length !== 1) return null
+		return this.parse(v[0][1])
 	}
 
 	async isRefreshTokenRevoked() {
@@ -171,8 +172,8 @@ export class OAuthTokenRepository extends BaseRepository<Token> implements token
 		await this.transaction({
 			watch: [key],
 			handler: async (pipe) => {
-				pipe['json.set'](key, '$.refreshToken', this.#refreshToken_serialize(token.refreshToken), 'xx')
-				pipe['json.set'](key, '$.refreshTokenExpiresAt', this.#refreshTokenExpireAt_serialize(token.refreshTokenExpiresAt), 'xx')
+				pipe['json.set'](key, '$.refreshToken', this.#refreshToken_serialize(token.refreshToken as string), 'xx')
+				pipe['json.set'](key, '$.refreshTokenExpiresAt', this.#refreshTokenExpireAt_serialize(token.refreshTokenExpiresAt as Date), 'xx')
 			},
 		})
 		return token
