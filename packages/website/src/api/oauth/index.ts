@@ -28,7 +28,7 @@ export interface Payload extends JwtPayload, Awaited<ReturnType<UserRepository['
 	cid: string
 	scope: string
 }
-export type handleAccessTokenType= (redirect: boolean, ...scope: string[]) => (this: FastifyInstance, req: FastifyRequest, res: FastifyReply) => Promise<void>
+export type handleAccessTokenType = (redirect: boolean, ...scopes: string[]) => (this: FastifyInstance, req: FastifyRequest, res: FastifyReply) => Promise<void>
 
 export const oauth: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	// setup context
@@ -77,7 +77,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 	await client.add(options.web)
 
 	// validate function
-	const handleAccessToken: handleAccessTokenType = function (redirect, scopes) {
+	const handleAccessToken: handleAccessTokenType = function (redirect, ...scopes: string[]) {
 		return async function (req, res) {
 			let authorization = req.headers.authorization
 			if (!authorization) {
