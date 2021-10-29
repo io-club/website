@@ -95,7 +95,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				return
 			}
 			const payload = await jwtService.verify(
-				authorization.substring(6).trimLeft(),
+				authorization.substring(6).trimStart(),
 				{
 				},
 			) as Payload
