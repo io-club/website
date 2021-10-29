@@ -1,5 +1,5 @@
 diff --git a/node_modules/h3/dist/index.mjs b/node_modules/h3/dist/index.mjs
-index cfd919c..ba14eb3 100644
+index 685190d..628ddad 100644
 --- a/node_modules/h3/dist/index.mjs
 +++ b/node_modules/h3/dist/index.mjs
 @@ -109,7 +109,7 @@ function callHandle(handle, req, res) {
