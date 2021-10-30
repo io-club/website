@@ -85,7 +85,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				handler: async function (req, res) {
 					const state = req.session.get('state')
 					if (state) {
-						res.status(status_code.BAD_REQUEST).send('logout first to login')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'logout first to login',
+						})
 						return
 					}
 
@@ -96,7 +98,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 							user = await this.entity.user.getUserById(req.body.username)
 						} catch (err) {
 							this.log.error({err, body: req.body})
-							res.status(status_code.BAD_REQUEST).send('can not find user')
+							res.status(status_code.BAD_REQUEST).send({
+								error: 'can not find user',
+							})
 							return
 						}
 						break
@@ -104,22 +108,30 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						try {
 							const users = await this.entity.user.getUserByField('email', req.body.email)
 							if (users.length > 1) {
-								res.status(status_code.BAD_REQUEST).send('more than one user')
+								res.status(status_code.BAD_REQUEST).send({
+									error: 'more than one user',
+								})
 								return
 							}
 							if (users.length < 1) {
-								res.status(status_code.BAD_REQUEST).send('can not find user')
+								res.status(status_code.BAD_REQUEST).send({
+									error: 'can not find user',
+								})
 								return
 							}
 							user = users[0]
 						} catch (err) {
 							this.log.error({err, body: req.body})
-							res.status(status_code.BAD_REQUEST).send('can not find user')
+							res.status(status_code.BAD_REQUEST).send({
+								error: 'can not find user',
+							})
 							return
 						}
 						break
 					default:
-						res.status(status_code.BAD_REQUEST).send('invalid login type')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'invalid login type',
+						})
 						return
 					}
 					req.session.set('state', 'login')
@@ -136,13 +148,17 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				return async function(req: FastifyRequest, res: FastifyReply) {
 					const state = req.session.get('state')
 					if (state !== 'login') {
-						res.status(status_code.BAD_REQUEST).send('must begin a login process')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'must begin a login process',
+						})
 						return
 					}
 
 					const login = req.session.get('login')
 					if (!login) {
-						res.status(status_code.BAD_REQUEST).send('invalid login session')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'invalid login session',
+						})
 						return
 					}
 
@@ -153,12 +169,16 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						}
 
 						if (login.state !== 'mfa') {
-							res.status(status_code.BAD_REQUEST).send('please verify password first')
+							res.status(status_code.BAD_REQUEST).send({
+								error: 'please verify password first',
+							})
 							return
 						}
 
 						if (method && !login.mfa.verified[method]) {
-							res.status(status_code.BAD_REQUEST).send(`${mfa} not verified`)
+							res.status(status_code.BAD_REQUEST).send({
+								error: `${mfa} not verified`,
+							})
 							return
 						}
 					}
@@ -185,12 +205,16 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 					try {
 						const user = await this.entity.user.getUserById(sess.id)
 						if (user.password !== req.body.password) {
-							res.status(status_code.BAD_REQUEST).send('incorrect password')
+							res.status(status_code.BAD_REQUEST).send({
+								error: 'incorrect password',
+							})
 							return
 						}
 					} catch (err) {
 						this.log.error({err, body: req.body})
-						res.status(status_code.BAD_REQUEST).send('can not find user')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'can not find user',
+						})
 						return
 					}
 
@@ -198,13 +222,17 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						sess.state = 'mfa'
 						req.session.set('login', sess)
 						res.send({
+							prefer: sess.mfa.prefer,
 							methods: Object.keys(sess.mfa.verified),
 						})
+						return
 					}
 
 					req.session.set('login', undefined)
 					req.session.set('state', 'logged')
-					res.send({})
+					res.send({
+						data: true,
+					})
 				},
 			})
 
@@ -220,7 +248,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						user = await this.entity.user.getUserById(sess.id)
 					} catch (err) {
 						this.log.error({err, body: req.body})
-						res.status(status_code.BAD_REQUEST).send('can not find user')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'can not find user',
+						})
 						return
 					}
 
@@ -233,7 +263,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						})
 					} catch (error) {
 						this.log.error({mail, error}, 'can not issue new code')
-						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not issue new code')
+						res.status(status_code.INTERNAL_SERVER_ERROR).send({
+							error: 'can not issue new code',
+						})
 						return
 					}
 
@@ -247,7 +279,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						app.log.info({info}, 'sent mail')
 					} catch (err) {
 						this.log.error({err, body: req.body})
-						res.status(status_code.BAD_REQUEST).send('can not send mail')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'can not send mail',
+						})
 						return
 					}
 
@@ -278,7 +312,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						user = await this.entity.user.getUserById(sess.id)
 					} catch (err) {
 						this.log.error({err, body: req.body})
-						res.status(status_code.BAD_REQUEST).send('can not find user')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'can not find user',
+						})
 						return
 					}
 
@@ -292,18 +328,24 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						})
 					} catch (error) {
 						this.log.error({id, error: `${error}`}, 'can not check code')
-						res.status(status_code.INTERNAL_SERVER_ERROR).send('can not check code')
+						res.status(status_code.INTERNAL_SERVER_ERROR).send({
+							error: 'can not check code',
+						})
 						return
 					}
 
 					if (!check) {
-						res.status(status_code.BAD_REQUEST).send('invalid code')
+						res.status(status_code.BAD_REQUEST).send({
+							error: 'invalid code',
+						})
 						return
 					}
 
 					req.session.set('login', undefined)
 					req.session.set('state', 'logged')
-					res.send({})
+					res.send({
+						data: true,
+					})
 				},
 			})
 		}, {
