@@ -11,25 +11,26 @@ import {escapeTag} from '~/api/plugins/redis'
 
 import {BaseRepository} from './base'
 
-interface info {
-	value: string
-	mode: 'public' | 'private'
+export interface Relation {
+	friends: string[]
+	privs: Record<string, 'public' | 'friends' | 'private'>
 }
 
-interface mfa_info extends info {
-	verified: boolean
+export interface MFA {
+	verified: Record<string, boolean>
+	prefer?: string
+	login: 'enforce' | 'skip_password' | 'none'
 }
-
-export type verifyFactor = 'password' | 'email' | 'phone'
 
 export interface User {
 	id: string
 	password: string
-	email: mfa_info
-	follows: string[]
-	nick?: string
-	phone?: mfa_info
-	login_method: verifyFactor[]
+	email: string
+	phone: string
+	nick: string
+
+	mfa: MFA
+	rel: Relation
 }
 
 export interface SignUpOptions {
@@ -49,52 +50,55 @@ export const userDefinition: JTDSchemaType<User> = {
 		id: { type: 'string', metadata: { format: 'alnun' } },
 		password: { type: 'string' },
 		email: {
-			properties: {
-				value: {
-					type: 'string',
-					metadata: { format: 'email' },
-				},
-				mode: { enum: ['public', 'private'] },
-				verified: { type: 'boolean' },
-			}
+			type: 'string',
+			metadata: { format: 'email' },
 		},
-		follows: {
-			elements: {
-				type: 'string',
-				metadata: { format: 'alnun' },
-			},
-		},
-		login_method: {
-			elements: {
-				enum: [
-					'password',
-					'email',
-					'phone',
-				],
-			},
-		},
-	},
-	optionalProperties: {
 		nick: {
 			type: 'string',
 			metadata: { format: 'alnun' },
 		},
 		phone: {
+			type: 'string',
+			metadata: { format: 'phone' },
+		},
+		mfa: {
 			properties: {
-				value: {
-					type: 'string',
-					metadata: { format: 'phone' },
+				verified: {
+					values: {
+						type: 'boolean',
+					},
 				},
-				mode: { enum: ['public', 'private'] },
-				verified: { type: 'boolean' },
-			}
+				login: {
+					enum: ['skip_password', 'enforce', 'none'],
+				},
+			},
+			optionalProperties: {
+				prefer: {
+					type: 'string',
+				},
+			},
+		},
+		rel: {
+			properties: {
+				friends: {
+					elements: {
+						type: 'string',
+						metadata: { format: 'alnun' },
+					},
+				},
+				privs: {
+					values: {
+						enum: ['public', 'friends', 'private'],
+					},
+				},
+			},
 		},
 	},
 }
 
 export class UserRepository extends BaseRepository<User> implements OAuthUserRepository {
-	#email_serialize: (a: mfa_info) => string
-	#phone_serialize: (a: mfa_info) => string
+	#email_serialize: (a: string) => string
+	#phone_serialize: (a: string) => string
 	#code: OAuthCodeRepository
 	#token: OAuthTokenRepository
 
@@ -106,7 +110,7 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 			serializer: app.ajv.compileSerializer(userDefinition),
 		})
 		this.#email_serialize = app.ajv.compileSerializer(userDefinition.properties.email)
-		this.#phone_serialize = app.ajv.compileSerializer(userDefinition.optionalProperties.phone)
+		this.#phone_serialize = app.ajv.compileSerializer(userDefinition.properties.phone)
 		this.#code = code
 		this.#token = token
 	}
@@ -136,19 +140,19 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 						case_sensitive: true,
 					},
 					{
-						ident: '$.email.value',
+						ident: '$.email',
 						as: 'email',
 						type: 'tag',
 						case_sensitive: true,
 					},
 					{
-						ident: '$.phone.value',
+						ident: '$.phone',
 						as: 'phone',
 						type: 'tag',
 						case_sensitive: true,
 					},
 					{
-						ident: '$.follows[*]',
+						ident: '$.rel.friends[*]',
 						as: 'follow',
 						type: 'tag',
 						case_sensitive: true,
@@ -213,13 +217,17 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 				const user: User = {
 					id: opt.id,
 					password: opt.password,
-					email: {
-						value: opt.email,
-						mode: 'public',
-						verified: false,
+					email: opt.email,
+					nick: opt.id,
+					phone: '',
+					mfa: {
+						verified: {},
+						login: 'none',
 					},
-					follows: [],
-					login_method: ['password'],
+					rel: {
+						friends: [],
+						privs: {},
+					},
 				}
 
 				pipe['json.set'](key, '$', this.serialize(user))
@@ -233,19 +241,11 @@ export class UserRepository extends BaseRepository<User> implements OAuthUserRep
 			watch: [key],
 			handler: async (pipe) => {
 				if (opt.email) {
-					pipe['json.set'](key, '$.email', this.#email_serialize({
-						value: opt.email,
-						mode: 'public',
-						verified: false,
-					}), 'xx')
+					pipe['json.set'](key, '$.email', this.#email_serialize(opt.email), 'xx')
 				}
 
 				if (opt.phone) {
-					pipe['json.set'](key, '$.phone', this.#phone_serialize({
-						value: opt.phone,
-						mode: 'public',
-						verified: false,
-					}), 'xx')
+					pipe['json.set'](key, '$.phone', this.#phone_serialize(opt.phone), 'xx')
 				}
 			},
 		})

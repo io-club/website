@@ -1,5 +1,5 @@
 import type { JTDDataType } from '~/alias/jtd'
-import type { User, verifyFactor } from '~/api/entity/user'
+import type { User } from '~/api/entity/user'
 import type { FastifyPluginCallback, FastifyReply, FastifyRequest } from 'fastify'
 
 import fp from 'fastify-plugin'
@@ -10,8 +10,8 @@ import { toFastifySchema } from '~/api/utils/schema'
 
 export interface LoginData {
 	id: string
-	method: User['login_method']
-	phase: number
+	state: 'password' | 'mfa'
+	mfa: User['mfa']
 }
 
 export interface Config {
@@ -125,14 +125,14 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 					req.session.set('state', 'login')
 					req.session.set('login', {
 						id: user.id,
-						method: user.login_method,
-						phase: 0,
+						mfa: user.mfa,
+						state: 'password',
 					})
-					res.send(user.login_method[0])
+					res.send({})
 				},
 			})
 
-			function preHandler(phase: verifyFactor | verifyFactor[]) {
+			function preHandler(mfa: boolean, method?: string) {
 				return async function(req: FastifyRequest, res: FastifyReply) {
 					const state = req.session.get('state')
 					if (state !== 'login') {
@@ -146,31 +146,21 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return
 					}
 
-					let pass
-					if (phase instanceof Array) {
-						pass = phase.includes(login.method[login.phase])
-					} else {
-						pass = login.method[login.phase] === phase
-					}
-					if (!pass) {
-						res.status(status_code.BAD_REQUEST).send(`invalid login phase ${phase}, expect ${login.method[login.phase]}`)
-						return
-					}
-				}
-			}
+					if (mfa) {
+						if (login.mfa.login === 'skip_password') {
+							login.state = 'mfa'
+							req.session.set('login', login)
+						}
 
-			async function onSend(req: FastifyRequest, res: FastifyReply) {
-				if (res.statusCode === status_code.OK) {
-					const sess = req.session.get('login') as LoginData
-					sess.phase += 1
-					if (sess.phase === sess.method.length) {
-						req.session.set('login', undefined)
-						req.session.set('state', 'logged')
-						return 'OK'
-					} else {
-						const method = sess.method[sess.phase]
-						req.session.set('login', sess)
-						return method
+						if (login.state !== 'mfa') {
+							res.status(status_code.BAD_REQUEST).send('please verify password first')
+							return
+						}
+
+						if (method && !login.mfa.verified[method]) {
+							res.status(status_code.BAD_REQUEST).send(`${mfa} not verified`)
+							return
+						}
 					}
 				}
 			}
@@ -188,10 +178,10 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				schema: {
 					body: password_schema.body,
 				},
-				preHandler: preHandler('password'),
-				onSend,
+				preHandler: preHandler(false),
 				handler: async function (req, res) {
 					const sess = req.session.get('login') as LoginData
+
 					try {
 						const user = await this.entity.user.getUserById(sess.id)
 						if (user.password !== req.body.password) {
@@ -203,14 +193,25 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						res.status(status_code.BAD_REQUEST).send('can not find user')
 						return
 					}
-					res.send('OK')
+
+					if (sess.mfa.login !== 'none') {
+						sess.state = 'mfa'
+						req.session.set('login', sess)
+						res.send({
+							methods: Object.keys(sess.mfa.verified),
+						})
+					}
+
+					req.session.set('login', undefined)
+					req.session.set('state', 'logged')
+					res.send({})
 				},
 			})
 
 			app.route({
 				method: 'GET',
 				url: '/email',
-				preHandler: preHandler('email'),
+				preHandler: preHandler(true, 'email'),
 				handler: async function (req, res) {
 					const sess = req.session.get('login') as LoginData
 
@@ -223,7 +224,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return
 					}
 
-					const mail = user.email.value
+					const mail = user.email
 
 					let code
 					try {
@@ -249,7 +250,8 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						res.status(status_code.BAD_REQUEST).send('can not send mail')
 						return
 					}
-					res.send('OK')
+
+					res.send({})
 				},
 			})
 
@@ -267,8 +269,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				schema: {
 					body: mfa_schema.body,
 				},
-				preHandler: preHandler(['email', 'phone']),
-				onSend,
+				preHandler: preHandler(true),
 				handler: async function (req, res) {
 					const sess = req.session.get('login') as LoginData
 
@@ -281,23 +282,7 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return
 					}
 
-					let id: string
-					switch (req.body.type) {
-					case 'email':
-						if (!user.email.verified) {
-							res.status(status_code.BAD_REQUEST).send('email not exist, or verified')
-							return
-						}
-						id = user.email.value
-						break
-					case 'phone':
-						if (!user.phone || !user.phone.verified) {
-							res.status(status_code.BAD_REQUEST).send('phone not exist, or verified')
-							return
-						}
-						id = user.phone.value
-						break
-					}
+					const id = user[req.body.type]
 
 					let check: boolean
 					try {
@@ -316,7 +301,9 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return
 					}
 
-					res.send('OK')
+					req.session.set('login', undefined)
+					req.session.set('state', 'logged')
+					res.send({})
 				},
 			})
 		}, {
@@ -413,12 +400,8 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 						return res.status(status_code.BAD_REQUEST).send('can not find such user')
 					}
 					const ret: JTDDataType<typeof get_schema.response> = {}
-					if (user.email?.mode === 'public') {
-						ret['email'] = user.email.value
-					}
-					if (user.phone?.mode === 'public') {
-						ret['phone'] = user.phone.value
-					}
+					ret['email'] = user.email
+					ret['phone'] = user.phone
 					res.send(ret)
 				},
 			})
