@@ -26,8 +26,8 @@ export default defineComponent({
 					w:align='items-center'
 					w:border='1 '
 				>
-					<div w:m='t-2' w:text='2xl true-gray-900' w:font='medium'>{loginway.choose}</div>
-					<div w:p='t-5 b-1'>
+					<div w:m='t-2' w:text='2xl true-gray-900' w:font='medium'>{loginway.choosemfa}</div>
+					<div w:p='t-5 b-2'>
 						<button
 							w:w='full'
 							w:text='true-gray-50'
@@ -35,8 +35,8 @@ export default defineComponent({
 							w:p='x-5 y-2'
 							w:transform='~ active:(scale-90)'
 							onClick={() => {
-								router.push('/login')
-							}}>{loginway.passwd}</button>
+								router.push('/login/mfa')
+							}}>{loginway.email}</button>
 					</div>
 					<div w:p='t-1 b-2'>
 						<button
@@ -46,9 +46,10 @@ export default defineComponent({
 							w:transform='~ active:(scale-90)'
 							w:border='1.5px gray-700'
 							onClick={() => {
-								router.push('/login/nopasswd')
-							}}>{loginway.eorp}</button>
+								router.push('/login/mfa')
+							}}>{loginway.phone}</button>
 					</div>
+
 					<div w:text='sm cool-gray-700' w:m='t-3' w:p='l-3px'>
 						{problem.noaccount} <Link to='/login/register'><span w:text='light-blue-600'>{common.register}</span></Link>
 					</div>

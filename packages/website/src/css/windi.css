@@ -10,3 +10,19 @@ html {
 button:focus, input:focus {
 	outline: none;
 }
+
+*:focus-visible {
+	border: none;
+	outline: none;
+}
+
+.loginDropdown {
+	width: 100%;
+	transition: 0.5s;
+}
+.loginDropdown > option {
+	padding: 20px;
+}
+.loginDropdown > option:first-child {
+	display: none;
+}

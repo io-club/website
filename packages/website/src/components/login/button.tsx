@@ -1,33 +1,31 @@
-
 import type { PropType } from 'vue'
-import type {VNode} from 'vue'
 
-import { defineComponent, FunctionalComponent, SVGAttributes } from 'vue'
-
+import ILoading from 'virtual:icons/eos-icons/loading'
+import { defineComponent } from 'vue'
 export default defineComponent({
 	props: {
-		icon: {
-			type: Object as PropType<VNode>
+		loading: {
+			type: Boolean,
+			default: false,
 		},
-		placeholder: String,
-		value: String,
+		disabled: Boolean,
 		onClick: Function as PropType<(ev: Event) => void>,
 	},
 	setup(props, {slots}) {
 		return () => {
 			return <button
-				w:text='true-gray-500'
-				w:p='y-2'
-				w:border='none'
+				disabled={props.disabled}
+				w:text='true-gray-50'
+				w:bg='gray-700'
+				w:p='x-5 y-2'
 				w:transform='~ active:(scale-90)'
 				onClick={props.onClick}
 			>
-				<div w:display='inline-block' w:text='text-bottom' w:m='r-5px'>
-					{props.icon}
-				</div>
-				{props.value}
+				{() => [
+					!props.loading ? null : <ILoading w:display='inline-block' w:text='text-bottom' w:m='r-5px'/>,
+					slots.default ? slots.default() : null,
+				]}
 			</button>
-
 		}
 	},
 })

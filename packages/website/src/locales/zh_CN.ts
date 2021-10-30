@@ -43,9 +43,13 @@ const p = {
 			email: '邮箱格式不符'
 		},
 		loginway: {
+			mfa: '两步验证',
+			changefma: '更换其他校验方式',
 			choose: '选择您的登录方式',
 			change: '改用其他登录方式',
-			password: '使用密码登录',
+			choosemfa: '选择两步校验方式',
+			email: '使用邮箱验证码',
+			phone: '使用手机验证码',
 			eorp: '使用邮箱或手机号登录'
 		},
 		common: {
@@ -72,9 +76,11 @@ const p = {
 			email: '输一手邮箱',
 		},
 		title: {
+			inputusername: '输入用户名',
 			inputcode: '输入验证码',
 			inputpassword: '输入密码',
 			inputemail: '填写邮箱',
+			inputphone: '输入手机号',
 		}
 	},
 	home: {
