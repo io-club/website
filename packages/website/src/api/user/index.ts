@@ -84,7 +84,13 @@ export const user: FastifyPluginCallback<Config> = fp(async function (app, optio
 				},
 				handler: async function (req, res) {
 					const state = req.session.get('state')
-					if (state) {
+					switch (state) {
+					case undefined:
+						break
+					case 'login':
+						req.session.set('login', undefined)
+						break
+					default:
 						res.status(status_code.BAD_REQUEST).send({
 							error: 'logout first to login',
 						})
