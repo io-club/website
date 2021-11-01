@@ -1,7 +1,9 @@
-import '@mgcrea/fastify-session'
+import type {Session} from '~/api/plugins/session'
 
-declare module '@mgcrea/fastify-session' {
-	interface SessionData {
-		uid?: string
+import 'fastify'
+
+declare module 'fastify' {
+	interface FastifyRequest {
+		session: Session;
 	}
 }

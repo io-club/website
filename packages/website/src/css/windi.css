@@ -1,0 +1,28 @@
+html {
+	scroll-behavior: smooth;
+	caret-color: black;
+	background-color: white;
+	color: black;
+	font-size: 16px;
+	outline: none;
+}
+
+button:focus, input:focus {
+	outline: none;
+}
+
+*:focus-visible {
+	border: none;
+	outline: none;
+}
+
+.loginDropdown {
+	width: 100%;
+	transition: 0.5s;
+}
+.loginDropdown > option {
+	padding: 20px;
+}
+.loginDropdown > option:first-child {
+	display: none;
+}

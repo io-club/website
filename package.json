@@ -8,7 +8,6 @@
 		"build-submodule": "git submodule update --init",
 		"build-pkg-oauth": "yarn workspace @jmondi/oauth2-server run build",
 		"build-pkg-mdvue": "yarn workspace @ioclub/mdvue run build",
-		"build-pkg-composable": "yarn workspace @ioclub/composable run build",
 		"build-pkgs": "run-p -l build-pkg-*",
 		"build-redis": "cd packages/website && ./build.sh",
 		"build-tasks": "run-p -l build-redis build-pkgs",
@@ -17,14 +16,15 @@
 		"postinstall": "patch-package --exclude 'IAmNotARealFile.txt'"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^5.0.0",
-		"@typescript-eslint/parser": "^5.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.2.0",
+		"@typescript-eslint/parser": "^5.2.0",
 		"concurrently": "^6.3.0",
-		"eslint": "7.4.0",
+		"eslint": "8.1.0",
 		"eslint-plugin-simple-import-sort": "^7.0.0",
 		"npm-run-all": "^4.1.5",
 		"patch-package": "^6.4.7",
 		"typescript": "^4.4.4",
-		"unbuild": "^0.5.7"
+		"unbuild": "^0.5.8",
+		"windicss-analysis": "^0.3.4"
 	}
 }

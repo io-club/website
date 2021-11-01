@@ -1,0 +1,13 @@
+diff --git a/node_modules/@nuxt/vite-builder/dist/index.mjs b/node_modules/@nuxt/vite-builder/dist/index.mjs
+index ffc21b7..0648c46 100644
+--- a/node_modules/@nuxt/vite-builder/dist/index.mjs
++++ b/node_modules/@nuxt/vite-builder/dist/index.mjs
+@@ -191,7 +191,7 @@ async function transformRequest(opts, id) {
+   }
+   if (id && id.startsWith("/@fs/")) {
+     id = id.slice("/@fs".length);
+-  } else if (!id.includes("entry") && id.startsWith("/")) {
++  } else if (!id.includes("entry") && id.startsWith("/") && !id.includes('vue-jsx')) {
+     id = "." + id;
+   }
+   if (await isExternal(opts, id)) {

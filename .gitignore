@@ -49,6 +49,7 @@ typings/
 
 # Optional npm cache directory
 .npm
+.yarn
 
 # Optional eslint cache
 .eslintcache
@@ -112,3 +113,4 @@ io
 .vercel_build_output
 *.rdb
 .output
+trdthglocal

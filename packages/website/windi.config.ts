@@ -53,8 +53,7 @@ function generate360() {
 
 export default defineConfig({
 	extract: {
-		include: ['**/*.{vue,html,jsx,tsx}'],
-		exclude: ['node_modules', '.git'],
+		include: ['src/**/*.{vue,html,jsx,tsx}'],
 	},
 	darkMode: 'class',
 	attributify: {
@@ -93,8 +92,10 @@ export default defineConfig({
 			},
 			backgroundImage: {
 				'rainbow': 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+				'digit': 'linear-gradient(to right, black 70%, transparent 70%)',
 			},
 			backgroundSize: {
+				'sz-digit': '3.8em 2px',
 				'400': '400% 400%',
 			},
 			spacing: {

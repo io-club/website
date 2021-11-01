@@ -8,7 +8,6 @@ import type {JwtPayload} from 'jsonwebtoken'
 import OAuth2Server from '@jmondi/oauth2-server'
 import fp from 'fastify-plugin'
 import status_code from 'http-status-codes'
-import jwt from 'jsonwebtoken'
 
 const {AuthorizationServer, DateInterval, OAuthRequest, OAuthResponse, OAuthException} = OAuth2Server
 
@@ -29,7 +28,7 @@ export interface Payload extends JwtPayload, Awaited<ReturnType<UserRepository['
 	cid: string
 	scope: string
 }
-export type handleAccessTokenType= (redirect: boolean, ...scope: string[]) => (this: FastifyInstance, req: FastifyRequest, res: FastifyReply) => Promise<void>
+export type handleAccessTokenType = (redirect: boolean, ...scopes: string[]) => (this: FastifyInstance, req: FastifyRequest, res: FastifyReply) => Promise<void>
 
 export const oauth: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	// setup context
@@ -69,17 +68,16 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 	await scope.add(...built_in_scopes)
 
 	// add the super client
-	options.root.name = 'root'
-	options.root.allowedGrants = ['client_credentials']
 	// add built-in scopes if not present
 	for (const scope of built_in_scopes) {
 		if (options.root.scopeNames.every(e => e !== scope.name))
 			options.root.scopeNames.push(scope.name)
 	}
 	await client.add(options.root)
+	await client.add(options.web)
 
 	// validate function
-	const handleAccessToken: handleAccessTokenType = function (redirect, scopes) {
+	const handleAccessToken: handleAccessTokenType = function (redirect, ...scopes: string[]) {
 		return async function (req, res) {
 			let authorization = req.headers.authorization
 			if (!authorization) {
@@ -96,10 +94,9 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				res.status(status_code.UNAUTHORIZED).send('invalid authorization header')
 				return
 			}
-			const payload = jwt.decode(
-				authorization.substring(6).trimLeft(),
+			const payload = await jwtService.verify(
+				authorization.substring(6).trimStart(),
 				{
-					json: true,
 				},
 			) as Payload
 			if (!payload) {
@@ -135,10 +132,13 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				properties: {
 					response_type: { enum: ['code'] },
 					client_id: { type: 'string' },
-					redirect_uri: { type: 'string' },
 					state: { type: 'string' },
 					code_challenge: { type: 'string' },
 					code_challenge_method: { enum: ['plain', 'S256'] },
+				},
+				optionalProperties: {
+					redirect_uri: { type: 'string' },
+					scope: { type: 'string' },
 				},
 			},
 		} as const
@@ -152,12 +152,11 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 				try {
 					const authRequest = await authServer.validateAuthorizationRequest(new OAuthRequest({query: req.query}))
 
-					// The auth request object can be serialized and saved into a user's session.
-					// You will probably want to redirect the user at this point to a login endpoint.
-
-					// Once the user has logged in set the user on the AuthorizationRequest
-					console.log('Once the user has logged in set the user on the AuthorizationRequest')
-					authRequest.user = { id: 'abc', email: 'user@example.com' }
+					if (!req.session.get('user')) {
+						res.status(status_code.MOVED_TEMPORARILY).redirect(options.url_login)
+						return
+					}
+					authRequest.user = req.session.get('user')
 
 					// At this point you should redirect the user to an authorization page.
 					// This form will ask the user to approve the client and the scopes requested.
@@ -195,25 +194,31 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 					'client_credentials': {
 						properties: {
 							client_id: { type: 'string' },
-							client_secret: { type: 'string' },
 							scope: { type: 'string' },
+						},
+						optionalProperties: {
+							client_secret: { type: 'string' },
 						},
 					},
 					'authorization_code': {
 						properties: {
 							client_id: { type: 'string' },
+							code: { type: 'string' },
+							code_verifier: { type: 'string' },
+							redirect_uri: { type: 'string' },
+						},
+						optionalProperties: {
 							client_secret: { type: 'string' },
-							scope: { type: 'string' },
 						},
 					},
 					'refresh_token': {
 						properties: {
 							client_id: { type: 'string' },
-							client_secret: { type: 'string' },
 							refresh_token: { type: 'string' },
+							scope: { type: 'string' },
 						},
 						optionalProperties: {
-							scope: { type: 'string' },
+							client_secret: { type: 'string' },
 						},
 					},
 				},
@@ -234,6 +239,7 @@ export const oauth: FastifyPluginCallback<Config> = fp(async function (app, opti
 					for (const [k,v] of Object.entries(response.headers)) {
 						res.header(k, v)
 					}
+
 					if (response.status === 302) {
 						if (!response.headers.location) throw new Error('missing redirect location');
 						res.redirect(response.headers.location)

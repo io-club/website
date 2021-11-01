@@ -1,9 +1,9 @@
-import type {JTDOptions} from '@/alias/jtd'
+import type {JTDOptions} from '~/alias/jtd'
 import type {FastifyPluginCallback} from 'fastify'
 
 import fp from 'fastify-plugin'
 
-import Ajv from '@/alias/jtd'
+import Ajv from '~/alias/jtd'
 
 export interface Config extends JTDOptions {
 }
@@ -64,7 +64,10 @@ const plugin: FastifyPluginCallback<Config> = fp(async function (fastify, option
 			const parser = ajv.compileParser(schema)
 			return (data) => {
 				const value = parser(data)
-				return {value, error: value ? undefined : new Error(`${parser.message} at ${parser.position}`)} 
+				return {value, error: value ? undefined : new Error(`${parser.message} at ${parser.position}\n${new String(data).slice(
+					parser.position <= 10 ? 0 : parser.position - 10,
+					parser.position + 10,
+				)}`)} 
 			}
 		} else {
 			const validate = ajv.compile(schema)

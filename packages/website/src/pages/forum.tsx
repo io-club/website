@@ -1,5 +1,6 @@
-import {useI18n} from '@ioclub/composable'
 import {defineComponent} from 'vue'
+
+import {useI18n} from '~/plugins/i18n'
 
 export default defineComponent({
 	setup() {
@@ -11,7 +12,7 @@ export default defineComponent({
 				let i = 0
 				for (i; i < 10; i++) {
 					ret.push(
-						<div 
+						<div
 							w:grid="~ cols-[6fr_1fr_1fr_1fr_1fr] rows-1 "
 							w:justify="center"
 							w:align="center"

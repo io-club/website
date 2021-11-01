@@ -1,3 +1,4 @@
+import type {AuthCode} from '~/api/entity/auth_code'
 import type {FastifyPluginCallback} from 'fastify'
 
 import fp from 'fastify-plugin'
@@ -7,58 +8,40 @@ export interface Config {
 	mail_from: string
 }
 
-interface BaseOptions {
+export interface CheckOptions {
 	id: string
-	sess: string
-}
-
-export interface CheckOptions extends BaseOptions {
 	code: string
 }
 
-export interface MailOptions extends BaseOptions {
-	to: string
-	subject: string
-	text: string
+export interface IssueOptions {
+	id: string
 	ttl?: number
+}
+
+interface Code extends AuthCode {
+	ttl: number
 }
 
 export interface Auth {
 	check: (opt: CheckOptions) => Promise<boolean>
-	send_mail: (opt: MailOptions) => Promise<void>
+	issue: (opt: IssueOptions) => Promise<Code>
 }
 
-const routes: FastifyPluginCallback<Config> = fp(async function (app, options) {
+export const auth: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	const auth: Auth = {
 		async check (opt) {
 			const c = await app.entity.auth_code.consume(opt.id)
-			return c?.sess === opt.sess && c?.code === opt.code
+			return c?.code === opt.code
 		},
-		async send_mail (opt) {
+		async issue (opt) {
 			const id = opt.id
-			const sess = opt.sess
-			const mail = opt.to
 			const ttl = opt.ttl ?? options.TTL
 
-			let code
-			try {
-				code = await app.entity.auth_code.issue(id, sess, ttl)
-			} catch (error) {
-				app.log.error({mail, error}, 'can not issue new code')
-				throw new Error('can not issue new code')
-			}
+			const code = await app.entity.auth_code.issue(id, ttl)
 
-			try {
-				const info = await app.mailer.sendMail({
-					from: options.mail_from,
-					to: mail,
-					subject: 'ioclub 验证码',
-					text: `你好, 本次验证码为${code}, ${ttl}秒后过期.`
-				})
-				app.log.info({info}, 'sent mail')
-			} catch (error) {
-				app.log.error({mail, error}, 'can not send mail')
-				throw new Error('can not send new mail')
+			return {
+				...code,
+				ttl,
 			}
 		},
 	}
@@ -67,5 +50,3 @@ const routes: FastifyPluginCallback<Config> = fp(async function (app, options) {
 	name: 'auth',
 	dependencies: ['entity', 'mailer'],
 })
-
-export default routes

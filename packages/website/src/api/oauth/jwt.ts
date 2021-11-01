@@ -10,7 +10,8 @@ export class JwtService implements JwtInterface {
 		this.#key = key
 	}
 
-	verify(token: string, options: VerifyOptions = {}) {
+	verify(token: string, options: VerifyOptions = {
+	}) {
 		return new Promise<JwtPayload>((resolve, reject) => {
 			jwt.verify(token, this.#key, options, (err, decoded) => {
 				if (decoded) resolve(decoded)
@@ -23,7 +24,8 @@ export class JwtService implements JwtInterface {
 		return jwt.decode(encryptedData, opts)
 	}
 
-	sign(payload: string | Buffer | Record<string, unknown>, options: SignOptions = {}) {
+	sign(payload: string | Buffer | Record<string, unknown>, options: SignOptions = {
+	}) {
 		return new Promise<string>((resolve, reject) => {
 			jwt.sign(payload, this.#key, options, (err, encoded) => {
 				if (encoded) resolve(encoded)

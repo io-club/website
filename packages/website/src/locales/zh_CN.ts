@@ -16,6 +16,73 @@ const p = {
 		footer: {
 		},
 	},
+	login: {
+		errormsg: {
+			nouser: '没有该用户',
+			loginerror: '登录失败',
+			registererror: '注册失败',
+			codeerror: '验证码错误',
+			network: '网络异常',
+			sendcode: '发送验证码失败',
+			resend: '重新发送',
+			hassend: '验证码以发送至',
+			checkEP: '请检查你的邮箱或手机号',
+			checkIP: '请检查你的ID或邮箱'
+		},
+		problem: {
+			hasaccount: '已有账号？',
+			noaccount: '没有帐号？',
+			nocode: '没有收到验证码？',
+			forgetpassword: '忘记密码？',
+		},
+		illegal: {
+			username: '用户名格式不符',
+			eorp: '邮箱或手机号格式不符',
+			password: '密码不能为空',
+			samepassword: '两次密码不一致',
+			email: '邮箱格式不符'
+		},
+		loginway: {
+			mfa: '两步验证',
+			changefma: '更换其他校验方式',
+			choose: '选择您的登录方式',
+			change: '改用其他登录方式',
+			choosemfa: '选择两步校验方式',
+			email: '使用邮箱验证码',
+			phone: '使用手机验证码',
+			eorp: '使用邮箱或手机号登录'
+		},
+		common: {
+			login: '登录',
+			register: '注册'
+		},
+		laststep: {
+			laststep: '上一步',
+			changeaccount: '换用其他帐号',
+			changeeorp: '修改邮箱/手机号',
+			changeusername: '修改用户名',
+			changepassword: '修改密码',
+		},
+		nextstep: {
+			nextstep: '下一步',
+			sendcode: '发送验证码',
+		},
+		placeholder: {
+			eorp: '输一手邮箱或手机号',
+			username: '输一手用户名',
+			code: '输一手验证码',
+			password: '输一手密码',
+			password2: '再输一手密码',
+			email: '输一手邮箱',
+		},
+		title: {
+			inputusername: '输入用户名',
+			inputcode: '输入验证码',
+			inputpassword: '输入密码',
+			inputemail: '填写邮箱',
+			inputphone: '输入手机号',
+		}
+	},
 	home: {
 		join_us: '加入我们',
 		cube: [
@@ -88,7 +155,6 @@ const p = {
 	'pastebin': '便利贴',
 	'more': '更多',
 	'user': '用户',
-	'login': '登录',
 	'last_modified': '最后修改',
 	'description': '简介',
 	'are_you_sure': '确定吗?',
