@@ -12,6 +12,7 @@
 		"build-redis": "cd packages/website && ./build.sh",
 		"build-tasks": "run-p -l build-redis build-pkgs",
 		"build": "run-s -l build-submodule build-tasks",
+		"nuxt-dev": "yarn workspace @ioclub/website run nuxt-dev",
 		"dev": "yarn workspace @ioclub/website run dev",
 		"postinstall": "patch-package --exclude 'IAmNotARealFile.txt'"
 	},
