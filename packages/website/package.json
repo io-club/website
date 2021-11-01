@@ -27,6 +27,7 @@
 		"@types/nodemailer": "^6.4.4",
 		"@types/redis-errors": "^1.2.1",
 		"@types/sharp": "^0.29.2",
+		"@windicss/plugin-heropatterns": "^0.0.8",
 		"autoprefixer": "^10.4.0",
 		"babel-plugin-module-resolver": "^4.1.0",
 		"postcss": "^8.3.11",
@@ -36,7 +37,6 @@
 		"postinstall-postinstall": "^2.1.0",
 		"unplugin-icons": "^0.12.16",
 		"upath": "^2.0.1",
-		"@windicss/plugin-heropatterns": "^0.0.8",
 		"vite-plugin-windicss": "^1.4.12"
 	},
 	"dependencies": {
@@ -65,6 +65,7 @@
 		"redis-errors": "^1.2.0",
 		"sharp": "^0.29.2",
 		"toastify-js": "^1.11.2",
-		"unstorage": "^0.3.0"
+		"unstorage": "^0.3.0",
+		"vue-request": "^1.2.3"
 	}
 }
