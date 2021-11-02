@@ -1,0 +1,13 @@
+diff --git a/node_modules/externality/dist/index.mjs b/node_modules/externality/dist/index.mjs
+index bc744b1..bd7314b 100644
+--- a/node_modules/externality/dist/index.mjs
++++ b/node_modules/externality/dist/index.mjs
+@@ -88,7 +88,7 @@ const ExternalsDefaults = {
+   externalExtensions: [".js", ".mjs", ".cjs", ".node"],
+   resolve: {}
+ };
+-const ProtocolRegex = /^(?<proto>.+):.+$/;
++const ProtocolRegex = /^(?<proto>.+):\/\/.+$/;
+ async function isExternal(id, importer, opts = {}) {
+   opts = { ...ExternalsDefaults, ...opts };
+   const inlineMatchers = opts.inline.map(toMatcher);
