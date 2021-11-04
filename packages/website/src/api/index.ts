@@ -17,7 +17,6 @@ import FastifyFetch from './plugins/fetch'
 import FastifyMailer from './plugins/mailer'
 import FastifyRedis from './plugins/redis'
 import FastifySession from './plugins/session'
-import FastifySharp from './plugins/sharp'
 //import service from './service'
 import {user} from './user'
 
@@ -99,7 +98,6 @@ function createApp() {
 		.register(FastifyAjv, options.ajv)
 		.register(FastifyCookie)
 		.register(FastifyFetch)
-		.register(FastifySharp)
 		.register(FastifySession, options.session)
 		.register(FastifyMailer, options.mailer)
 
