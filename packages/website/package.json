@@ -9,13 +9,9 @@
 	"type": "module",
 	"repository": "https://github.com/xhebox/ioclub/ioclub",
 	"scripts": {
-		"redis": "redis-server --save '' --appendonly no --loadmodule RedisJSON/target/release/librejson.so --loadmodule RediSearch/build/redisearch.so",
-		"nuxt-dev": "nu dev --no-clear",
-		"nuxt-build": "nu build --no-clear",
-		"nuxt-start": "node ./output/server/index.mjs",
-		"dev": "run-p -r -l redis nuxt-dev",
-		"build": "run-p -r -l redis nuxt-build",
-		"start": "run-p -r -l redis nuxt-start",
+		"dev": "nu dev --no-clear",
+		"build": "nu build --no-clear",
+		"start": "node ./output/server/index.mjs",
 		"windi": "windicss-analysis --open false"
 	},
 	"license": "MIT",
@@ -26,7 +22,6 @@
 		"@types/lodash": "^4.14.176",
 		"@types/nodemailer": "^6.4.4",
 		"@types/redis-errors": "^1.2.1",
-		"@types/sharp": "^0.29.2",
 		"@windicss/plugin-heropatterns": "^0.0.8",
 		"autoprefixer": "^10.4.0",
 		"babel-plugin-module-resolver": "^4.1.0",
@@ -63,7 +58,6 @@
 		"pathe": "^0.2.0",
 		"query-string": "^7.0.1",
 		"redis-errors": "^1.2.0",
-		"sharp": "^0.29.2",
 		"toastify-js": "^1.11.2",
 		"unstorage": "^0.3.0",
 		"vue-request": "^1.2.3"

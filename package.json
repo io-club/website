@@ -5,14 +5,11 @@
 		"packages/website"
 	],
 	"scripts": {
-		"build-submodule": "git submodule update --init",
+		"build-submodule": "git submodule update --init --recursive",
 		"build-pkg-oauth": "yarn workspace @jmondi/oauth2-server run build",
 		"build-pkg-mdvue": "yarn workspace @ioclub/mdvue run build",
 		"build-pkgs": "run-p -l build-pkg-*",
-		"build-redis": "cd packages/website && ./build.sh",
-		"build-tasks": "run-p -l build-redis build-pkgs",
-		"build": "run-s -l build-submodule build-tasks",
-		"nuxt-dev": "yarn workspace @ioclub/website run nuxt-dev",
+		"build": "run-s -l build-submodule build-pkgs",
 		"dev": "yarn workspace @ioclub/website run dev",
 		"postinstall": "patch-package --exclude 'IAmNotARealFile.txt'"
 	},
