@@ -31,6 +31,7 @@ export const auth: FastifyPluginCallback<Config> = fp(async function (app, optio
 	const auth: Auth = {
 		async check (opt) {
 			const c = await app.entity.auth_code.consume(opt.id)
+
 			return c?.code === opt.code
 		},
 		async issue (opt) {

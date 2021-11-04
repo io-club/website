@@ -17,15 +17,33 @@ export default defineComponent({
 	setup() {
 		const router = useRouter()
 		const { i18n } = useI18n()
-		const username = ref('')
+		const field = ref('')
 		const { login } = i18n.value
-
-		const { loading, run } = useRequest(() =>
+		watch(field, () => {
+			if (checkInput(field.value) || checkInput(field.value)) {
+				return
+			}
+			toast('输入格式不符')
+		})
+		const try_next = () => {
+			if (checkInput(field.value, 'username')) {
+				toast('尝试使用用户名')
+				try_username()
+				return
+			}
+			else if (checkInput(field.value, 'email')) {
+				toast('尝试使用邮箱')
+				try_email()
+				return
+			}
+			toast(login.illegal.username, 'warning')
+		}
+		const { loading: loading, run: try_username } = useRequest(() =>
 			$fetch('/api/user/login', {
 				method: 'POST',
 				body: {
 					type: 'password',
-					username: username.value
+					password: field.value
 				}
 			}), {
 			manual: true,
@@ -34,27 +52,46 @@ export default defineComponent({
 					console.log('onError', e, e instanceof FetchError, e.data, params)
 				else
 					console.log('onError', login.errormsg.network)
-				// toast(login.errormsg.nouser)
 				return
 			},
 			onSuccess: (data, param) => {
 				console.log('onSucess', data, param);
-				router.push('/login/password')
+				router.push('/login/email')
 			}
 		})
-		watch(username, () => {
-			checkInput(username.value, 'username', () => toast(login.illegal.username))
+		const { loading: loading2, run: try_email } = useRequest(() =>
+			$fetch('/api/user/login', {
+				method: 'POST',
+				body: {
+					type: 'email',
+					email: field.value
+				}
+			}), {
+			manual: true,
+			onError: (e, params) => {
+				if (e instanceof FetchError)
+					console.log('onError', e, e instanceof FetchError, e.data, params)
+				else
+					console.log('onError', login.errormsg.network)
+				return
+			},
+			onSuccess: (data, param) => {
+				console.log('onSucess', data, param);
+				router.push('/login/email')
+			}
 		})
+
 		return () => {
 			return <div>
-				<LogoLink to='/login/mfa' icon={<ILArrow/>}>{login.loginway.eorp}</LogoLink>
+				{/* <LogoLink to='/login/mfa' icon={<ILArrow/>}>{login.loginway.eorp}</LogoLink> */}
 				<div w:m='t-4' w:text='2xl true-gray-900' w:font='medium'>
-					{login.title.inputusername}
+					{/* {login.title.inputusername} */}
+					{login.common.login}
 				</div>
 				<Ninput
-					placeholder={login.placeholder.username}
-					value={username.value}
-					onChange={e => username.value = e}/>
+					placeholder='输入用户名邮箱或密码' //{login.placeholder.username}
+					value={field.value}
+					onChange={e => field.value = e}/>
 				<div w:text='sm cool-gray-700' w:m='t-3' w:p='l-3px'>
 					{login.problem.noaccount}
 					<Link to='/login/register'>
@@ -66,7 +103,7 @@ export default defineComponent({
 						disabled={loading.value}
 						loading={loading.value}
 						w:opacity={!loading.value ? '' : '50'}
-						onClick={run}
+						onClick={try_next}
 					>
 						{login.nextstep.nextstep}
 					</NButton>
