@@ -22,9 +22,12 @@ export interface I18nOptions<T> {
 }
 
 async function setI18n(opts: I18nOptions<T>, nuxt: NuxtApp) {
+	if (Object.keys(opts.messages).length == 0) {
+		throw new Error('should provide at least one locale')
+	}
 	const locale = useState(
 		'__i18n_locale',
-		() => opts.locale ?? nuxt.ssrContext?.req.headers['accept-language']?.split(',')[0] ?? 'en-US',
+		() => opts.locale ?? nuxt.ssrContext?.req.headers['accept-language']?.split(',')[0] ?? 'en',
 	)
 	const i18n = useState<T>('__i18n_value')
 	const messages: Record<string, T> = {}
@@ -46,7 +49,19 @@ async function setI18n(opts: I18nOptions<T>, nuxt: NuxtApp) {
 			i18n.value = messages[e]
 			return
 		}
-		throw new Error(`can not find locale ${e}`)
+
+		// fallback to the default
+		i18n.value = Object.values(messages)[0]
+		if (!i18n.value) {
+			const [k, v] = Object.entries(opts.messages)[0]
+			if (typeof v === 'string') {
+				const file = await import(/* @vite-ignore */ v)
+				messages[k] = (file.default ? file.default : file) as T
+			} else {
+				messages[k] = v
+			}
+			i18n.value = v
+		}
 	}
 	await generate(locale.value)
 	watch(locale, generate)
