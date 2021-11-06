@@ -50,7 +50,8 @@ const p = {
 			choosemfa: '选择两步校验方式',
 			email: '使用邮箱验证码',
 			phone: '使用手机验证码',
-			eorp: '使用邮箱或手机号登录'
+			eorp: '使用验证码登录',
+			userpasswordlogin: '使用密码登录'
 		},
 		common: {
 			login: '登录',
