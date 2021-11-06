@@ -24,7 +24,7 @@ export default defineComponent({
 			<div w:display='inline-block' w:text='text-bottom' w:m='r-5px'>
 				{props.icon}
 			</div>
-			<Link to={props.to}><span w:text='hover:(gray-800)'>{() => slots.default ? slots.default() : null}</span></Link>
+			<Link to={props.to}><span w:transition="~ duration-200 ease-in-out" w:text='hover:(gray-800)'>{() => slots.default ? slots.default() : null}</span></Link>
 		</div>
 	},
 })

@@ -1,5 +1,6 @@
 import { FetchError } from 'ohmyfetch'
 import ILArrow from 'virtual:icons/mdi/arrow-left'
+import LoginIcon from 'virtual:icons/mdi/login-variant'
 import { defineComponent, ref, watch } from 'vue'
 import { useRequest } from 'vue-request';
 import { useRouter } from 'vue-router'
@@ -83,7 +84,7 @@ export default defineComponent({
 
 		return () => {
 			return <div>
-				{/* <LogoLink to='/login/mfa' icon={<ILArrow/>}>{login.loginway.eorp}</LogoLink> */}
+				<LogoLink to='/login/mfa' icon={<LoginIcon/>}>{login.loginway.eorp}</LogoLink>
 				<div w:m='t-4' w:text='2xl true-gray-900' w:font='medium'>
 					{/* {login.title.inputusername} */}
 					{login.common.login}

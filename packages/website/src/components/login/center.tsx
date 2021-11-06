@@ -15,9 +15,9 @@ export default defineComponent({
 		>
 			<div
 				w:w='100'
-				w:p='12'
-				w:align='items-center'
-				w:border='1 '
+				w:h='90'
+				w:p='12 <sm:0'
+				w:border='1 <sm:0'
 			>
 				{() => slots.default ? slots.default() : null}
 			</div>
