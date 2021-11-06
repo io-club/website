@@ -26,7 +26,7 @@ export default defineComponent({
 		const customed_nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz', 80)
 		const password = ref('')
 		const storage = useNuxtApp().$__storage
-		const { loading, run } = useRequest(() =>
+		const { data: enforce, loading, run } = useRequest(() =>
 			$fetch('/api/user/login/password', {
 				method: 'POST',
 				body: {
@@ -41,15 +41,40 @@ export default defineComponent({
 					console.log('onError', login2.i.errormsg.network)
 				return
 			},
-			onSuccess: (data, param) => {
-				console.log('onSucess', data, param);
-				router.push('/login/mfa')
+			onSuccess: (data) => {
+				console.log('OnSuccess: ', data);
+				console.log('prefer: ', data.prefer);
+				console.log('methods: ', data.methods);
+				console.log('data.data: ', data.data)
+				if (!data.prefer && !data.methods) {
+					console.log('登录成功，不用两步校验')
+					return
+				}
+				if (data.prefer != 'none') {
+					console.log('登录成功，需要两步校验， 有prefer')
+					// router.push('/login/mfa/' + data.prefer)
+					return
+				}
+				console.log('登录成功，需要两步校验， 但没有prefer')
+				// router.push('/login/mfa/email')
 			}
 		})
+
+		const { loading: sending } = useRequest('/api/user/login/email', {
+			// ready: computed(() => enforce.value && enforce.value.prefer != 'phone'),
+			manual: true,
+			onError: (e, params) => {
+				console.log('网络异常');
+			},
+			onSuccess: (data) => {
+				router.push('/login/mfa/email')
+			}
+		})
+
 		return () => {
 			const login = login2.i
 			return <div>
-				<LogoLink to='/login' icon={<ILArrow/>}>{route.query.username?.toString()}</LogoLink>
+				<LogoLink to='/login' icon={<ILArrow/>}>{login.laststep.changeusername}</LogoLink>
 				<div w:m='t-2' w:text='2xl true-gray-900' w:font='medium'>{login.title.inputpassword}</div>
 				<Ninput placeholder={login.placeholder.password} value={password.value} onChange={e => password.value = e}/>
 				<div w:text='sm cool-gray-700' w:m='t-3' w:p='l-3px'>

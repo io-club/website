@@ -51,6 +51,7 @@ export class AuthCodeRepository extends BaseRepository<AuthCode> {
 			pipe['del'](key)
 		})
 		if (!res[0]) return null
+		console.log(this.parse(res[0]));
 		return this.parse(res[0])
 	}
 }
