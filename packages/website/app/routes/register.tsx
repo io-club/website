@@ -12,7 +12,7 @@ export const links: LinksFunction = () => {
 }
 
 type ActionData = {
-	formError?: Error
+	formError?: string
 	formData: {
 		username: string
 		name: string
@@ -30,12 +30,19 @@ const registerStudent = async (data: FormData) => {
 				throw `${v}不能为空`
 			}
 		}
+		if (!/^\d+$/g.test(data.get('username')?.toString() ?? '')) {
+			throw '学号必须全是数字'
+		}
 		const client = new faunadb.Client({
 			secret: process.env['FAUNA_ADMIN_KEY'] ?? '',
 			domain: 'db.us.fauna.com',
 			scheme: 'https',
 		})
-		const res = await client.query(q.Create(q.Collection('student'), { data: data }))
+		const map: Record<string, unknown> = {}
+		for (const [k, v] of data.entries()) {
+			map[k] = v
+		}
+		const res = await client.query(q.Create(q.Collection('student'), { data: map }))
 		console.log(res)
 		return null
 	} catch (err) {
@@ -56,7 +63,7 @@ export const action: ActionFunction = async ({
 	if (err !== null) {
 		console.error('Error: [%s] %s', err.name, err.message)
 		return json<ActionData>({
-			formError: err, formData: {
+			formError: err.message, formData: {
 				username: formData.get('username')?.toString() ?? '',
 				name: formData.get('name')?.toString() ?? '',
 				class: formData.get('class')?.toString() ?? '',
@@ -74,6 +81,7 @@ export default function Index() {
 	const actionData = useActionData<ActionData>({})
 	const formError = actionData?.formError
 	const formData = actionData?.formData
+	console.log(actionData)
 	const typ = searchParams.get('type')
 	return (
 		<div className="container">
@@ -83,7 +91,7 @@ export default function Index() {
 					<img src='/contra.jpg' alt='contra cover' />
 				</div>}
 				<Form method="post" style={{ textAlign: 'center' }}>
-					{typ === 'finished' ? null : <div>
+					{typ === 'finished' ? <img src='/2022.jpg' alt='qq group' /> : <div>
 						<div>
 							<label htmlFor="name-input">姓名：</label>
 							<input
@@ -125,7 +133,7 @@ export default function Index() {
 								className="form-validation-error"
 								role="alert"
 							>
-								{formError.message}
+								{formError}
 							</p>
 							}
 						</div>

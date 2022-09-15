@@ -1,7 +1,5 @@
 // Constants
 const int MAX_MARCHING_STEPS = 255;
-const float MIN_DIST = 0.0;
-const float MAX_DIST = 60.0;
 const float EPSILON = 0.0005;
 const float PI = 3.14159265359;
 
@@ -90,8 +88,8 @@ vec3 calcNormal(vec3 p) {
 		e.xxx * sdScene(p + e.xxx).sd);
 }
 
-vec4 diffuse(vec3 ro, vec3 rd, float d, vec3 lp, vec4 bgcol, vec4 col) {
-  if (d > MAX_DIST) {
+vec4 diffuse(vec3 ro, vec3 rd, float d, vec3 lp, vec4 bgcol, vec4 col, float max_dist) {
+  if (d > max_dist) {
     return bgcol;
 	} else {
 		vec3 p = ro + rd * d;
