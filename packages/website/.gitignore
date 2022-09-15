@@ -1,0 +1,5 @@
+public/build
+build
+api
+.env
+.cache

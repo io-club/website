@@ -1,0 +1,27 @@
+{
+	"name": "@ioclub/website",
+	"version": "0.1.0",
+	"sideEffects": false,
+	"scripts": {
+		"serve": "remix-serve build",
+		"build": "remix build",
+		"dev": "remix dev"
+	},
+	"dependencies": {
+		"@babylonjs/core": "^5.23.0",
+		"@babylonjs/gui": "^5.23.0",
+		"@remix-run/node": "^1.7.0",
+		"@remix-run/react": "^1.7.0",
+		"@remix-run/serve": "^1.7.0",
+		"@remix-run/vercel": "^1.7.0",
+		"@vercel/node": "^2.4.4",
+		"faunadb": "^4.6.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"remix-utils": "^3.3.0"
+	},
+	"devDependencies": {},
+	"engines": {
+		"node": ">=14"
+	}
+}

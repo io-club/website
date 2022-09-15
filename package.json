@@ -1,0 +1,26 @@
+{
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"build": "yarn workspace @ioclub/website run build",
+		"serve": "yarn workspace @ioclub/website run serve",
+		"dev": "yarn workspace @ioclub/website run dev"
+	},
+	"devDependencies": {
+		"@remix-run/dev": "*",
+		"@remix-run/eslint-config": "*",
+		"@remix-run/serve": "*",
+		"@types/react": "^18.0.15",
+		"@types/react-dom": "^18.0.6",
+		"@typescript-eslint/eslint-plugin": "^5.8.0",
+		"@typescript-eslint/parser": "^5.8.0",
+		"eslint": "^8.20.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-simple-import-sort": "^8.0.0",
+		"eslint-plugin-unused-imports": "^2.0.0",
+		"npm-run-all": "^4.1.5",
+		"typescript": "^4.7.4"
+	}
+}
