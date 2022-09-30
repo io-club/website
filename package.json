@@ -4,14 +4,14 @@
 		"packages/*"
 	],
 	"scripts": {
-		"build": "yarn workspace @ioclub/website run build",
-		"serve": "yarn workspace @ioclub/website run serve",
-		"dev": "yarn workspace @ioclub/website run dev"
+		"docker-release": "docker buildx build --platform=linux/arm64,linux/amd64 -t xhebox/iolab:latest -f docker/Dockerfile --push .",
+		"docker-ignore": "gitignore-to-dockerignore",
+		"build": "pnpm --filter @ioclub/website run build",
+		"serve": "pnpm --filter @ioclub/website run serve",
+		"dev": "pnpm --filter @ioclub/website run dev"
 	},
 	"devDependencies": {
-		"@remix-run/dev": "*",
 		"@remix-run/eslint-config": "*",
-		"@remix-run/serve": "*",
 		"@types/react": "^18.0.15",
 		"@types/react-dom": "^18.0.6",
 		"@typescript-eslint/eslint-plugin": "^5.8.0",
@@ -20,6 +20,7 @@
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-simple-import-sort": "^8.0.0",
 		"eslint-plugin-unused-imports": "^2.0.0",
+		"gitignore-to-dockerignore": "^2.0.0",
 		"npm-run-all": "^4.1.5",
 		"typescript": "^4.7.4"
 	}
