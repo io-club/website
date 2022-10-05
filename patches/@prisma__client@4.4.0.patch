@@ -1,0 +1,24 @@
+--- a/generator-build/index.js
++++ b/generator-build/index.js
+@@ -17155,6 +17155,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++  console.log(3333, id); if (id === "noname") {
++    return "musl";
++  }
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }
+--- a/runtime/index.js
++++ b/runtime/index.js
+@@ -19913,6 +19913,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++  console.log(3333, id); if (id === "noname") {
++    return "musl";
++  }
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }

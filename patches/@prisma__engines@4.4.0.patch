@@ -1,0 +1,36 @@
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -21146,6 +21146,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++  if (id === "noname") {
++    return "musl";
++  }
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }
+--- a/dist/scripts/localinstall.js
++++ b/dist/scripts/localinstall.js
+@@ -4588,6 +4588,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++  if (id === "noname") {
++    return "musl";
++  }
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }
+--- a/dist/scripts/postinstall.js
++++ b/dist/scripts/postinstall.js
+@@ -21130,6 +21130,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++  if (id === "noname") {
++    return "musl";
++  }
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }

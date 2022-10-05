@@ -1,5 +1,19 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  '@prisma/engines@4.4.0':
+    hash: 3ca3eirl4z2djb7h2rjyc3sg2a
+    path: patches/@prisma__engines@4.4.0.patch
+  windicss@3.5.6:
+    hash: s6enedff7j5ane2yt5l6sjwrau
+    path: patches/windicss@3.5.6.patch
+  '@prisma/client@4.4.0':
+    hash: cwoiavq2imcqer22uqu2blj3ky
+    path: patches/@prisma__client@4.4.0.patch
+  prisma@4.4.0:
+    hash: 6xfdh4vwwzgekfvcvvnsqkvndm
+    path: patches/prisma@4.4.0.patch
+
 importers:
 
   .:
@@ -38,12 +52,14 @@ importers:
     specifiers:
       '@babylonjs/core': ^5.23.0
       '@babylonjs/gui': ^5.23.0
+      '@prisma/client': ^4.4.0
       '@remix-run/dev': '*'
       '@remix-run/react': ^1.7.2
       '@remix-run/serve': ^1.7.2
       '@remix-run/server-runtime': ^1.7.2
       '@windicss/plugin-heropatterns': ^0.0.8
       faunadb: ^4.6.0
+      prisma: ^4.4.0
       react: ^18.2.0
       react-dom: ^18.2.0
       remix-utils: ^3.3.0
@@ -52,6 +68,7 @@ importers:
     dependencies:
       '@babylonjs/core': 5.26.1
       '@babylonjs/gui': 5.25.0_@babylonjs+core@5.26.1
+      '@prisma/client': 4.4.0_cwoiavq2imcqer22uqu2blj3ky_prisma@4.4.0
       '@remix-run/react': 1.7.2_biqbaboplfbrettd7655fr4n2y
       '@remix-run/serve': 1.7.2_biqbaboplfbrettd7655fr4n2y
       '@remix-run/server-runtime': 1.7.2_biqbaboplfbrettd7655fr4n2y
@@ -62,8 +79,9 @@ importers:
     devDependencies:
       '@remix-run/dev': 1.7.2_63cxfdg5f5bb4xpkk3vcjfcl3q
       '@windicss/plugin-heropatterns': 0.0.8
+      prisma: 4.4.0
       typescript: 4.8.4
-      windicss: 3.5.6
+      windicss: 3.5.6_s6enedff7j5ane2yt5l6sjwrau
 
 packages:
 
@@ -1556,6 +1574,30 @@ packages:
       tiny-glob: 0.2.9
       tslib: 2.4.0
     dev: true
+
+  /@prisma/client/4.4.0_cwoiavq2imcqer22uqu2blj3ky_prisma@4.4.0:
+    resolution: {integrity: sha512-ciKOP246x1xwr04G9ajHlJ4pkmtu9Q6esVyqVBO0QJihaKQIUvbPjClp17IsRJyxqNpFm4ScbOc/s9DUzKHINQ==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6
+      prisma: 4.4.0
+    dev: false
+    patched: true
+
+  /@prisma/engines-version/4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6:
+    resolution: {integrity: sha512-P5v/PuEIJLYXZUZBvOLPqoyCW+m6StNqHdiR6te++gYVODpPdLakks5HVx3JaZIY+LwR02juJWFlwpc9Eog/ug==}
+    dev: false
+
+  /@prisma/engines/4.4.0_3ca3eirl4z2djb7h2rjyc3sg2a:
+    resolution: {integrity: sha512-Fpykccxlt9MHrAs/QpPGpI2nOiRxuLA+LiApgA59ibbf24YICZIMWd3SI2YD+q0IAIso0jCGiHhirAIbxK3RyQ==}
+    requiresBuild: true
+    patched: true
 
   /@remix-run/dev/1.7.2_63cxfdg5f5bb4xpkk3vcjfcl3q:
     resolution: {integrity: sha512-oJcaju9zID+xOUnkMQJBEbjiiYBvILVsX64Fzi1itlm5vjNuo99nmKM7gleaDawNLo3lyd6Xd+JyMa3aIwDKOQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/@remix-run/dev/-/dev-1.7.2.tgz}
@@ -6166,6 +6208,14 @@ packages:
       parse-ms: 2.1.0
     dev: true
 
+  /prisma/4.4.0:
+    resolution: {integrity: sha512-l/QKLmLcKJQFuc+X02LyICo0NWTUVaNNZ00jKJBqwDyhwMAhboD1FWwYV50rkH4Wls0RviAJSFzkC2ZrfawpfA==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 4.4.0_3ca3eirl4z2djb7h2rjyc3sg2a
+
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz}
     dev: true
@@ -7499,11 +7549,12 @@ packages:
       string-width: 4.2.3
     dev: false
 
-  /windicss/3.5.6:
+  /windicss/3.5.6_s6enedff7j5ane2yt5l6sjwrau:
     resolution: {integrity: sha512-P1mzPEjgFMZLX0ZqfFht4fhV/FX8DTG7ERG1fBLiWvd34pTLVReS5CVsewKn9PApSgXnVfPWwvq+qUsRwpnwFA==}
     engines: {node: '>= 12'}
     hasBin: true
     dev: true
+    patched: true
 
   /word-wrap/1.2.3:
     resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/word-wrap/-/word-wrap-1.2.3.tgz}

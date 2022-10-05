@@ -1,5 +1,6 @@
 public/build
 windi.css
+prisma/*.db
 build
 api
 .env
