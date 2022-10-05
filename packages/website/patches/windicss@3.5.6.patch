@@ -1,0 +1,13 @@
+diff --git a/cli/index.js b/tmp/24f6311d100c1f2316d3cffe0efc63ac/cli/index.js
+index c6cb95093543ada370202c2cc076347eea4f197c..f6e9a190f1b56c967cf407b4eb43559b9d15b0f3 100755
+--- a/cli/index.js
++++ b/tmp/24f6311d100c1f2316d3cffe0efc63ac/cli/index.js
+@@ -8051,7 +8051,7 @@ function attributify(files) {
+         }
+         else {
+             var utility = processor.attributify(attrs);
+-            styleSheets[file] = utility.styleSheet;
++					  styleSheets[file] = styleSheets[file] ? styleSheets[file].extend(utility.styleSheet) : utility.styleSheet;
+         }
+     });
+ }

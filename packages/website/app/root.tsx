@@ -1,4 +1,4 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
+import type { LinksFunction, MetaFunction } from '@remix-run/server-runtime'
 
 import {
 	Links,
@@ -13,9 +13,14 @@ import { ExternalScripts } from 'remix-utils'
 import globalStylesUrl from './styles/global.css'
 import globalLargeStylesUrl from './styles/global-large.css'
 import globalMediumStylesUrl from './styles/global-medium.css'
+import globalWindiUrl from './styles/windi.css'
 
 export const links: LinksFunction = () => {
 	return [
+		{
+			rel: 'stylesheet',
+			href: globalWindiUrl,
+		},
 		{
 			rel: 'stylesheet',
 			href: globalStylesUrl,
@@ -46,7 +51,7 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body style={{ height: '100vh', width: '100%', padding: 0, margin: 0, display: 'flex' }}>
+			<body className="flex" w:h="screen" w:p="0" w:m="0">
 				<Outlet />
 				<ScrollRestoration />
 				<ExternalScripts />
