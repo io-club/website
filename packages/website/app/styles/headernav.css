@@ -1,0 +1,30 @@
+.headernav {
+    background-color: white;
+    width: 100vw;
+    height: 50px;
+    display: flex;
+    padding: 12px 10px;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+.headernav .left {
+    display: flex;
+}
+.headernav .right {
+    display: flex;
+}
+.headernav .right>li {
+    padding-left: 10px;
+}
+.headernav .left>div {
+    display: flex;
+}
+
+.headernav .left>div>.breadcrumb {
+    padding: 0 4px;
+    display: flex;
+    justify-content: center;
+    color: var(--gray);
+}
