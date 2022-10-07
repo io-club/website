@@ -1,4 +1,4 @@
-import type { AttributifyNames } from '@unocss/preset-attributify'
+import type { AttributifyNames } from 'unocss/preset-attributify'
 
 type Prefix = 'w-'
 

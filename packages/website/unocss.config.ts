@@ -4,7 +4,6 @@ import { presetScalpel } from 'unocss-preset-scalpel'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
 import presetDaisy from 'unocss-preset-daisy'
 import { presetHeroPatterns } from '@julr/unocss-preset-heropatterns'
-
 export default defineConfig({
 	presets: [
 		presetUno(),

@@ -12,6 +12,7 @@ import {
 import { ExternalScripts } from 'remix-utils'
 
 import globalUnoUrl from './styles/uno.css'
+import globalStyles from './styles/global.css'
 import HeaderNav from './components/headerNav'
 
 export const links: LinksFunction = () => {
@@ -19,6 +20,10 @@ export const links: LinksFunction = () => {
 		{
 			rel: 'stylesheet',
 			href: globalUnoUrl,
+		},
+		{
+			rel: 'stylesheet',
+			href: globalStyles,
 		},
 	]
 }
@@ -38,7 +43,8 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body className="flex" w-h="screen" w-p="0" w-m="0">
+			<body className="flex" w-flex="col" w-justify='center' w-h="auto" w-p="0" w-m="0">
+				<HeaderNav/>
 				<Outlet />
 				<ScrollRestoration />
 				<ExternalScripts />
