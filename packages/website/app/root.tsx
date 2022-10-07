@@ -43,7 +43,7 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body className="flex" w-flex="col" w-justify='center' w-h="auto" w-p="0" w-m="0">
+			<body className="flex min-h-screen" w-flex="col" w-justify='center' w-p="0" w-m="0">
 				<HeaderNav/>
 				<Outlet />
 				<ScrollRestoration />

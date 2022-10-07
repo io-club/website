@@ -151,24 +151,40 @@ const Demo = function({
 			// set cameras
 			scene.activeCameras = [camera, sCamera]
 
-			// join button
-			const btn = Button.CreateSimpleButton('btn', 'Click! Join us now!')
-			btn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER
-			btn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM
-			btn.width = '250px'
-			btn.height = '80px'
-			btn.background = '#eee'
-			btn.color = '#111'
-			btn.cornerRadius = 80
-			btn.top = '-100px'
-			btn.isHitTestVisible = true
-			btn.onPointerClickObservable.addOnce(() => {
-				navigate('/register')
+			//button List
+			const btnList:Array<{
+				text:string;
+				nevigate:string;
+			}> = [
+				{
+					text:'Click! Join us now!',
+					nevigate:'register'
+				},
+				{
+					text:'To Home',
+					nevigate:'home'
+				}
+			]
+			btnList.forEach(({text,nevigate},index)=>{
+				console.log(index)
+				const btn = Button.CreateSimpleButton('btn', text)
+				btn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER
+				btn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM
+				btn.width = '250px'
+				btn.height = '80px'
+				btn.background = '#eee'
+				btn.color = '#111'
+				btn.cornerRadius = 80
+				btn.top = -100*++index+"px"
+				btn.isHitTestVisible = true
+				btn.onPointerClickObservable.addOnce(() => {
+					navigate(`${nevigate}`)
+				})
+				btn.fontSize = 24
+				btn.fontStyle = 'bold'
+				btn.shadowBlur = 0
+				gui.addControl(btn)
 			})
-			btn.fontSize = 24
-			btn.fontStyle = 'bold'
-			btn.shadowBlur = 0
-			gui.addControl(btn)
 
 			let time = 0
 			scene.registerBeforeRender(() => {
