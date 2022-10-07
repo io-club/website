@@ -1,0 +1,28 @@
+---
+meta:
+  title: My First Post
+  description: Isn't this awesome?
+
+headers:
+  Cache-Control: no-cache
+---
+
+
+export const handle = {
+  someData: "abc",
+};
+
+import { useLoaderData } from "@remix-run/react";
+
+export const loader = async () => {
+  return { mamboNumber: 5 };
+};
+
+export function ComponentUsingData() {
+  const { mamboNumber } = useLoaderData();
+  return <div id="loader">Mambo Number: {mamboNumber}</div>;
+}
+
+# This is some markdown!
+
+<ComponentUsingData/>

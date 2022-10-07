@@ -1,8 +1,8 @@
-public/build
-windi.css
-uno.css
-prisma/*.db
-build
-api
-.env
+/public/build
+/prisma/*.db
+/build
+/app/styles
+/api
+.env.production
 .cache
+*uno.css

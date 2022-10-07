@@ -1,9 +1,7 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/server-runtime'
 
 import {
-	Link,
 	Links,
-	LiveReload,
 	Meta,
 	Outlet,
 	Scripts,
@@ -11,19 +9,19 @@ import {
 } from '@remix-run/react'
 import { ExternalScripts } from 'remix-utils'
 
-import globalUnoUrl from './styles/uno.css'
-import globalStyles from './styles/global.css'
-import HeaderNav from './components/headerNav'
+import HeaderNav from '~/components/headerNav'
+import rootCssUrl from '~/styles/root.css'
+import unoCssUrl from '~/uno.css'
 
 export const links: LinksFunction = () => {
 	return [
 		{
 			rel: 'stylesheet',
-			href: globalUnoUrl,
+			href: rootCssUrl,
 		},
 		{
 			rel: 'stylesheet',
-			href: globalStyles,
+			href: unoCssUrl,
 		},
 	]
 }
@@ -33,9 +31,11 @@ export const meta: MetaFunction = () => ({
 	title: 'IOLab 2022',
 	viewport: 'width=device-width,initial-scale=1',
 })
+
 export const handle = {
-	breadcrumb: () => <Link to="/">IO-Club</Link>,
-  };
+	breadcrumb: () => 'IO-Club',
+}
+
 export default function App() {
 	return (
 		<html lang="en">
@@ -43,13 +43,23 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body className="flex min-h-screen" w-flex="col" w-justify='center' w-p="0" w-m="0">
-				<HeaderNav/>
-				<Outlet />
+			<body
+				className="min-h-screen font-normal"
+				w-scrollbar='~ w-0px'
+				w-flex="col"
+				w-justify="center"
+				w-p="0"
+				w-m="0"
+				w-text="neutral-500"
+				w-bg="light-50"
+			>
+				<HeaderNav />
+				<main w-flex="grow">
+					<Outlet />
+				</main>
 				<ScrollRestoration />
 				<ExternalScripts />
 				<Scripts />
-				<LiveReload />
 			</body>
 		</html>
 	)

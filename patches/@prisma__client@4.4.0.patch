@@ -4,7 +4,7 @@
    if (id === "nixos") {
      return "nixos";
    }
-+  console.log(3333, id); if (id === "noname") {
++  if (id === "noname") {
 +    return "musl";
 +  }
    if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
@@ -16,7 +16,7 @@
    if (id === "nixos") {
      return "nixos";
    }
-+  console.log(3333, id); if (id === "noname") {
++  if (id === "noname") {
 +    return "musl";
 +  }
    if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {

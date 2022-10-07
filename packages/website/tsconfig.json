@@ -6,6 +6,7 @@
 	],
 	"compilerOptions": {
 		"baseUrl": ".",
+		"module": "esnext",
 		"paths": {
 			"~/*": [
 				"./app/*"

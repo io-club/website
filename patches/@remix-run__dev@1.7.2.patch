@@ -1,0 +1,114 @@
+diff --git a/dist/compiler.js b/dist/compiler.js
+index b1cf495c3bc4ee202d4d833911773ecd26fb6bc1..9b834cc5e75dbde49db960994f5c2eff19a69057 100644
+--- a/dist/compiler.js
++++ b/dist/compiler.js
+@@ -309,7 +309,7 @@ async function createBrowserBuild(config, options) {
+     entryPoints[id] = config.routes[id].file + "?browser";
+   }
+ 
+-  let plugins = [urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin(), esbuildPluginPnp.pnpPlugin()];
++  let plugins = [urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), browserRouteModulesPlugin.browserRouteModulesPlugin(config, /\?browser$/), emptyModulesPlugin.emptyModulesPlugin(config, /\.server(\.[jt]sx?)?$/), nodeModulesPolyfill.NodeModulesPolyfillPlugin(), esbuildPluginPnp.pnpPlugin(),cssPlugin(options)];
+   return esbuild__namespace.build({
+     entryPoints,
+     outdir: config.assetsBuildDirectory,
+@@ -360,7 +360,7 @@ function createServerBuild(config, options, assetsManifestPromiseRef) {
+ 
+   let isCloudflareRuntime = ["cloudflare-pages", "cloudflare-workers"].includes(config.serverBuildTarget ?? "");
+   let isDenoRuntime = config.serverBuildTarget === "deno";
+-  let plugins = [urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), emptyModulesPlugin.emptyModulesPlugin(config, /\.client(\.[jt]sx?)?$/), serverRouteModulesPlugin.serverRouteModulesPlugin(config), serverEntryModulePlugin.serverEntryModulePlugin(config), serverAssetsManifestPlugin.serverAssetsManifestPlugin(assetsManifestPromiseRef), serverBareModulesPlugin.serverBareModulesPlugin(config, options.onWarning), esbuildPluginPnp.pnpPlugin()];
++  let plugins = [urlImportsPlugin.urlImportsPlugin(), mdx.mdxPlugin(config), emptyModulesPlugin.emptyModulesPlugin(config, /\.client(\.[jt]sx?)?$/), serverRouteModulesPlugin.serverRouteModulesPlugin(config), serverEntryModulePlugin.serverEntryModulePlugin(config), serverAssetsManifestPlugin.serverAssetsManifestPlugin(assetsManifestPromiseRef), serverBareModulesPlugin.serverBareModulesPlugin(config, options.onWarning), esbuildPluginPnp.pnpPlugin(),cssPlugin(options)];
+ 
+   if (config.serverPlatform !== "node") {
+     plugins.unshift(nodeModulesPolyfill.NodeModulesPolyfillPlugin());
+@@ -446,6 +446,91 @@ async function writeServerBuildResult(config, outputFiles) {
+   }
+ }
+ 
++const isExtendedLengthPath = /^\\\\\?\\/;
++const normalizePathSlashes = (path) => isExtendedLengthPath.test(path) ? path : path.replace(/\\/g, "/");
++function cssPlugin(buildConfig) {
++  return {
++    name: "css-file",
++    async setup(build) {
++      let buildOps = build.initialOptions;
++      build.onLoad({ filter: /\.css$/ }, async (args) => {
++        let { outfile, outdir, assetNames } = buildOps;
++        let { metafile, outputFiles, warnings, errors } = await esbuild.build({
++          ...buildOps,
++          minify: buildConfig.mode === build$1.BuildMode.Production,
++          minifySyntax: true,
++          metafile: true,
++          write: false,
++          sourcemap: false,
++          incremental: false,
++          splitting: false,
++          stdin: undefined,
++          outfile: undefined,
++          outdir: outfile ? path.dirname(outfile) : outdir,
++          entryNames: assetNames,
++          entryPoints: [args.path],
++          loader: {
++            ...buildOps.loader,
++            ".css": "css",
++          },
++          // this plugin treats absolute paths in 'url()' css rules as external to prevent breaking changes
++          plugins: [
++            {
++              name: "resolve-absolute",
++              async setup(build) {
++                build.onResolve({ filter: /.*/ }, async (args) => {
++                  let { kind, path: resolvePath } = args;
++                  if (kind === "url-token" && path.isAbsolute(resolvePath)) {
++                    return {
++                      path: resolvePath,
++                      external: true,
++                    };
++                  }
++                });
++              },
++            },
++          ],
++        });
++        if (errors && errors.length !== 0) {
++          return { errors };
++        }
++
++        let { outputs } = metafile;
++        let entry = Object.keys(outputs).find(
++          (out) => outputs[out].entryPoint
++        );
++        let entryFile = outputFiles.find((file) =>
++          normalizePathSlashes(file.path).endsWith(normalizePathSlashes(entry))
++        );
++        let outputFilesWithoutEntry = outputFiles.filter(
++          (file) => file !== entryFile
++        );
++ 			 
++
++        // write all assets
++        await Promise.all(
++          outputFilesWithoutEntry.map(({ path: filepath, contents }) =>
++            fse.outputFile(filepath, contents)
++          )
++        );
++        return {
++          contents: entryFile.contents,
++          loader: "file",
++          // add all css assets to watchFiles
++          watchFiles: Object.values(outputs).reduce((arr, { inputs }) => {
++            let resolvedInputs = Object.keys(inputs).map((input) =>
++              path.resolve(input)
++            );
++            arr.push(...resolvedInputs);
++            return arr;
++          }, []),
++          warnings,
++        };
++      });
++    },
++  };
++}
++
+ exports.build = build;
+ exports.formatBuildFailure = formatBuildFailure;
+ exports.watch = watch;
