@@ -11,31 +11,14 @@ import {
 } from '@remix-run/react'
 import { ExternalScripts } from 'remix-utils'
 
-import globalStylesUrl from './styles/global.css'
-import globalLargeStylesUrl from './styles/global-large.css'
-import globalMediumStylesUrl from './styles/global-medium.css'
-import globalWindiUrl from './styles/windi.css'
+import globalUnoUrl from './styles/uno.css'
 import HeaderNav from './components/headerNav'
 
 export const links: LinksFunction = () => {
 	return [
 		{
 			rel: 'stylesheet',
-			href: globalWindiUrl,
-		},
-		{
-			rel: 'stylesheet',
-			href: globalStylesUrl,
-		},
-		{
-			rel: 'stylesheet',
-			href: globalMediumStylesUrl,
-			media: 'print, (min-width: 640px)',
-		},
-		{
-			rel: 'stylesheet',
-			href: globalLargeStylesUrl,
-			media: 'screen and (min-width: 1024px)',
+			href: globalUnoUrl,
 		},
 	]
 }
@@ -55,8 +38,7 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body className="flex-col" w:flex='' w:min-h="100vh" w:w='100vw'  w:p="0" w:m="0">
-				<HeaderNav/>
+			<body className="flex" w-h="screen" w-p="0" w-m="0">
 				<Outlet />
 				<ScrollRestoration />
 				<ExternalScripts />
