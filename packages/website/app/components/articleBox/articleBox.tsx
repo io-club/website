@@ -6,9 +6,7 @@ import AvatarUrl from "../../temporary/avatar.jpg";
 export const ArticleBox = ({ title }: { title: string }) => {
 
   return (
-
     <div className="article-container" w-w="full" w-h="30vh" w-grid="~ rows-[20%80%]">
-
       <div className="top">
         <h1 className="article-h1" w-display="inline-block after:display-block" w-text="50px" >
           {`>`}
