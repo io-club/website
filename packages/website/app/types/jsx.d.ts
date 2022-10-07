@@ -1,8 +1,7 @@
-import type { AttributifyNames } from './attributify.d'
+import type { AttributifyNames } from '@unocss/preset-attributify'
 
-declare namespace JSX {
-	interface ReservedProps extends Partial<Record<import('./attributify.d').AttributifyNames<'w:'>, string>> {
-	}
-	interface HTMLAttributes<T> extends Partial<Record<AttributifyNames<'w:'>, string>> {
-	}
+type Prefix = 'w-'
+
+declare module 'react' {
+	interface HTMLAttributes<T> extends Partial<Record<AttributifyNames<Prefix>, string>> {}
 }
