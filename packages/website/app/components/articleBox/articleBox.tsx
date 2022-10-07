@@ -2,11 +2,17 @@ import { Link } from "@remix-run/react";
 import { AiFillCalendar, AiFillDatabase, AiFillHeart } from "react-icons/ai";
 import 'animate.css'
 import AvatarUrl from "../../temporary/avatar.jpg";
-
-
+import { useState } from "react";
 export const ArticleBox = ({ title }: { title: string }) => {
+  console.log(1)
   return (
-    <div className="article-container" w-w="full" w-h="30vh" w-grid="~ rows-[20%80%]">
+    <div className="article-container wow fadeIn" 
+    data-wow-duration="1s" 
+    data-wow-delay="1s" 
+    data-wow-iteration="1s"
+    w-w="full" 
+    w-h="30vh" 
+    w-grid="~ rows-[20%80%]">
       <div className="top">
         <h1 className="article-h1" w-display="inline-block after:display-block" w-text="50px" >
           {`>`}
