@@ -4,9 +4,6 @@ patchedDependencies:
   '@prisma/engines@4.4.0':
     hash: 3ca3eirl4z2djb7h2rjyc3sg2a
     path: patches/@prisma__engines@4.4.0.patch
-  windicss@3.5.6:
-    hash: s6enedff7j5ane2yt5l6sjwrau
-    path: patches/windicss@3.5.6.patch
   '@prisma/client@4.4.0':
     hash: cwoiavq2imcqer22uqu2blj3ky
     path: patches/@prisma__client@4.4.0.patch
@@ -65,15 +62,16 @@ importers:
       '@unocss/preset-rem-to-px': ^0.45.25
       '@unocss/reset': ^0.45.26
       '@unocss/transformer-directives': ^0.45.26
-      faunadb: ^4.6.0
+      animate.css: ^4.1.1
+      faunadb: ^4.7.0
       katex: ^0.16.2
       prisma: ^4.4.0
       prop-types: ^15.8.1
       react: ^18.2.0
       react-dom: ^18.2.0
       react-icons: ^4.4.0
-      react-uuid: ^1.0.3
       react-katex: ^3.0.1
+      react-uuid: ^1.0.3
       remix-utils: ^3.3.0
       typescript: ^4.8.4
       unocss: ^0.45.26
@@ -81,6 +79,7 @@ importers:
       unocss-preset-scalpel: ^1.2.5
       unocss-preset-scrollbar: ^0.2.1
       vite: ^3.1.6
+      wowjs: ^1.1.3
     dependencies:
       '@babylonjs/core': 5.27.0
       '@babylonjs/gui': 5.27.0_@babylonjs+core@5.27.0
@@ -90,14 +89,16 @@ importers:
       '@remix-run/serve': 1.7.2_biqbaboplfbrettd7655fr4n2y
       '@remix-run/server-runtime': 1.7.2_biqbaboplfbrettd7655fr4n2y
       '@unocss/reset': 0.45.26
+      animate.css: 4.1.1
       faunadb: 4.7.0
       katex: 0.16.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-katex: 3.0.1_sh5qlbywuemxd2y3xkrw2y2kr4
       react-icons: 4.4.0_react@18.2.0
+      react-katex: 3.0.1_sh5qlbywuemxd2y3xkrw2y2kr4
       react-uuid: 1.0.3
       remix-utils: 3.3.0_pqza7jbp5ekgievnaooqxawnlq
+      wowjs: 1.1.3
     devDependencies:
       '@julr/unocss-preset-heropatterns': 0.0.2_unocss@0.45.26
       '@kidonng/daisyui': 2.31.0
@@ -2424,6 +2425,10 @@ packages:
       uri-js: 4.4.1
     dev: true
 
+  /animate.css/4.1.1:
+    resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}
+    dev: false
+
   /ansi-align/3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
     dependencies:
@@ -2455,7 +2460,7 @@ packages:
       color-convert: 2.0.1
 
   /ansi-styles/5.2.0:
-    resolution: {integrity: sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/ansi-styles/-/ansi-styles-5.2.0.tgz}
+    resolution: {integrity: sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==}
     engines: {node: '>=10'}
     dev: true
 
@@ -8390,6 +8395,12 @@ packages:
     resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npm.taobao.org/word-wrap/-/word-wrap-1.2.3.tgz}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /wowjs/1.1.3:
+    resolution: {integrity: sha512-HQp1gi56wYmjOYYOMZ08TnDGpT+AO21RJVa0t1NJ3jU8l3dMyP+sY7TO/lilzVp4JFjW88bBY87RnpxdpSKofA==}
+    dependencies:
+      animate.css: 4.1.1
+    dev: false
 
   /wrap-ansi/7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
