@@ -1,7 +1,7 @@
-import type { ActionFunction, LinksFunction } from '@remix-run/server-runtime';
+import type { ActionFunction, LinksFunction } from '@remix-run/server-runtime'
 
-import { redirect } from '@remix-run/server-runtime'
 import { Form, useSearchParams } from '@remix-run/react'
+import { redirect } from '@remix-run/server-runtime'
 import faunadb, { query as q } from 'faunadb'
 import { json, useActionData } from 'remix-utils'
 

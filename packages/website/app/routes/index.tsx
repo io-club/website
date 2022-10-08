@@ -1,6 +1,6 @@
-import type { BinaryFileAssetTask, EngineOptions, SceneOptions, TextFileAssetTask } from '@babylonjs/core';
+import type { BinaryFileAssetTask, EngineOptions, SceneOptions, TextFileAssetTask } from '@babylonjs/core'
 
-import { Analyser, ArcRotateCamera, AssetsManager, Camera, Color4, CreateGround, DynamicTexture, Effect, Engine, HemisphericLight, MeshBuilder, RawTexture, Scene, ShaderMaterial, Sound, SoundTrack, StandardMaterial, Texture, Vector2, Vector3, Vector4 } from '@babylonjs/core';
+import { Analyser, ArcRotateCamera, AssetsManager, Camera, Color4, CreateGround, DynamicTexture, Effect, Engine, HemisphericLight, MeshBuilder, RawTexture, Scene, ShaderMaterial, Sound, SoundTrack, StandardMaterial, Texture, Vector2, Vector3, Vector4 } from '@babylonjs/core'
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui'
 import { useNavigate } from '@remix-run/react'
 import { useEffect, useRef } from 'react'

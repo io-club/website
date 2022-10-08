@@ -1,9 +1,9 @@
-import { defineConfig, presetUno, presetAttributify, presetWebFonts, presetTypography, presetIcons, transformerDirectives } from 'unocss'
+import { presetHeroPatterns } from '@julr/unocss-preset-heropatterns'
 import presetRemToPx from '@unocss/preset-rem-to-px'
+import { defineConfig, presetAttributify, presetIcons, presetTypography, presetUno, presetWebFonts, transformerDirectives } from 'unocss'
+import presetDaisy from 'unocss-preset-daisy'
 import { presetScalpel } from 'unocss-preset-scalpel'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
-import presetDaisy from 'unocss-preset-daisy'
-import { presetHeroPatterns } from '@julr/unocss-preset-heropatterns'
 
 export default defineConfig({
 	transformers: [

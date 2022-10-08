@@ -18,7 +18,7 @@
 		"@remix-run/react": "^1.7.2",
 		"@remix-run/serve": "^1.7.2",
 		"@remix-run/server-runtime": "^1.7.2",
-		"@unocss/reset": "^0.45.26",
+		"@unocss/reset": "^0.45.28",
 		"animate.css": "^4.1.1",
 		"faunadb": "^4.7.0",
 		"katex": "^0.16.2",
@@ -34,21 +34,21 @@
 		"@julr/unocss-preset-heropatterns": "^0.0.2",
 		"@kidonng/daisyui": "^2.31.0",
 		"@remix-run/dev": "*",
-		"@unocss/cli": "^0.45.26",
-		"@unocss/preset-attributify": "^0.45.26",
-		"@unocss/preset-rem-to-px": "^0.45.25",
-		"@unocss/transformer-directives": "^0.45.26",
+		"@unocss/cli": "^0.45.28",
+		"@unocss/preset-attributify": "^0.45.28",
+		"@unocss/preset-rem-to-px": "^0.45.28",
+		"@unocss/transformer-directives": "^0.45.28",
 		"prisma": "^4.4.0",
 		"prop-types": "^15.8.1",
 		"typescript": "^4.8.4",
-		"unocss": "^0.45.26",
+		"unocss": "^0.45.28",
 		"unocss-preset-daisy": "^1.2.0",
 		"unocss-preset-scalpel": "^1.2.5",
 		"unocss-preset-scrollbar": "^0.2.1",
 		"vite": "^3.1.6"
 	},
 	"engines": {
-		"node": ">=14"
+		"node": ">=16"
 	},
 	"peerDependencies": {
 		"prop-types": "^15.8.1",

@@ -1,15 +1,14 @@
 .git/
 **/.git/
-**/**/node_modules
+**/node_modules
 
-**/**/.cache
-**/**/.env
-**/**/.vercel
-**/**/.output
-**/**/.js.map
-**/**/.ts.map
+**/.cache
+**/.env
+**/.vercel
+**/.output
+**/.js.map
+**/.ts.map
 
 **/build/
 **/public/build
-**/api/index.js
-**/api/index.js.map
+**/api/
