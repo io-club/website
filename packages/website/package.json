@@ -20,8 +20,10 @@
 		"@remix-run/server-runtime": "^1.7.2",
 		"@unocss/reset": "^0.45.26",
 		"faunadb": "^4.6.0",
+		"katex": "^0.16.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-katex": "^3.0.1",
 		"remix-utils": "^3.3.0"
 	},
 	"devDependencies": {
@@ -33,6 +35,7 @@
 		"@unocss/preset-rem-to-px": "^0.45.25",
 		"@unocss/transformer-directives": "^0.45.26",
 		"prisma": "^4.4.0",
+		"prop-types": "^15.8.1",
 		"typescript": "^4.8.4",
 		"unocss": "^0.45.26",
 		"unocss-preset-daisy": "^1.2.0",
@@ -44,6 +47,7 @@
 		"node": ">=14"
 	},
 	"peerDependencies": {
+		"prop-types": "^15.8.1",
 		"vite": "^3.1.6"
 	}
 }
