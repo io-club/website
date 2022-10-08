@@ -6,10 +6,8 @@
 	"scripts": {
 		"docker-release": "docker buildx build --platform=linux/arm64,linux/amd64 -t xhebox/iolab:latest -f docker/Dockerfile --push .",
 		"docker-ignore": "gitignore-to-dockerignore",
-		"eslint": "eslint --fix packages",
-		"build": "pnpm --filter @ioclub/website run build",
-		"serve": "pnpm --filter @ioclub/website run serve",
-		"dev": "pnpm --filter @ioclub/website run dev"
+		"build": "pnpm -r build",
+		"eslint": "eslint ."
 	},
 	"devDependencies": {
 		"@remix-run/eslint-config": "^1.7.2",

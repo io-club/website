@@ -13,8 +13,9 @@ import resetCssUrl from '@unocss/reset/normalize.css'
 import { ExternalScripts } from 'remix-utils'
 
 import unoCssUrl from '~/styles/uno.css'
-import globalStyles from './styles/global.css'
+
 import HeaderNav from './components/headerNav'
+import globalStyles from './styles/global.css'
 
 export const links: LinksFunction = () => {
 	return [
@@ -40,7 +41,7 @@ export const meta: MetaFunction = () => ({
 })
 export const handle = {
 	breadcrumb: () => <Link to="/">IO-Club</Link>,
-  };
+}
 export default function App() {
 	return (
 		<html lang="en">
