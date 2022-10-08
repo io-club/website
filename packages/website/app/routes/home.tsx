@@ -1,5 +1,5 @@
 import { Link, Outlet } from "@remix-run/react";
-import type { LinksFunction,MetaFunction } from '@remix-run/node' 
+import type { LinksFunction,MetaFunction } from '@remix-run/server-runtime' 
 import stylesUrl from '~/styles/articleBox.css'
 
 
