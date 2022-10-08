@@ -11,7 +11,8 @@ import {
 } from '@remix-run/react'
 import { ExternalScripts } from 'remix-utils'
 
-import globalUnoUrl from './styles/uno.css'
+import resetCssUrl from '@unocss/reset/normalize.css'
+import unoCssUrl from '~/styles/uno.css'
 import globalStyles from './styles/global.css'
 import HeaderNav from './components/headerNav'
 
@@ -19,7 +20,11 @@ export const links: LinksFunction = () => {
 	return [
 		{
 			rel: 'stylesheet',
-			href: globalUnoUrl,
+			href: resetCssUrl,
+		},
+		{
+			rel: 'stylesheet',
+			href: unoCssUrl,
 		},
 		{
 			rel: 'stylesheet',

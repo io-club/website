@@ -63,7 +63,9 @@ importers:
       '@unocss/cli': ^0.45.26
       '@unocss/preset-attributify': ^0.45.26
       '@unocss/preset-rem-to-px': ^0.45.25
-      faunadb: ^4.7.0
+      '@unocss/reset': ^0.45.26
+      '@unocss/transformer-directives': ^0.45.26
+      faunadb: ^4.6.0
       prisma: ^4.4.0
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -84,6 +86,7 @@ importers:
       '@remix-run/react': 1.7.2_biqbaboplfbrettd7655fr4n2y
       '@remix-run/serve': 1.7.2_biqbaboplfbrettd7655fr4n2y
       '@remix-run/server-runtime': 1.7.2_biqbaboplfbrettd7655fr4n2y
+      '@unocss/reset': 0.45.26
       faunadb: 4.7.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -97,6 +100,7 @@ importers:
       '@unocss/cli': 0.45.26
       '@unocss/preset-attributify': 0.45.26
       '@unocss/preset-rem-to-px': 0.45.25
+      '@unocss/transformer-directives': 0.45.26
       prisma: 4.4.0_6xfdh4vwwzgekfvcvvnsqkvndm
       typescript: 4.8.4
       unocss: 0.45.26_vite@3.1.6
@@ -2306,7 +2310,6 @@ packages:
 
   /@unocss/reset/0.45.26:
     resolution: {integrity: sha512-9X0cSvGPXdZ1KAuiWzFWtcoyfC7b8j4GYHr4lDXRkPC5oI3CJhw4WcdvzTHVPqOX2CKqq731H4GhcQ5c5LBuHA==}
-    dev: true
 
   /@unocss/scope/0.45.26:
     resolution: {integrity: sha512-t5ADmEW9Rhf4Ku0DHwgPoy2mTU0eRrpx6QfXFWtWC+ZtHsjOcC9RXgWYXKZmINtiY+FzQ8A+v/k0wlIuvhJF7g==}
