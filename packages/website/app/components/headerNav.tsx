@@ -1,35 +1,32 @@
 import { Link, useMatches } from '@remix-run/react'
-import {AiOutlineSearch,AiOutlineUser} from 'react-icons/ai'
-import uuid from 'react-uuid'
-
 
 const HeaderNav = () => {
 	const matches = useMatches()
 	return (
-		<div className="headernav justify-between flex items-center py-3 px-2">
-			<div className="left flex">
-				{matches
-					.filter((match) => match.handle && match.handle.breadcrumb)
-					.map((match, index) => (
-						<div className="flex" key={uuid()}>
-							<li>{match.handle?.breadcrumb(match)}</li>
-							{index === matches.length - 2 ? (
-								' '
-							) : (
-								<li className="breadcrumb">/</li>
-							)}
-						</div>
-					))}
-			</div>
-			<div className="right flex">
-				<li className="search">
-					<button className="button"><AiOutlineSearch/>Search</button>   
+		<div w-justify="between" w-item="center" w-flex="~" w-p="y-12 x-10" w-pos="sticky" w-top="0">
+			<ul w-flex="~" w-children:p="r-4">
+				{matches.slice(0, -1).map(match => <li
+					key={match.id.toString()}
+					data-sep="/ "
+
+					className="not-last:after:content-[attr(data-sep)]"
+				>{match.handle?.breadcrumb(match)}</li>
+				)}
+			</ul>
+			<ul w-flex="~" w-children:p="l-10">
+				<li>
+					<button>
+						<div className="i-ant-design:search-outlined" w-display="inline-block"/>Search
+					</button>
 				</li>
-				<li className="login">
-					<Link to="/login"><button className="button"><AiOutlineUser/>LogIn</button></Link>
-          
+				<li>
+					<button>
+						<Link to="/login" w-decoration="none">
+							<div className="i-ant-design:user-outlined" w-display="inline-block"/>Login
+						</Link>
+					</button>
 				</li>
-			</div>
+			</ul>
 		</div>
 	)
 }

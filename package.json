@@ -30,7 +30,8 @@
 			"@prisma/engines@4.4.0": "patches/@prisma__engines@4.4.0.patch",
 			"@prisma/client@4.4.0": "patches/@prisma__client@4.4.0.patch",
 			"prisma@4.4.0": "patches/prisma@4.4.0.patch",
-			"@remix-run/dev@1.7.2": "patches/@remix-run__dev@1.7.2.patch"
+			"@remix-run/dev@1.7.2": "patches/@remix-run__dev@1.7.2.patch",
+			"@unocss/preset-mini@0.45.28": "patches/@unocss__preset-mini@0.45.28.patch"
 		}
 	},
 	"engines": {
