@@ -1,8 +1,6 @@
 public/build
-windi.css
-uno.css
 prisma/*.db
 build
 api
-.env
 .cache
+uno.css
