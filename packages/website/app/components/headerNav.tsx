@@ -6,7 +6,7 @@ import uuid from 'react-uuid'
 const HeaderNav = () => {
 	const matches = useMatches()
 	return (
-		<div className="headernav justify-between flex bg-white items-center py-3 px-2">
+		<div className="headernav justify-between flex items-center py-3 px-2">
 			<div className="left flex">
 				{matches
 					.filter((match) => match.handle && match.handle.breadcrumb)

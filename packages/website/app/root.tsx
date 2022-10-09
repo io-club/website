@@ -49,7 +49,7 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body w-flex="~ col" w-justify='center' w-p="0" w-m="0" w-min-h="screen">
+			<body w-flex="~ col" w-justify='center' w-p="0" w-m="0" w-min-h="screen" w-color="gray-800" w-bg="light-50">
 				<HeaderNav />
 				<main w-flex="grow">
 					<Outlet />

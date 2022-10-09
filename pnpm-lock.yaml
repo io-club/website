@@ -10,6 +10,9 @@ patchedDependencies:
   prisma@4.4.0:
     hash: 6xfdh4vwwzgekfvcvvnsqkvndm
     path: patches/prisma@4.4.0.patch
+  '@remix-run/dev@1.7.2':
+    hash: camnj7gxlsmrfvwgbjk25cbmfa
+    path: patches/@remix-run__dev@1.7.2.patch
 
 importers:
 
@@ -100,7 +103,7 @@ importers:
     devDependencies:
       '@julr/unocss-preset-heropatterns': 0.0.2_unocss@0.45.28
       '@kidonng/daisyui': 2.31.0
-      '@remix-run/dev': 1.7.2_63cxfdg5f5bb4xpkk3vcjfcl3q
+      '@remix-run/dev': 1.7.2_camnj7gxlsmrfvwgbjk25cbmfa_63cxfdg5f5bb4xpkk3vcjfcl3q
       '@unocss/cli': 0.45.28
       '@unocss/preset-attributify': 0.45.28
       '@unocss/preset-rem-to-px': 0.45.28
@@ -1689,7 +1692,7 @@ packages:
     requiresBuild: true
     patched: true
 
-  /@remix-run/dev/1.7.2_63cxfdg5f5bb4xpkk3vcjfcl3q:
+  /@remix-run/dev/1.7.2_camnj7gxlsmrfvwgbjk25cbmfa_63cxfdg5f5bb4xpkk3vcjfcl3q:
     resolution: {integrity: sha512-oJcaju9zID+xOUnkMQJBEbjiiYBvILVsX64Fzi1itlm5vjNuo99nmKM7gleaDawNLo3lyd6Xd+JyMa3aIwDKOQ==}
     engines: {node: '>=14'}
     hasBin: true
@@ -1748,6 +1751,7 @@ packages:
       - supports-color
       - utf-8-validate
     dev: true
+    patched: true
 
   /@remix-run/eslint-config/1.7.2_ceius3krcep667lesqygbylwku:
     resolution: {integrity: sha512-ikYWq570XnBt+E1FZ3PZxJliYPONaWNNG16eER+4/dp9GNQQApKBGfn5hs6256+678RNgFCCBx++W9BaJTBjgQ==}
