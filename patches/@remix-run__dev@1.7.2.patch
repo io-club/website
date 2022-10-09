@@ -1,7 +1,7 @@
-diff --git a/dist/compiler.js b/tmp/f22b7e085e54159a82d24b7908f51eb8/dist/compiler.js
-index b1cf495c3bc4ee202d4d833911773ecd26fb6bc1..dbf8021b8670e9ac55f64c17bb206f2d9d2476fd 100644
+diff --git a/dist/compiler.js b/dist/compiler.js
+index b1cf495c3bc4ee202d4d833911773ecd26fb6bc1..9b834cc5e75dbde49db960994f5c2eff19a69057 100644
 --- a/dist/compiler.js
-+++ a/dist/compiler.js
++++ b/dist/compiler.js
 @@ -309,7 +309,7 @@ async function createBrowserBuild(config, options) {
      entryPoints[id] = config.routes[id].file + "?browser";
    }

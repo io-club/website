@@ -8,8 +8,7 @@ const HeaderNav = () => {
 				{matches.slice(0, -1).map(match => <li
 					key={match.id.toString()}
 					data-sep="/ "
-
-					className="not-last:after:content-[attr(data-sep)]"
+					className="not-last:after:content-raw-[attr(data-sep)]"
 				>{match.handle?.breadcrumb(match)}</li>
 				)}
 			</ul>
