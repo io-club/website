@@ -5,10 +5,10 @@
 	"scripts": {
 		"serve": "remix-serve build",
 		"build": "run-s build:*",
-		"build:uno": "unocss 'app/**/*.tsx' 'app/**/*.mdx' -c unocss.config.ts -o app/styles/uno.css -m",
+		"build:uno": "unocss \"app/**/*.{tsx,jsx,mdx}\" -c unocss.config.ts -o app/styles/uno.css -m",
 		"build:remix": "remix build",
 		"dev": "run-p dev:*",
-		"dev:uno": "unocss 'app/**/*.tsx' 'app/**/*.mdx' -c uno.config.ts -o app/styles/uno.css -w",
+		"dev:uno": "unocss \"app/**/*.{tsx,jsx,mdx}\" -c unocss.config.ts -o app/styles/uno.css -w",
 		"dev:remix": "remix dev"
 	},
 	"dependencies": {
