@@ -1,5 +1,3 @@
-import 'animate.css'
-
 import { Link } from '@remix-run/react'
 
 import AvatarUrl from '../../temporary/avatar.jpg'
@@ -28,15 +26,15 @@ export const ArticleBox = ({ title }: { title: string }) => {
 							<img w-border="rounded-full" w-w="80px" src={AvatarUrl} alt="avatar" />
 						</li>
 						<li className="createTime align-middle " w-display="block" w-h="30px">
-							<div className="i-ant-design:calendar-filled" w-display="inline-block"/>
+							<div className="i-ant-design:calendar-filled" w-display="inline-block" />
 							Create:2022-10-2
 						</li>
 						<li className="type align-middle">
-							<div className="i-ant-design:database-filled" w-display="inline-block"/>
+							<div className="i-ant-design:database-filled" w-display="inline-block" />
 							Type:Steins;Gate
 						</li>
 						<li className="visit align-middle">
-							<div className="i-ant-design:heart-filled" w-display="inline-block"/>
+							<div className="i-ant-design:heart-filled" w-display="inline-block" />
 							Visitors:100
 						</li>
 					</ul>

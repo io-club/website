@@ -13,10 +13,11 @@ const titleList = [
 	'幻象的自平衡',
 	'相生的自平衡',
 ]
+
 const HomeIndex = () => {
 	return (
 		<div>
-			{titleList.map((title,index)=><ArticleBox key={index} title={title}/>)}
+			{titleList.map((title, index) => <ArticleBox key={index} title={title} />)}
 		</div>
 	)
 }

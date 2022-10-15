@@ -41,6 +41,12 @@ module.exports = {
 		'padding-line-between-statements': [
 			'error',
 			{ 'blankLine': 'always', 'prev': 'function', 'next': '*' },
+			{ 'blankLine': 'always', 'prev': 'export', 'next': '*' },
+			{ 'blankLine': 'always', 'prev': 'multiline-var', 'next': '*' },
+			{ 'blankLine': 'always', 'prev': 'multiline-let', 'next': '*' },
+			{ 'blankLine': 'always', 'prev': 'multiline-const', 'next': '*' },
+			{ 'blankLine': 'always', 'prev': 'class', 'next': '*' },
+			{ 'blankLine': 'always', 'prev': 'function', 'next': '*' },
 		],
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
 		'@typescript-eslint/no-empty-interface': 'off',

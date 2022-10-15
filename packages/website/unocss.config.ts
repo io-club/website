@@ -1,5 +1,4 @@
 import { presetHeroPatterns } from '@julr/unocss-preset-heropatterns'
-import presetRemToPx from '@unocss/preset-rem-to-px'
 import { defineConfig, presetAttributify, presetIcons, presetTypography, presetUno, presetWebFonts, transformerDirectives } from 'unocss'
 import presetDaisy from 'unocss-preset-daisy'
 import { presetScalpel } from 'unocss-preset-scalpel'
@@ -17,7 +16,6 @@ export default defineConfig({
 		presetTypography(),
 		presetIcons(),
 		presetWebFonts(),
-		presetRemToPx,
 		presetScalpel(),
 		presetScrollbar(),
 		presetDaisy(),

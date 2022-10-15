@@ -3,7 +3,6 @@ import type { LinksFunction, MetaFunction } from '@remix-run/server-runtime'
 import {
 	Link,
 	Links,
-	LiveReload,
 	Meta,
 	Outlet,
 	Scripts,
@@ -33,9 +32,11 @@ export const meta: MetaFunction = () => ({
 	title: 'IOLab 2022',
 	viewport: 'width=device-width,initial-scale=1',
 })
+
 export const handle = {
 	breadcrumb: () => <Link to="/">IO-Club</Link>,
 }
+
 export default function App() {
 	return (
 		<html lang="en">
@@ -51,7 +52,6 @@ export default function App() {
 				<ScrollRestoration />
 				<ExternalScripts />
 				<Scripts />
-				<LiveReload />
 			</body>
 		</html>
 	)

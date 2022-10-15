@@ -1,4 +1,4 @@
-import type { LinksFunction,MetaFunction } from '@remix-run/server-runtime' 
+import type { LinksFunction, MetaFunction } from '@remix-run/server-runtime'
 
 import { Link, Outlet } from '@remix-run/react'
 
@@ -9,13 +9,14 @@ export const meta: MetaFunction = () => ({
 	title: 'Home',
 })
 
-
 export const handle = {
 	breadcrumb: () => <Link to="/home">Home</Link>,
 }
+
 export const links: LinksFunction = () => {
 	return [{ rel: 'stylesheet', href: stylesUrl }]
 }
+
 export default function Home() {
 	return (
 		<div className="home-container w-screen  min-h-screen">

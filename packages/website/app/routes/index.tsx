@@ -40,6 +40,7 @@ const Demo = function({
 				new Vector3(0, 0, 0),
 				scene
 			)
+
 			camera.mode = Camera.ORTHOGRAPHIC_CAMERA
 			camera.orthoTop = 1
 			camera.orthoBottom = -1
@@ -74,6 +75,7 @@ const Demo = function({
 				loop: true,
 				volume: 0.15,
 			})
+
 			const soundTrack = new SoundTrack(scene)
 			soundTrack.addSound(music)
 
@@ -127,6 +129,7 @@ const Demo = function({
 				faceColors: faceColors,
 				faceUV: faceUV,
 			})
+
 			box.material = cubemat
 			box.position.y += 2
 
@@ -152,20 +155,21 @@ const Demo = function({
 			scene.activeCameras = [camera, sCamera]
 
 			//button List
-			const btnList:Array<{
-				text:string;
-				nevigate:string;
+			const btnList: Array<{
+				text: string;
+				nevigate: string;
 			}> = [
 				{
-					text:'Click! Join us now!',
-					nevigate:'register'
+					text: 'Click! Join us now!',
+					nevigate: 'register'
 				},
 				{
-					text:'To Home',
-					nevigate:'home'
+					text: 'To Home',
+					nevigate: 'home'
 				}
 			]
-			btnList.forEach(({text,nevigate},index)=>{
+
+			btnList.forEach(({ text, nevigate }, index) => {
 				console.log(index)
 				const btn = Button.CreateSimpleButton('btn', text)
 				btn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER
@@ -175,7 +179,7 @@ const Demo = function({
 				btn.background = '#eee'
 				btn.color = '#111'
 				btn.cornerRadius = 80
-				btn.top = -100*++index+'px'
+				btn.top = -100 * ++index + 'px'
 				btn.isHitTestVisible = true
 				btn.onPointerClickObservable.addOnce(() => {
 					navigate(`${nevigate}`)
@@ -206,7 +210,7 @@ const Demo = function({
 				let g = Math.tan(time)
 				if (g > 2) g = 2
 				else if (g < -2) g = -2
-				box.addRotation(Math.sin(time) / 24, g / 32,  - Math.cos(time) / 32)
+				box.addRotation(Math.sin(time) / 24, g / 32, - Math.cos(time) / 32)
 			})
 		}
 
