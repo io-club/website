@@ -24,7 +24,7 @@ async function start() {
 		handleError: true,
 	})
 
-	if (env.MODE !== 'production') {
+	if (env.MODE === 'production') {
 		await app.register(
 			fastifyCompress,
 			{ global: true }
