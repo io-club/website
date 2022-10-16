@@ -3,7 +3,7 @@ import { Link, useMatches } from '@remix-run/react'
 const HeaderNav = () => {
 	const matches = useMatches()
 	return (
-		<div w-justify="between" w-item="center" w-flex="~" w-p="y-12 x-10" w-pos="sticky" w-top="0">
+		<div w-justify="between" w-item="center" w-flex="~" w-p="4" w-pos="sticky" w-top="0">
 			<ul w-flex="~" w-children:p="r-4">
 				{matches.slice(0, -1).map(match => <li
 					key={match.id}

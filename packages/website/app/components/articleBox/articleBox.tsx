@@ -22,7 +22,7 @@ export const ArticleBox = ({ title }: { title: string }) => {
 			<div className="bottom" w-grid="~ cols-[30%70%]">
 				<div className="left">
 					<ul w-list="none">
-						<li className="avatar">
+						<li>
 							<img w-border="rounded-full" w-w="80px" src={AvatarUrl} alt="avatar" />
 						</li>
 						<li className="createTime align-middle " w-display="block" w-h="30px">

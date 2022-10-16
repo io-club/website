@@ -5,4 +5,4 @@
 /api
 .env.production
 .cache
-uno.css
+*uno.css
