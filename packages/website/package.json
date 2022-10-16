@@ -5,11 +5,11 @@
 	"scripts": {
 		"init-db:generate": "prisma generate",
 		"init-db:push": "prisma db push --force-reset",
-		"build:uno": "unocss \"app/**/*.{tsx,jsx,mdx}\" -c unocss.config.ts -o styles/uno.css",
 		"build:css": "postcss styles --base styles --dir app/styles --env production",
+		"build:uno": "unocss \"app/**/*.{tsx,jsx,mdx,css}\" -c unocss.config.ts -o app/styles/uno.css -m",
 		"build:remix": "remix build",
-		"dev:uno": "unocss \"app/**/*.{tsx,jsx,mdx}\" -c unocss.config.ts -o styles/uno.css -w",
 		"dev:css": "postcss styles --base styles --dir app/styles -w",
+		"dev:uno": "unocss \"app/**/*.{tsx,jsx,mdx,css}\" -c unocss.config.ts -o app/styles/uno.css -w",
 		"dev:remix": "remix watch",
 		"dev:run": "nodemon ./build/index.js --watch ./build/index.js",
 		"init-db": "dotenv -e .env -e .env.development -- run-s init-db:*",

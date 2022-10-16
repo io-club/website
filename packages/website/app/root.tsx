@@ -12,12 +12,17 @@ import { ExternalScripts } from 'remix-utils'
 
 import HeaderNav from '~/components/headerNav'
 import rootCssUrl from '~/styles/root.css'
+import unoCssUrl from '~/styles/uno.css'
 
 export const links: LinksFunction = () => {
 	return [
 		{
 			rel: 'stylesheet',
 			href: rootCssUrl,
+		},
+		{
+			rel: 'stylesheet',
+			href: unoCssUrl,
 		},
 	]
 }
