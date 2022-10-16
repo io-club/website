@@ -1,5 +1,6 @@
 import type { User } from '@prisma/client'
 
+import fastifyCompress from '@fastify/compress'
 import fastifyStatic from '@fastify/static'
 import { createRequestHandler } from '@mcansh/remix-fastify'
 import { PrismaClient } from '@prisma/client'
@@ -22,6 +23,13 @@ async function start() {
 	await app.register(fastifyRacing, {
 		handleError: true,
 	})
+
+	if (env.MODE !== 'production') {
+		await app.register(
+			fastifyCompress,
+			{ global: true }
+		)
+	}
 
 	await app.register(fastifyStatic, {
 		root: path.join(cwd, 'public'),

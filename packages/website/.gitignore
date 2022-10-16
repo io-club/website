@@ -1,7 +1,8 @@
-public/build
-prisma/*.db
-build
-api
+/public/build
+/prisma/*.db
+/build
+/app/styles
+/api
 .env.production
 .cache
 uno.css

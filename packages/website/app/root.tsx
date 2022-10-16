@@ -8,21 +8,16 @@ import {
 	Scripts,
 	ScrollRestoration,
 } from '@remix-run/react'
-import resetCssUrl from '@unocss/reset/tailwind.css'
 import { ExternalScripts } from 'remix-utils'
 
 import HeaderNav from '~/components/headerNav'
-import unoCssUrl from '~/styles/uno.css'
+import rootCssUrl from '~/styles/root.css'
 
 export const links: LinksFunction = () => {
 	return [
 		{
 			rel: 'stylesheet',
-			href: resetCssUrl,
-		},
-		{
-			rel: 'stylesheet',
-			href: unoCssUrl,
+			href: rootCssUrl,
 		},
 	]
 }
