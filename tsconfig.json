@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "lib": ["DOM", "DOM.Iterable", "ES2020", "esnext.asynciterable"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -12,9 +12,5 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["./app/*"]
-    },
-    "noEmit": true
   }
 }

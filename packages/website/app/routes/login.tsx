@@ -27,9 +27,13 @@ export const action: ActionFunction = async ({ request, context }) => {
 
 
 export const loader: LoaderFunction = async ({ request, context }) => {
+	try {
+		const res = await context.graphql('{ users(first: 100) { nodes { id, nick, email } } }')
+		console.log(res.data?.users)
+	} catch (err) {
+		console.error(err)
+	}
 	return await context.auth.isAuthenticated(request, {
 		successRedirect: '/home',
 	})
 }
-
-

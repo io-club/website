@@ -1,7 +1,7 @@
-diff --git a/dist/index.js b/dist/index.js
-index 542c4d95b1d7968a6469f0ca25d97e9e639c28ac..3d1c0a450aec213270d509aaa1c2120fc61b8b8b 100644
+diff --git a/dist/index.js b/tmp/b5ee886f48ec1aeb853310ab20e85075/dist/index.js
+index 152b88a8acfcf88703220ae09f94e08334dba5d5..49f5c450d5912d8a736bb706e1bef786c515549d 100644
 --- a/dist/index.js
-+++ b/dist/index.js
++++ a/dist/index.js
 @@ -21146,6 +21146,9 @@ function parseDistro(input) {
    if (id === "nixos") {
      return "nixos";
@@ -12,10 +12,10 @@ index 542c4d95b1d7968a6469f0ca25d97e9e639c28ac..3d1c0a450aec213270d509aaa1c2120f
    if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
      return "rhel";
    }
-diff --git a/dist/scripts/localinstall.js b/dist/scripts/localinstall.js
-index 19fcdaa93756663bac44c7c4938a744352ed4a10..f5da7369758359d2b21964d6d6db7c6f5db7d704 100644
+diff --git a/dist/scripts/localinstall.js b/tmp/b5ee886f48ec1aeb853310ab20e85075/dist/scripts/localinstall.js
+index efdd33fba84a4f7ffa83cde3bea39137ac682850..ac0929ebab6ac9eeaeaabd3f07ce83ab130e646b 100644
 --- a/dist/scripts/localinstall.js
-+++ b/dist/scripts/localinstall.js
++++ a/dist/scripts/localinstall.js
 @@ -4588,6 +4588,9 @@ function parseDistro(input) {
    if (id === "nixos") {
      return "nixos";
@@ -26,10 +26,10 @@ index 19fcdaa93756663bac44c7c4938a744352ed4a10..f5da7369758359d2b21964d6d6db7c6f
    if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
      return "rhel";
    }
-diff --git a/dist/scripts/postinstall.js b/dist/scripts/postinstall.js
-index 10e49848fc66a6eed02685146f94294284172def..14b301b420f737266913247e8805efa48326d4a6 100644
+diff --git a/dist/scripts/postinstall.js b/tmp/b5ee886f48ec1aeb853310ab20e85075/dist/scripts/postinstall.js
+index d50a19421f0b9d3f430e6c4887a6398843bfc8ef..4f7a1e5177869bc4465a95470d9d87058bdd9815 100644
 --- a/dist/scripts/postinstall.js
-+++ b/dist/scripts/postinstall.js
++++ a/dist/scripts/postinstall.js
 @@ -21130,6 +21130,9 @@ function parseDistro(input) {
    if (id === "nixos") {
      return "nixos";

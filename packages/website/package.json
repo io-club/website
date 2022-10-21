@@ -3,8 +3,8 @@
 	"version": "0.1.0",
 	"sideEffects": false,
 	"scripts": {
-		"init-db:generate": "prisma generate",
 		"init-db:push": "prisma db push --force-reset",
+		"init-db:seed": "prisma db seed",
 		"build:css": "postcss styles --base styles --dir app/styles --env production",
 		"build:uno": "unocss -c unocss.config.ts -o app/uno.css -m \"app/**/*.{tsx,jsx,mdx}\" \"app/styles/**/*.css\"",
 		"build:remix": "remix build",
@@ -23,7 +23,7 @@
 		"@fastify/compress": "^6.1.1",
 		"@fastify/static": "^6.5.0",
 		"@mcansh/remix-fastify": "^1.12.0",
-		"@prisma/client": "^4.4.0",
+		"@prisma/client": "^4.5.0",
 		"@remix-run/react": "^1.7.2",
 		"@remix-run/serve": "^1.7.2",
 		"@remix-run/server-runtime": "^1.7.2",
@@ -34,9 +34,11 @@
 		"fastify": "^4.8.1",
 		"fastify-plugin": "^4.2.1",
 		"fastify-racing": "^1.0.3",
-		"faunadb": "^4.7.0",
+		"graphql": "^16.0.0",
 		"katex": "^0.16.2",
+		"mercurius": "^11.0.0",
 		"nanoid": "^4.0.0",
+		"nexus": "^1.3.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"rehype-katex": "^6.0.2",
@@ -51,12 +53,13 @@
 		"@julr/unocss-preset-heropatterns": "^0.0.2",
 		"@kidonng/daisyui": "^2.31.0",
 		"@remix-run/dev": "^1.7.2",
-		"@remix-run/node": "^1.7.2",
 		"@types/cookie-signature": "^1.0.4",
+		"@types/node": "^18.11.0",
 		"@unocss/cli": "^0.45.29",
 		"@unocss/preset-attributify": "^0.45.29",
 		"@unocss/transformer-directives": "^0.45.29",
 		"autoprefixer": "^10.4.12",
+		"esbuild-register": "^3.3.3",
 		"nodemon": "^2.0.20",
 		"postcss": "^8.4.18",
 		"postcss-cli": "^10.0.0",
@@ -64,21 +67,17 @@
 		"postcss-nesting": "^10.2.0",
 		"postcss-pseudo-class-enter": "^5.0.0",
 		"postcss-url": "^10.1.3",
-		"prisma": "^4.4.0",
-		"prop-types": "^15.8.1",
+		"prisma": "^4.5.0",
 		"typescript": "^4.8.4",
 		"unocss": "^0.45.29",
 		"unocss-preset-daisy": "^1.2.0",
 		"unocss-preset-scalpel": "^1.2.5",
-		"unocss-preset-scrollbar": "^0.2.1",
-		"vite": "^3.1.8"
+		"unocss-preset-scrollbar": "^0.2.1"
+	},
+	"prisma": {
+		"seed": "node --require esbuild-register prisma/seed.ts"
 	},
 	"engines": {
 		"node": ">=16"
-	},
-	"peerDependencies": {
-		"@remix-run/node": "^1.7.2",
-		"prop-types": "^15.8.1",
-		"vite": "^3.1.6"
 	}
 }
