@@ -5,25 +5,26 @@ import { useEffect, useRef } from 'react'
 import { ClientOnly } from 'remix-utils'
 
 interface DemoAsset {
-	common: TextFileAssetTask
-	vert: TextFileAssetTask
-	frag: TextFileAssetTask
-	music: BinaryFileAssetTask
+	common: TextFileAssetTask;
+	vert: TextFileAssetTask;
+	frag: TextFileAssetTask;
+	music: BinaryFileAssetTask;
 }
 
 interface DemoProps {
-	antialias?: EngineOptions['antialias']
-	adaptToDeviceRatio?: EngineOptions['adaptToDeviceRatio']
-	engineOptions?: EngineOptions
-	sceneOptions?: SceneOptions
+	antialias?: EngineOptions['antialias'];
+	adaptToDeviceRatio?: EngineOptions['adaptToDeviceRatio'];
+	engineOptions?: EngineOptions;
+	sceneOptions?: SceneOptions;
 }
 
-const Demo = function({
+const Demo = function ({
 	antialias,
 	engineOptions,
 	adaptToDeviceRatio,
 	sceneOptions,
-	...rest }: DemoProps) {
+	...rest
+}: DemoProps) {
 	const reactCanvas = useRef(null)
 	const navigate = useNavigate()
 
@@ -31,7 +32,9 @@ const Demo = function({
 		let cancelled = false
 
 		const render = async() => {
+			//@ts-ignore
 			const { Analyser, ArcRotateCamera, AssetsManager, Camera, Color4, CreateGround, DynamicTexture, Effect, Engine, HemisphericLight, MeshBuilder, RawTexture, Scene, ShaderMaterial, Sound, SoundTrack, StandardMaterial, Texture, Vector2, Vector3, Vector4 } = await import('@babylonjs/core')
+			//@ts-ignore
 			const { AdvancedDynamicTexture, Button, Control } = await import('@babylonjs/gui')
 
 			const createScene = (scene: Scene, asset: DemoAsset) => {
@@ -271,7 +274,13 @@ const Demo = function({
 		return () => { cancelled = true }
 	}, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, navigate])
 
-	return <canvas style={{ height: '100%', width: '100%' }} ref={reactCanvas} {...rest} />
+	return (
+		<canvas
+			style={{ height: '100%', width: '100%' }}
+			ref={reactCanvas}
+			{...rest}
+		/>
+	)
 }
 
 export default () => <ClientOnly>{() => <Demo />}</ClientOnly>

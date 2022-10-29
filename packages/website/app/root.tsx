@@ -1,7 +1,6 @@
 import type { LinksFunction, MetaFunction } from '@remix-run/server-runtime'
 
 import {
-	Link,
 	Links,
 	Meta,
 	Outlet,
@@ -11,8 +10,10 @@ import {
 import { ExternalScripts } from 'remix-utils'
 
 import HeaderNav from '~/components/headerNav'
+import globalCssUrl from '~/styles/global.css'
 import rootCssUrl from '~/styles/root.css'
 import unoCssUrl from '~/uno.css'
+
 
 export const links: LinksFunction = () => {
 	return [
@@ -24,6 +25,10 @@ export const links: LinksFunction = () => {
 			rel: 'stylesheet',
 			href: unoCssUrl,
 		},
+		{
+			rel: 'stylesheet',
+			href: globalCssUrl,
+		},
 	]
 }
 
@@ -34,7 +39,7 @@ export const meta: MetaFunction = () => ({
 })
 
 export const handle = {
-	breadcrumb: () => <Link to="/">IO-Club</Link>,
+	breadcrumb: () => 'IO-Club',
 }
 
 export default function App() {
@@ -44,7 +49,16 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body w-flex="~ col" w-justify='center' w-p="0" w-m="0" w-min-h="screen" w-color="gray-800" w-bg="light-50">
+			<body
+				className="min-h-screen font-normal"
+				w-scrollbar='~ w-0px'
+				w-flex="col"
+				w-justify="center"
+				w-p="0"
+				w-m="0"
+				w-text="neutral-500"
+				w-bg="light-50"
+			>
 				<HeaderNav />
 				<main w-flex="grow">
 					<Outlet />

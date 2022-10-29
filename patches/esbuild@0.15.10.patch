@@ -1,0 +1,16 @@
+diff --git a/lib/main.js b/tmp/a450aa25f6024fa12d610efd7e9dbc7e/lib/main.js
+index 32efa227accf619477023edc2ea6989f6aa8b78c..34f5096a1b78786a9e8e633ca3039070f8546261 100644
+--- a/lib/main.js
++++ b/lib/main.js
+@@ -1021,6 +1021,11 @@ function buildOrServeImpl(callName, buildKey, sendRequest, sendResponse, refs, s
+       copyResponseToResult(response, result);
+       runOnEndCallbacks(result, logPluginError, () => {
+         if (result.errors.length > 0) {
++					if (response.rebuild) {
++            sendRequest(refs, { command: 'rebuild-dispose', key }, () => {
++              // We don't care about the result
++            });
++          }
+           return callback2(failureErrorWithLog("Build failed", result.errors, result.warnings), null);
+         }
+         if (response.rebuild) {

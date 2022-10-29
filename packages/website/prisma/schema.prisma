@@ -20,3 +20,13 @@ model Session {
   sess    String
   expires DateTime
 }
+
+model ArticleBox{
+  id Int @id @default(autoincrement())
+  createTime DateTime @default(now())
+  name String?
+  title String
+  content String
+  data String
+  type String
+}

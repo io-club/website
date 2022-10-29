@@ -45,7 +45,6 @@ const registerStudent = async (data: FormData) => {
 		}
 		const res = await client.query(q.Create(q.Collection('student'), { data: map }))
 		*/
-		console.log(res)
 		return null
 	} catch (err) {
 		if (err instanceof Error) {

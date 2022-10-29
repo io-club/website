@@ -1,29 +1,54 @@
 import { Link, useMatches } from '@remix-run/react'
 
+
 const HeaderNav = () => {
 	const matches = useMatches()
 	return (
-		<div w-justify="between" w-item="center" w-flex="~" w-p="4" w-pos="sticky" w-top="0">
-			<ul w-flex="~" w-children:p="r-4">
-				{matches.slice(0, -1).map(match => <li
-					key={match.id}
-					data-sep="/ "
-					className="not-last:after:content-raw-[attr(data-sep)]"
-				>{match.handle?.breadcrumb(match)}</li>
-				)}
-			</ul>
-			<ul w-flex="~" w-children:p="l-10">
-				<li>
-					<button>
-						<div className="i-ant-design:search-outlined" w-display="inline-block" />Search
+		<div
+			className="top-0 sticky justify-between flex bg-white items-center py-3 px-2"
+			w-p="12px 10px"
+			w-bg="white"
+			w-w="100vw"
+			w-h="50px"
+			w-flex="row"
+			w-top="0"
+			w-items="center"
+		>
+			<div className="flex">
+				{matches
+					.filter((match) => match.handle && match.handle.breadcrumb)
+					.map((match, index) => {
+						return (
+							<ul className="flex" key={match.id}>
+								<li>{match.handle?.breadcrumb(match)}{match.data ? ('/'+match.data.article.frontmatter.title):''}</li>
+								{index >= matches.length ? (
+									' '
+								) : (
+									<li
+										className="text-gray-400 justify-center"
+										w-flex="row"
+									>
+                    /
+									</li>
+								)}
+							</ul>
+						)
+					})}
+			</div>
+			<ul className="flex">
+				<li w-pl="10px">
+					<button className="btn btn-ghost">
+						<div className="i-carbon-search text-2xl text-gray-400 inline-block" />
+            Search
 					</button>
 				</li>
-				<li>
-					<button>
-						<Link to="/login" w-decoration="none">
-							<div className="i-ant-design:user-outlined" w-display="inline-block" />Login
-						</Link>
-					</button>
+				<li w-pl="10px">
+					<Link to="/login">
+						<button className="btn btn-ghost">
+							<div className="i-ant-design-user-outlined text-2xl text-gray-400 inline-block" />
+              LogIn
+						</button>
+					</Link>
 				</li>
 			</ul>
 		</div>
