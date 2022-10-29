@@ -35,14 +35,14 @@ const HeaderNav = () => {
 						)
 					})}
 			</div>
-			<div className="right flex">
-				<li className="search" w-pl="10px">
-					<button className="button">
+			<ul className="flex">
+				<li w-pl="10px">
+					<button className="btn btn-ghost">
 						<div className="i-carbon-search text-2xl text-gray-400 inline-block" />
             Search
 					</button>
 				</li>
-				<li className="login" w-pl="10px">
+				<li w-pl="10px">
 					<Link to="/login">
 						<button className="btn btn-ghost">
 							<div className="i-ant-design-user-outlined text-2xl text-gray-400 inline-block" />

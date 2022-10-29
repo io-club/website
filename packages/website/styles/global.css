@@ -1,0 +1,27 @@
+li {
+    list-style: none;
+    font-size: 18px;
+}
+
+a {
+    border-radius: 4px;
+    text-decoration: none;
+    height: 30px;
+    padding: 3px 5px;
+    transition: all 0.3s;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateY(400px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

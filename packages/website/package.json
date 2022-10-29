@@ -5,6 +5,7 @@
 	"scripts": {
 		"init-db:generate": "prisma generate",
 		"init-db:push": "prisma db push --force-reset",
+		"init-db:seed":"prisma db seed",
 		"build:css": "postcss styles --base styles --dir app/styles --env production",
 		"build:uno": "unocss -c unocss.config.ts -o app/uno.css -m \"app/**/*.{tsx,jsx,mdx}\" \"app/styles/**/*.css\"",
 		"build:remix": "remix build",
@@ -17,6 +18,9 @@
 		"build": "dotenv -e .env -e .env.production -- run-s build:*",
 		"serve": "dotenv -e .env -e .env.production -- node ./build/index.js"
 	},
+	"prisma": {
+		"seed": "node --require esbuild-register prisma/seed.ts"
+	  },
 	"dependencies": {
 		"@babylonjs/core": "^5.27.0",
 		"@babylonjs/gui": "^5.27.0",

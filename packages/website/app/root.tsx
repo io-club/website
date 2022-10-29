@@ -10,8 +10,10 @@ import {
 import { ExternalScripts } from 'remix-utils'
 
 import HeaderNav from '~/components/headerNav'
+import globalCssUrl from '~/styles/global.css'
 import rootCssUrl from '~/styles/root.css'
 import unoCssUrl from '~/uno.css'
+
 
 export const links: LinksFunction = () => {
 	return [
@@ -22,6 +24,10 @@ export const links: LinksFunction = () => {
 		{
 			rel: 'stylesheet',
 			href: unoCssUrl,
+		},
+		{
+			rel: 'stylesheet',
+			href: globalCssUrl,
 		},
 	]
 }

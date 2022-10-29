@@ -1,9 +1,8 @@
 import type { LoaderFunction } from '@remix-run/server-runtime'
 
-import { db } from '~/utils/db.server'
 
-export const loader: LoaderFunction = async ({ params }) => {
-	const data = await db.articleBox.findMany({
+export const loader: LoaderFunction = async ({ params, context  }) => {
+	const data = await  context.db.articleBox.findMany({
 		take: 6,
 		skip: parseInt(params.offset!),
 		select: {

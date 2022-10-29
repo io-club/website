@@ -38,6 +38,7 @@ const Home = () => {
 			if (more && ['init', 'done'].some(v => v === fetcher.type) && entries[0].isIntersecting)
 				fetcher.load(`/api/article/${offset.current}`)
 		})
+
 		if (e) {
 			intersectionObserver.observe(e)
 			return () => intersectionObserver.unobserve(e)
@@ -61,11 +62,12 @@ const Home = () => {
 				w-text="black center"
 				w-align="middle"
 			>
-				{more ? '' : <div className='btn btn-ghost'>END</div>}
+				{more ? '' : <div>END</div>}
 			</div>
 		</div>
 	)
 }
+
 const Component = () => {
 	const isHydrated = useHydrated()
 
@@ -73,4 +75,5 @@ const Component = () => {
 		return <Home />
 	}
 }
+
 export default Component
