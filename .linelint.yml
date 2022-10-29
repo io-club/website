@@ -1,0 +1,16 @@
+rules:
+  end-of-file:
+    enable: true
+    disable-autofix: false
+    ignore:
+      - node_modules/
+      - packages/website/public
+      - packages/website/.cache
+      - packages/website/.next
+      - packages/website/.vscode
+      - packages/website/build
+      - packages/website/app/uno.css
+      - packages/website/app/styles
+      - patches
+      - schema.graphql
+    single-new-line: true
