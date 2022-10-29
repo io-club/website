@@ -6,3 +6,5 @@ node_modules
 .output
 .js.map
 .ts.map
+.vscode
+.next

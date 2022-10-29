@@ -1,0 +1,40 @@
+{
+	"name": "@ioclub/postcss-unocss",
+	"version": "0.1.0",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"main": "./dist/index.cjs",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "unbuild"
+	},
+	"devDependencies": {
+		"@types/node": "^18.11.9",
+		"postcss": "^8.4.18",
+		"rollup": "^3.2.5",
+		"unbuild": "^0.9.4"
+	},
+	"engines": {
+		"node": ">=16"
+	},
+	"dependencies": {
+		"@ampproject/remapping": "^2.2.0",
+		"@rollup/pluginutils": "^5.0.2",
+		"@unocss/config": "^0.46.3",
+		"@unocss/core": "^0.46.3",
+		"chokidar": "^3.5.3",
+		"colorette": "^2.0.19",
+		"consola": "^2.15.3",
+		"fast-glob": "^3.2.12",
+		"magic-string": "^0.26.7",
+		"perfect-debounce": "^0.1.3"
+	}
+}
