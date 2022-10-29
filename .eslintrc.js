@@ -3,6 +3,9 @@ module.exports = {
 		browser: true,
 		node: true,
 	},
+	ignorePatterns: [
+		'node_modules',
+	],
 	extends: [
 		'@remix-run/eslint-config',
 		'@remix-run/eslint-config/node',

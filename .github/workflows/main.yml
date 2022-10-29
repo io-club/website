@@ -27,6 +27,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  newline:
+    if: ${{ github.event_name != 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          depth: 1
+      - name: Check newline
+        uses: fernandrone/linelint@master
+
   eslint:
     if: ${{ github.event_name != 'push' }}
     uses: ./.github/workflows/common.yml
@@ -36,7 +47,7 @@ jobs:
       target: 'eslint'
 
   build:
-    needs: eslint
+    needs: [newline, eslint]
     if: ${{ github.event_name != 'push' }}
     uses: ./.github/workflows/common.yml
     with:
