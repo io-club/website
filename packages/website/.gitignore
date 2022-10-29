@@ -1,8 +1,11 @@
 /public/build
-/prisma/*.db
+/prisma/*.db*
 /build
 /app/styles
 /api
 .env.production
 .cache
 *uno.css
+types/nexus.d.ts
+schema.graphql
+query.sh

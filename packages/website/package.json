@@ -5,7 +5,7 @@
 	"scripts": {
 		"init-db:generate": "prisma generate",
 		"init-db:push": "prisma db push --force-reset",
-		"init-db:seed":"prisma db seed",
+		"init-db:seed": "prisma db seed",
 		"build:css": "postcss styles --base styles --dir app/styles --env production",
 		"build:uno": "unocss -c unocss.config.ts -o app/uno.css -m \"app/**/*.{tsx,jsx,mdx}\" \"app/styles/**/*.css\"",
 		"build:remix": "remix build",
@@ -20,7 +20,7 @@
 	},
 	"prisma": {
 		"seed": "node --require esbuild-register prisma/seed.ts"
-	  },
+	},
 	"dependencies": {
 		"@babylonjs/core": "^5.27.0",
 		"@babylonjs/gui": "^5.27.0",
@@ -35,15 +35,20 @@
 		"@unocss/reset": "^0.45.29",
 		"cookie-signature": "^1.2.0",
 		"dotenv-cli": "^6.0.0",
+		"esbuild-register": "^3.3.3",
 		"fastify": "^4.8.1",
 		"fastify-plugin": "^4.2.1",
 		"fastify-racing": "^1.0.3",
 		"faunadb": "^4.7.0",
+		"graphql": "^16.6.0",
 		"highlight.js": "^11.6.0",
 		"katex": "^0.16.2",
+		"mercurius": "^11.2.0",
 		"nanoid": "^4.0.0",
+		"nexus": "^1.3.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-katex": "^3.0.1",
 		"rehype-katex": "^6.0.2",
 		"remark-math": "^5.1.1",
 		"remix-auth": "^3.3.0",

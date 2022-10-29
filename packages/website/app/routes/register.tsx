@@ -2,7 +2,6 @@ import type { ActionFunction, LinksFunction } from '@remix-run/server-runtime'
 
 import { Form, useSearchParams } from '@remix-run/react'
 import { redirect } from '@remix-run/server-runtime'
-import faunadb, {query as q} from 'faunadb'
 import { json, useActionData } from 'remix-utils'
 
 import stylesUrl from '~/styles/register.css'
@@ -33,6 +32,7 @@ const registerStudent = async (data: FormData) => {
 		if (!/^\d+$/g.test(data.get('username')?.toString() ?? '')) {
 			throw '学号必须全是数字'
 		}
+		/*
 		const client = new faunadb.Client({
 			secret: process.env['FAUNA_ADMIN_KEY'] ?? '',
 			domain: 'db.us.fauna.com',
@@ -44,7 +44,7 @@ const registerStudent = async (data: FormData) => {
 			map[k] = v
 		}
 		const res = await client.query(q.Create(q.Collection('student'), { data: map }))
-		console.log(res)
+		*/
 		return null
 	} catch (err) {
 		if (err instanceof Error) {

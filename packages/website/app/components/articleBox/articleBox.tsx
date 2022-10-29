@@ -1,4 +1,4 @@
-import type { IArticleBox } from '../../types/articleBox'
+import type { IArticleBox } from '../../../types/articleBox'
 
 import { Link } from '@remix-run/react'
 import { useEffect, useRef } from 'react'

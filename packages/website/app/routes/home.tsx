@@ -1,6 +1,6 @@
 
+import type { IArticleBox } from '../../types/articleBox'
 import type { MetaFunction } from '@remix-run/server-runtime'
-import type { IArticleBox } from '~/types/articleBox'
 
 import { useFetcher } from '@remix-run/react'
 import { useEffect, useRef, useState } from 'react'

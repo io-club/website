@@ -1,10 +1,4 @@
-import type {
-	BinaryFileAssetTask,
-	EngineOptions,
-	Scene,
-	SceneOptions,
-	TextFileAssetTask,
-} from '@babylonjs/core'
+import type { BinaryFileAssetTask, EngineOptions, Scene, SceneOptions, TextFileAssetTask } from '@babylonjs/core'
 
 import { useNavigate } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
@@ -37,39 +31,14 @@ const Demo = function ({
 	useEffect(() => {
 		let cancelled = false
 
-		const render = async () => {
-			const {
-				Analyser,
-				ArcRotateCamera,
-				AssetsManager,
-				Camera,
-				Color4,
-				CreateGround,
-				DynamicTexture,
-				Effect,
-				Engine,
-				HemisphericLight,
-				MeshBuilder,
-				RawTexture,
-				Scene,
-				ShaderMaterial,
-				Sound,
-				SoundTrack,
-				StandardMaterial,
-				Texture,
-				Vector2,
-				Vector3,
-				Vector4,
-				//@ts-ignore
-			} = await import('@babylonjs/core')
-
+		const render = async() => {
+			//@ts-ignore
+			const { Analyser, ArcRotateCamera, AssetsManager, Camera, Color4, CreateGround, DynamicTexture, Effect, Engine, HemisphericLight, MeshBuilder, RawTexture, Scene, ShaderMaterial, Sound, SoundTrack, StandardMaterial, Texture, Vector2, Vector3, Vector4 } = await import('@babylonjs/core')
 			//@ts-ignore
 			const { AdvancedDynamicTexture, Button, Control } = await import('@babylonjs/gui')
 
 			const createScene = (scene: Scene, asset: DemoAsset) => {
-				console.log(
-					'Can you find the hidden register? TIP: classic game cheat keys'
-				)
+				console.log('Can you find the hidden register? TIP: classic game cheat keys')
 				const camera = new ArcRotateCamera(
 					'camera',
 					0,
@@ -87,21 +56,16 @@ const Demo = function ({
 				camera.layerMask = 0x20000000
 
 				Effect.IncludesShadersStore['common'] = asset.common.text
-				const mat = new ShaderMaterial(
-					'shader',
-					scene,
+				const mat = new ShaderMaterial('shader', scene,
 					{ vertexSource: asset.vert.text, fragmentSource: asset.frag.text },
 					{
 						attributes: ['position', 'normal', 'uv'],
 						uniforms: [
-							'world',
-							'worldView',
-							'worldViewProjection',
-							'view',
+							'world', 'worldView', 'worldViewProjection', 'view',
 							'iTime',
 							'iResolution',
 						],
-					}
+					},
 				)
 
 				const plane = CreateGround('canvas', { width: 2, height: 2 }, scene)
@@ -109,45 +73,24 @@ const Demo = function ({
 				plane.rotation.y = Math.PI / 2
 				plane.layerMask = 0x20000000
 
-				const music = new Sound(
-					'Music',
-					asset.music.data,
-					null,
-					() => {
-						music.play(0, 0, 200)
-						music.updateOptions({
-							offset: 32,
-						})
-					},
-					{
-						loop: true,
-						volume: 0.15,
-					}
-				)
+				const music = new Sound('Music', asset.music.data, null, () => {
+					music.play(0, 0, 200)
+					music.updateOptions({
+						offset: 32,
+					})
+				}, {
+					loop: true,
+					volume: 0.15,
+				})
 
 				const soundTrack = new SoundTrack(scene)
 				soundTrack.addSound(music)
 
-				const groundTexture = new Texture(
-					'/ground.jpg',
-					scene,
-					true,
-					false,
-					Texture.BILINEAR_SAMPLINGMODE
-				)
+				const groundTexture = new Texture('/ground.jpg', scene, true, false, Texture.BILINEAR_SAMPLINGMODE)
 
 				const musicFFT = new Analyser(scene)
 				soundTrack.connectToAnalyser(musicFFT)
-				const freqTexture = RawTexture.CreateRTexture(
-					null,
-					32,
-					1,
-					scene,
-					false,
-					false,
-					Texture.NEAREST_SAMPLINGMODE,
-					Engine.TEXTURETYPE_UNSIGNED_BYTE
-				)
+				const freqTexture = RawTexture.CreateRTexture(null, 32, 1, scene, false, false, Texture.NEAREST_SAMPLINGMODE, Engine.TEXTURETYPE_UNSIGNED_BYTE)
 
 				// 2nd camera
 				const sCamera = new ArcRotateCamera(
@@ -159,12 +102,7 @@ const Demo = function ({
 					scene
 				)
 
-				const light = new HemisphericLight(
-					'light',
-					new Vector3(-4, 2, 0),
-					scene
-				)
-
+				const light = new HemisphericLight('light', new Vector3(-4, 2, 0), scene)
 				light.intensity = 0.7
 				light.excludeWithLayerMask = 0x20000000
 
@@ -176,78 +114,17 @@ const Demo = function ({
 				faceColors[4] = Color4.FromHexString('#f5930b')
 				faceColors[5] = Color4.FromHexString('#ec4899')
 
-				const dynamicTexture = new DynamicTexture(
-					'text',
-					{ width: 912, height: 152 },
-					scene
-				)
-
+				const dynamicTexture = new DynamicTexture('text', { width: 912, height: 152 }, scene)
 				const cubemat = new StandardMaterial('cubemat', scene)
-				cubemat.alpha = 0.8
-				dynamicTexture.drawText(
-					'Cool',
-					28,
-					90,
-					'40px solid Arial',
-					'white',
-					null
-				)
-				dynamicTexture.drawText(
-					'Edison',
-					168,
-					64,
-					'35px solid Arial',
-					'white',
-					null
-				)
-				dynamicTexture.drawText(
-					'Galm -',
-					168,
-					94,
-					'35px solid Arial',
-					'white',
-					null
-				)
-				dynamicTexture.drawText(
-					'Malmen',
-					168,
-					124,
-					'35px solid Arial',
-					'white',
-					null
-				)
-				dynamicTexture.drawText(
-					'2022',
-					334,
-					90,
-					'40px solid Arial',
-					'white',
-					null
-				)
-				dynamicTexture.drawText(
-					'Hack',
-					473,
-					90,
-					'40px solid Arial',
-					'white',
-					null
-				)
-				dynamicTexture.drawText(
-					'IOLab',
-					630,
-					90,
-					'40px solid Arial',
-					'white',
-					null
-				)
-				dynamicTexture.drawText(
-					'Cheat',
-					775,
-					90,
-					'40px solid Arial',
-					'white',
-					null
-				)
+				cubemat.alpha = .8
+				dynamicTexture.drawText('Cool', 28, 90, '40px solid Arial', 'white', null)
+				dynamicTexture.drawText('Edison', 168, 64, '35px solid Arial', 'white', null)
+				dynamicTexture.drawText('Galm -', 168, 94, '35px solid Arial', 'white', null)
+				dynamicTexture.drawText('Malmen', 168, 124, '35px solid Arial', 'white', null)
+				dynamicTexture.drawText('2022', 334, 90, '40px solid Arial', 'white', null)
+				dynamicTexture.drawText('Hack', 473, 90, '40px solid Arial', 'white', null)
+				dynamicTexture.drawText('IOLab', 630, 90, '40px solid Arial', 'white', null)
+				dynamicTexture.drawText('Cheat', 775, 90, '40px solid Arial', 'white', null)
 				cubemat.emissiveTexture = dynamicTexture
 
 				const faceUV = new Array(6)
@@ -264,43 +141,22 @@ const Demo = function ({
 				box.position.y += 2
 
 				// gui
-				const gui = AdvancedDynamicTexture.CreateFullscreenUI(
-					'gui',
-					true,
-					scene
-				)
+				const gui = AdvancedDynamicTexture.CreateFullscreenUI('gui', true, scene)
 
 				const keys: string[] = []
-				const contra = [
-					'ArrowUp',
-					'ArrowUp',
-					'ArrowDown',
-					'ArrowDown',
-					'ArrowLeft',
-					'ArrowRight',
-					'ArrowLeft',
-					'ArrowRight',
-					'b',
-					'a',
-				]
-
+				const contra = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
 				const canvas = scene.getEngine().getRenderingCanvas()
 				canvas?.focus()
-				canvas?.addEventListener(
-					'keydown',
-					(ev) => {
-						if (ev.repeat) return
-						keys.push(ev.key)
-						if (keys.length == 10) {
-							let v = true
-							for (let i = 0; i < 10; i++)
-								v = v && contra[i].toLowerCase() === keys[i].toLowerCase()
-							if (v) navigate('/register?type=badass')
-							keys.shift()
-						}
-					},
-					false
-				)
+				canvas?.addEventListener('keydown', (ev) => {
+					if (ev.repeat) return
+					keys.push(ev.key)
+					if (keys.length == 10) {
+						let v = true
+						for (let i = 0; i < 10; i++) v = v && contra[i].toLowerCase() === keys[i].toLowerCase()
+						if (v) navigate('/register?type=badass')
+						keys.shift()
+					}
+				}, false)
 
 				// set cameras
 				scene.activeCameras = [camera, sCamera]
@@ -312,12 +168,12 @@ const Demo = function ({
 				}> = [
 					{
 						text: 'Click! Join us now!',
-						nevigate: 'register',
+						nevigate: 'register'
 					},
 					{
 						text: 'To Home',
-						nevigate: 'home',
-					},
+						nevigate: 'home'
+					}
 				]
 
 				btnList.forEach(({ text, nevigate }, index) => {
@@ -348,70 +204,44 @@ const Demo = function ({
 
 					// shader plne
 					mat.setFloat('iTime', time)
-					mat.setVector2(
-						'iResolution',
-						new Vector2(scene.getEngine().getAspectRatio(camera), 1)
-					)
+					mat.setVector2('iResolution', new Vector2(scene.getEngine().getAspectRatio(camera), 1))
 					freqTexture.update(musicFFT.getByteFrequencyData())
 					mat.setTexture('iFreqAll', freqTexture)
 					mat.setTexture('iGround', groundTexture)
 
 					// cube
 					const s1 = musicFFT.getByteFrequencyData()
-					const s2 =
-            ((s1.reverse().slice(0, 256).reduce((p, c, _) => p + c / 255, 0) /
-              256) *
-              10) %
-            1
-
+					const s2 = (s1.reverse().slice(0, 256).reduce((p, c, _) => p + c / 255, 0) / 256 * 10) % 1
 					const s = 0.9 * s2 + 1.0 * (1 - s2)
 					box.scaling = new Vector3(s, s, s)
 					let g = Math.tan(time)
 					if (g > 2) g = 2
 					else if (g < -2) g = -2
-					box.addRotation(Math.sin(time) / 24, g / 32, -Math.cos(time) / 32)
+					box.addRotation(Math.sin(time) / 24, g / 32, - Math.cos(time) / 32)
 				})
 			}
 
 			const { current: canvas } = reactCanvas
 			if (!canvas) return
 
-			const engine = new Engine(
-				canvas,
-				antialias,
-				engineOptions,
-				adaptToDeviceRatio
-			)
-
+			const engine = new Engine(canvas, antialias, engineOptions, adaptToDeviceRatio)
 			const scene = new Scene(engine, sceneOptions)
 			const assetsManager = new AssetsManager(scene)
 			const assets: DemoAsset = {
 				common: assetsManager.addTextFileTask('common', '/common.glsl'),
 				vert: assetsManager.addTextFileTask('vert', '/demo.vert.glsl'),
 				frag: assetsManager.addTextFileTask('frag', '/demo.frag.glsl'),
-				music: assetsManager.addBinaryFileTask(
-					'music',
-					'/Malmen_-_Edison_Glam.ogg'
-				),
+				music: assetsManager.addBinaryFileTask('music', '/Malmen_-_Edison_Glam.ogg'),
 			}
 
-			assetsManager.onProgress = function (
-				remainingCount,
-				totalCount,
-				lastTask
-			) {
+			assetsManager.onProgress = function(remainingCount, totalCount, lastTask) {
 				engine.loadingUIText = `Loading...... ${lastTask.name} - ${remainingCount}/${totalCount}`
 			}
 
 			assetsManager.onFinish = (tasks) => {
 				let noerr = true
-				tasks.forEach((task) => {
-					if (task.errorObject)
-						console.log(
-							'task failed',
-							task.errorObject.message,
-							task.errorObject.exception
-						)
+				tasks.forEach(task => {
+					if (task.errorObject) console.log('task failed', task.errorObject.message, task.errorObject.exception)
 					noerr = noerr && !task.errorObject
 				})
 				if (!noerr) {
@@ -421,9 +251,7 @@ const Demo = function ({
 				if (scene.isReady() && createScene) {
 					createScene(scene, assets)
 				} else if (createScene) {
-					scene.onReadyObservable.addOnce((scene) =>
-						createScene(scene, assets)
-					)
+					scene.onReadyObservable.addOnce((scene) => createScene(scene, assets))
 				}
 
 				const resize = () => scene.getEngine().resize()
@@ -441,11 +269,9 @@ const Demo = function ({
 			assetsManager.load()
 		}
 
-		render().catch((err) => console.error(err))
+		render().catch(err => console.error(err))
 
-		return () => {
-			cancelled = true
-		}
+		return () => { cancelled = true }
 	}, [antialias, engineOptions, adaptToDeviceRatio, sceneOptions, navigate])
 
 	return (

@@ -1,0 +1,42 @@
+diff --git a/build/index.js b/build/index.js
+index d5b94711a5a587b747c049225d85e90b73a32585..8bb5b7cea007ed41aa874a42a87a3a042fddcf88 100755
+--- a/build/index.js
++++ b/build/index.js
+@@ -86507,6 +86507,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++  if (id === "noname") {
++    return "musl";
++  }
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }
+diff --git a/prisma-client/generator-build/index.js b/prisma-client/generator-build/index.js
+index 84ff770309d64cb8d24a19efe7ef583332635f82..32441da7284632ba7e635bc397dc0e68a60da008 100644
+--- a/prisma-client/generator-build/index.js
++++ b/prisma-client/generator-build/index.js
+@@ -17157,6 +17157,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++	if (id === "noname") {
++		return "musl";
++	}
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }
+diff --git a/prisma-client/runtime/index.js b/prisma-client/runtime/index.js
+index 12ad8381c7dfb41e1477981fa5e7856ebe01d092..d7f2467dea6b79bd1f81bbb2a816630581af5b93 100644
+--- a/prisma-client/runtime/index.js
++++ b/prisma-client/runtime/index.js
+@@ -19915,6 +19915,9 @@ function parseDistro(input) {
+   if (id === "nixos") {
+     return "nixos";
+   }
++	if (id === "noname") {
++		return "musl";
++	}
+   if (idLike.includes("centos") || idLike.includes("fedora") || idLike.includes("rhel") || id === "fedora") {
+     return "rhel";
+   }

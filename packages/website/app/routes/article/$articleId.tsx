@@ -1,5 +1,5 @@
-import type { AppLoadContext, LoaderFunction } from '@remix-run/server-runtime'
-import type { IArticle } from '~/types/articleBox'
+import type { IArticle } from '../../../types/articleBox'
+import type { LoaderFunction } from '@remix-run/server-runtime'
 
 import { json, redirect } from '@remix-run/server-runtime'
 
@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({params, context}) => {
 	})
 }
 
-const getData = async (articleBoxId = 1, context: AppLoadContext) => {
+const getData = async (articleBoxId = 1, context: any) => {
 	const articleData: IArticle = await context.db.articleBox.findUnique({
 		where: {
 			id: articleBoxId,

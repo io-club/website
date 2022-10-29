@@ -4,23 +4,24 @@ const db = new PrismaClient()
 
 const seed = async() => {
 
-	await db.user.deleteMany({
-		where: {
-			name: 'Lyra',
-		},
-	})
+	// await db.user.deleteMany({
+	// 	where: {
+	// 		nick: 'Lyra',
+	// 	},
+	// })
 	await db.articleBox.deleteMany({
 		where: {
 			name: 'Lyra',
 		},
 	})
-	await db.user.create({
-		data: {
-			name: 'Lyra',
-			email: '1170155d48@qq.com',
-			password: 'cuteLyra'
-		},
-	})
+	// await db.user.create({
+	// 	data: {
+	// 		nick: 'Lyra',
+	// 		email: '1170155d48@qq.com',
+	// 		phone:"12334565677"
+	// 		password: 'cuteLyra'
+	// 	},
+	// })
 	await Promise.all(
 		post.map((AtricleBoxData: any)=>{
 			return db.articleBox.create({data: AtricleBoxData})

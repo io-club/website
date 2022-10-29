@@ -18,7 +18,7 @@ export default function Screen() {
 	)
 }
 
-export const action: ActionFunction = async ({ request, context }) => {
+export const action: ActionFunction = async ({ request, context }:any) => {
 	return await context.auth.authenticate('user-pass', request, {
 		successRedirect: '/',
 		failureRedirect: '/register',
@@ -26,10 +26,14 @@ export const action: ActionFunction = async ({ request, context }) => {
 }
 
 
-export const loader: LoaderFunction = async ({ request, context }) => {
+export const loader: LoaderFunction = async ({ request, context }:any) => {
+	try {
+		const res = await context.graphql('{ users(first: 100) { nodes { id, nick, email } } }')
+		console.log(res.data?.users)
+	} catch (err) {
+		console.error(err)
+	}
 	return await context.auth.isAuthenticated(request, {
 		successRedirect: '/home',
 	})
 }
-
-
