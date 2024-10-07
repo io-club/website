@@ -1,0 +1,56 @@
+---
+const matches = ["cate", "tags", "posts"];
+---
+
+<header
+	w-justify-between
+	w-item-center
+	w-flex
+	w-pos-sticky
+	w-top-0
+	w-border-b-2
+	w-bg-light-100
+	w-z-999
+	w-px="[calc(1.5%+1rem)]"
+	w-py-1.25rem
+	children:w-h-4rem
+>
+	<img
+		src="/logo.svg"
+		w-translate-y-0
+		w-transition-transform
+		w-delay-50
+		w-duration-200
+		hover:w-translate-y--0.5rem
+		green-500
+		alt="My Happy SVG"
+	/>
+	<nav 
+		w-min-w="70%"
+		md:w-min-w="50%"
+		lg:w-min-w="40%"
+		>
+		<ul
+			w-w-full
+			w-h-full
+			w-text-2xl
+			w-grid
+			w-grid-auto-flow-col
+			w-justify-between
+			w-grid-items-center
+		>
+			{
+				matches.map((a) => (
+					<li
+						w-text-align-center
+						w-transition-border
+						w-duration-100
+						hover:(w-border-b-2 w-border-color-orange-300)
+					>
+					{a}
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+</header>

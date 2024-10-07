@@ -1,0 +1,42 @@
+{
+	"name": "astro",
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "pnpm run /^dev:/",
+		"dev:astro": "astro dev",
+		"dev:i18n": "typesafe-i18n",
+		"start": "astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview"
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.7.0",
+		"@astrojs/lit": "^4.3.0",
+		"@astrojs/node": "^8.3.4",
+		"@astrojs/solid-js": "^4.4.2",
+		"@astrojs/ts-plugin": "^1.10.2",
+		"@equinor/fusion-wc-button": "^2.4.2",
+		"@equinor/fusion-wc-theme": "^1.1.2",
+		"@kobalte/core": "^0.13.6",
+		"@lucia-auth/adapter-sqlite": "^3.0.2",
+		"@rhds/elements": "^2.1.0",
+		"@umbraco-ui/uui-button": "^1.10.0",
+		"@webcomponents/template-shadowroot": "^0.2.1",
+		"astro": "^4.15.9",
+		"astro-hook": "workspace:*",
+		"better-sqlite3": "^11.3.0",
+		"kysely": "^0.27.4",
+		"lit": "^3.2.0",
+		"lucia": "^3.2.0",
+		"typesafe-i18n": "^5.26.2"
+	},
+	"devDependencies": {
+		"@types/better-sqlite3": "^7.6.11",
+		"@unocss/preset-uno": "^0.63.3",
+		"@unocss/reset": "^0.63.3",
+		"typescript": "^5.6.2",
+		"unocss": "^0.60.4",
+		"unocss-preset-animations": "^1.1.0"
+	}
+}
