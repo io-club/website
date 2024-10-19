@@ -14,21 +14,48 @@ export async function getStaticPaths() {
 export const prerender = true;
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
+console.log(headings);
 ---
 
 <BaseLayout>
-  <div w-bg-gray-100>
+  <div w-bg-gray-100 w-min-h-full>
     <div w-max-w-screen-xl w-w-full w-mx-auto w-my-8 w-flex w-flex-row>
-      <div w-flex-1 lg:w-mr-8 w-bg-white>
+      <div class="content" w-flex-1 lg:w-mr-8 w-bg-white>
         <div class="markdown-body" w-p-10>
           <Content />
         </div>
       </div>
-      <div w-w-96 w-hidden lg:w-block w-bg-white w-p-10>
-        <!-- TODO: TOC -->
-         TOC
+      <div class="sidebar" w-w-96 w-hidden lg:w-block>
+        <div class="toc" w-bg-white w-p-10 w-h-min w-text-base w-sticky w-right-0>
+          {
+            headings &&
+              headings.map(({ depth, slug, text }) => {
+                if (depth === 2) {
+                  return (
+                    <div id={slug} w-mb-2>
+                      {text}
+                    </div>
+                  );
+                }
+                if (depth === 3) {
+                  return (
+                    <div id={slug} w-mb-2 w-pl-3>
+                      {text}
+                    </div>
+                  );
+                }
+              })
+          }
+        </div>
       </div>
     </div>
   </div>
 </BaseLayout>
+
+<!-- TODO: Implemented using tailwind -->
+<style>
+  .toc {
+    top: calc(106px + 2rem);
+  }
+</style>
