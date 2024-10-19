@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/Base.astro";
+import "github-markdown-css/github-markdown-light.css";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("guideline");
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+export const prerender = true;
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout>
+  <div w-bg-gray-100>
+    <div w-max-w-screen-xl w-w-full w-mx-auto w-my-8 w-flex w-flex-row>
+      <div w-flex-1 lg:w-mr-8 w-bg-white>
+        <div class="markdown-body" w-p-10>
+          <Content />
+        </div>
+      </div>
+      <div w-w-96 w-hidden lg:w-block w-bg-white w-p-10>
+        <!-- TODO: TOC -->
+         TOC
+      </div>
+    </div>
+  </div>
+</BaseLayout>
