@@ -1,36 +1,15 @@
 import { defineMiddleware } from 'astro:middleware'
-import { verifyRequestOrigin } from 'lucia'
+import { validateSession } from '@lib/auth'
 
-import { lucia } from '@lib/auth'
+const cookieName = 'sdfdsf'
 
 export const onRequest = defineMiddleware(async (context, next) => {
-	if (context.request.method !== 'GET') {
-		const originHeader = context.request.headers.get('Origin')
-		const hostHeader = context.request.headers.get('Host')
-		if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [hostHeader])) {
-			return new Response(null, {
-				status: 403,
-			})
-		}
-	}
-
-	const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null
+	const sessionId = context.cookies.get(cookieName)?.value
 	if (!sessionId) {
-		context.locals.user = null
 		context.locals.session = null
 		return next()
 	}
 
-	const { session, user } = await lucia.validateSession(sessionId)
-	if (session?.fresh) {
-		const sessionCookie = lucia.createSessionCookie(session.id)
-		context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
-	}
-	if (!session) {
-		const sessionCookie = lucia.createBlankSessionCookie()
-		context.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
-	}
-	context.locals.session = session
-	context.locals.user = user
+	context.locals.session = await validateSession(sessionId)
 	return next()
 })

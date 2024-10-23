@@ -1,0 +1,22 @@
+---
+import { decode } from 'js-base64'
+import { fetchDir, fetchBlob } from '@lib/git'
+
+import Common from '../_common.astro'
+import Posts from './posts'
+
+const { path, type } = Astro.params
+if (type !== 'tree') {
+	return Astro.redirect('/404')
+}
+
+const page = await fetchDir(path as string)
+const md = await fetchBlob(page.find((e) => e.path === 'README.md')?.sha as string)
+---
+
+<Common title={path}>
+	<h1>{md.sha}</h1>
+	<article class="prose text-base">
+		<Posts text={decode(md.content)} />
+	</article>
+</Common>

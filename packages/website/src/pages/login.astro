@@ -1,0 +1,9 @@
+---
+import Common from './_common.astro'
+import Login from './login'
+const { path } = Astro.params
+---
+
+<Common title={path}>
+	<Login />
+</Common>

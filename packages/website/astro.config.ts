@@ -1,7 +1,7 @@
 import node from '@astrojs/node'
 import { defineConfig } from 'astro/config'
 import UnoCSS from 'unocss/astro'
-import lit from '@astrojs/lit'
+import qwikdev from '@qwikdev/astro'
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,7 +17,7 @@ export default defineConfig({
 		UnoCSS({
 			injectReset: true,
 		}),
-		lit(),
+		qwikdev(),
 	],
 	vite: {
 		optimizeDeps: {

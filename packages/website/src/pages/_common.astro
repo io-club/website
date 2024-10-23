@@ -1,0 +1,41 @@
+---
+import Header from './header'
+import { ViewTransitions } from 'astro:transitions'
+
+const { title } = Astro.props
+
+export const pages = [
+	{ path: '', slug: 'home' },
+	{ path: 'login', slug: 'login' },
+	{ path: 'posts', slug: 'posts' },
+]
+const locale = Astro.preferredLocale
+---
+
+<!doctype html>
+<html lang={locale}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<ViewTransitions fallback="swap" />
+	</head>
+	<body
+		w-flex="~ col"
+		w-p="0"
+		w-m="0"
+		w-min-w="view"
+		w-min-h="screen"
+		w-color="gray-800"
+		w-bg="light-50"
+		w-color-black
+		dark:w-bg-gray-900
+		dark:w-color-white
+		w-children:min-w="full"
+	>
+	<Header {pages} />
+		<slot />
+	</body>
+</html>

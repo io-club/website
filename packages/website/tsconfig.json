@@ -1,21 +1,17 @@
 {
-  "extends": [
-    "astro/tsconfigs/strictest",
-    "../../tsconfig.base.json"
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@lib/*": [
-        "./src/lib/*"
-      ]
-    },
-    "plugins": [
-      {
-        "name": "@astrojs/ts-plugin"
-      }
-    ],
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js"
-  }
+	"extends": ["astro/tsconfigs/strictest", "../../tsconfig.base.json"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@*": ["./src/*"]
+		},
+		"plugins": [
+			{
+				"name": "@astrojs/ts-plugin"
+			}
+		],
+		"experimentalDecorators": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "@builder.io/qwik"
+	}
 }

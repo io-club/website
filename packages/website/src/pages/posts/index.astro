@@ -1,0 +1,34 @@
+---
+import { fetchDir, fetchSubdir } from '@lib/git'
+
+import Common from '../_common.astro'
+
+const { path } = Astro.params
+
+const date = await fetchDir('main')
+const date_share = await fetchSubdir(date)
+date_share.map(console.log)
+---
+
+<Common title={path}>
+	<ul>
+		{
+			date_share.map((date) => (
+				<li>
+					<h1 w-text-4xl>{date.path}</h1>
+					<ul>
+						{date.shares
+							.filter((e) => e.type === "tree")
+							.map((share) => (
+								<li>
+									<a href={`/posts/${share.type}-${share.sha}`}>
+										{share.path}
+									</a>
+								</li>
+							))}
+					</ul>
+				</li>
+			))
+		}
+	</ul>
+</Common>

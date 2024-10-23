@@ -1,139 +1,53 @@
 ---
-import BaseLayout from "../layouts/Base.astro";
-const pageTitle = "Home Page";
-const cube = ["0", "1", "2", 3, 4, 5];
-const join_us = "3";
+import Common from './_common.astro'
+const { path } = Astro.params
 ---
 
-<BaseLayout pageTitle={pageTitle}>
+<Common title={path}>
 	<div w-pos-relative w-mt-0 w-w-full w-h-35vw w-bg="#3c4896">
-		<div w-pos-absolute w-top-20% w-left-10% w-color-white>
-			<p w-text-6xl>I/O Club</p>
-			<input id="text" type="text" w-bg-transparent w-text-2xl w-outline-none />
+		<div
+			w-pos-absolute
+			w-top="20%"
+			w-left="10%"
+			w-color-white
+		>
+			<p w-text-4xl sm:w-text-6xl>I/O Club</p>
+			<input
+				id="text"
+				type="text"
+				w-bg-transparent
+				w-text-md
+				sm:w-text-2xl
+				w-outline-none
+			/>
 		</div>
 		<div
 			w-pos-absolute
 			w-bottom-0
-			w-left-10%
+			w-left="10%"
 			w-color-white
 			w-flex="~ row"
+			w-text-md
+			sm:w-text-2xl
 			children:w-pr-4rem
 		>
 			<div>
-				<p w-text-2xl>二维码呢</p>
+				<p>二维码呢</p>
 			</div>
 			<div>
-				<p w-text-2xl>二维码呢</p>
+				<p>二维码呢</p>
 			</div>
 		</div>
 		<img
 			w-pos-absolute
 			w-bottom-0
-			w-right-10%
+			w-right="4%"
+			sm:w-right="10%"
 			w-h-25vw
 			w-drop-shadow-pig
 			w-drop-shadow-color-gray-800
+			alt="tt"
 			src="/pig.3.png"
 		/>
 	</div>
-	<h2>My awesome blog subtitle</h2>
-	<div pos="relative" bg="rainbow 400" animate="bg400">
-		<div
-			w="full"
-			h="full"
-			pos="absolute t-0 l-0"
-			bg="hero-circuit-board-white-80"
-			z="0"
-		>
-		</div>
-		<div p="y-8" children="my-4">
-			<div
-				m="x-auto"
-				w="48"
-				h="48"
-				flex="~"
-				justify="center"
-				align="items-center"
-				transform="perspect-800px perspect-origin-top-right"
-			>
-				<div
-					select="none"
-					w="24"
-					h="24"
-					transform="preserve-3d"
-					pos="relative"
-					animate="rotate360"
-					children="border-4 border-purple-500 opacity-80 font-bold flex justify-center items-center transform absolute w-full h-full"
-					onClick={(e) => console.log(3, e)}
-				>
-					<div bg="pink-500" transform="translate-z-12">
-						{cube[0]}
-					</div>
-					<div bg="blue-500" transform="rotate-y-180 translate-z-12">
-						{cube[1]}
-					</div>
-					<div bg="yellow-500" transform="rotate-y-90 translate-z-12">
-						{cube[2]}
-					</div>
-					<div bg="green-500" transform="-rotate-y-90 translate-z-12">
-						{cube[3]}
-					</div>
-					<div bg="red-500" transform="rotate-x-90 translate-z-12">
-						{cube[4]}
-					</div>
-					<div bg="gray-500" transform="-rotate-x-90 translate-z-12">
-						{cube[5]}
-					</div>
-				</div>
-			</div>
-			<a
-				to="/register"
-				display="block"
-				w="max"
-				m="x-auto"
-				pos="relative"
-				class="group"
-				>{
-					() => [
-						<div
-							class="group-hover:(bg-black animate-expandX)"
-							h="full"
-							w="full"
-							pos="absolute t-0 l-0"
-							bg="white"
-							transition="all duration-500"
-							transform="origin-left"
-							border="rounded"
-							z="1"
-						/>,
-						<div
-							class="group-hover:text-white"
-							text="black 3xl"
-							p="y-2 x-3"
-							display="relative"
-							z="2"
-						>
-							{join_us}
-						</div>,
-					]
-				}
-			</a>
-		</div>
-	</div>
-	<script>
-		const text = document.getElementById("text") as HTMLInputElement | null;
-		if (text) {
-			let v = "我文案呢";
-			text.value = "";
-			const timer = setInterval(() => {
-				if (v.length == 0) {
-					window.clearInterval(timer);
-					text.focus();
-					return;
-				}
-				text.value += v[0];
-				v = v.substring(1);
-			}, 100);
-		}
-	</script>
-</BaseLayout>
+</Common>
