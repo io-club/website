@@ -87,6 +87,9 @@ export default component$<{ text: string }>(({ text }) => {
 				atxHeading() {
 					enterNode('h')
 				},
+				characterEscapeValue() {
+					enterNode('span')
+				},
 				data() {
 					enterNode('span')
 				},
@@ -124,10 +127,17 @@ export default component$<{ text: string }>(({ text }) => {
 				},
 			},
 			exit: {
-				characterEscapeValue: appendText,
 				autolinkProtocol: appendText,
 				codeFlowValue: appendText,
 				lineEnding: appendTextOn('code'),
+				characterEscapeValue(ev) {
+					appendText(ev)
+					exitNode()
+				},
+				data(ev) {
+					appendText(ev)
+					exitNode()
+				},
 				codeTextData: appendText,
 				atxHeading: exitNode,
 				atxHeadingSequence(ev) {
@@ -141,10 +151,6 @@ export default component$<{ text: string }>(({ text }) => {
 				},
 				thematicBreak() {
 					enterNode('br')
-					exitNode()
-				},
-				data(ev) {
-					appendText(ev)
 					exitNode()
 				},
 				image: exitNode,
