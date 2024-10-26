@@ -1,13 +1,22 @@
 ---
-import { fetchDir, fetchSubdir } from '@lib/git'
+import { fetchTree } from '@lib/git'
 
 import Common from '../_common.astro'
 
 const { path } = Astro.params
 
-const date = await fetchDir('main')
-const date_share = await fetchSubdir(date)
-date_share.map(console.log)
+const date = await fetchTree('main')
+const date_share = await Promise.all(
+	date
+		.filter((e) => e.type === 'tree' && e.path?.length === 6)
+		.map(async (e) => {
+			return {
+				path: e.path,
+				sha: e.sha,
+				shares: await fetchTree(e.sha as string),
+			}
+		}),
+)
 ---
 
 <Common title={path}>
@@ -21,9 +30,7 @@ date_share.map(console.log)
 							.filter((e) => e.type === "tree")
 							.map((share) => (
 								<li>
-									<a href={`/posts/${share.type}-${share.sha}`}>
-										{share.path}
-									</a>
+									<a href={`/posts/${share.type}-${share.sha}`}>{share.path}</a>
 								</li>
 							))}
 					</ul>

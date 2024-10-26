@@ -1,20 +1,24 @@
 import { component$, useStore, useTask$ } from '@builder.io/qwik'
+import normalize from 'path-normalize'
+import mime from 'mime'
 import { nanoid } from 'nanoid'
+import { decode } from 'js-base64'
 import { postprocess, parse, preprocess } from 'micromark'
+
+import { fetchBlob, fetchTree } from '@lib/git'
 
 type Node = { nodes: { key: string; node: Node }[]; props: Record<string, string> }
 
-const Render = component$<{ node: Node }>(({ node }) => {
+const Render = component$<{ node: Node; path: string }>(({ node, path }) => {
 	let CustomTag = node.props.name as string
 	const props: Record<string, unknown> = { text: node.props.text }
 	if (CustomTag === 'autolink') {
 		CustomTag = 'a'
-		//return <a href={node.props.text ?? '/'} />
 	} else if (CustomTag === 'h') {
 		CustomTag += node.props.depth
 	} else if (CustomTag === 'img') {
 		props.alt = node.props.label
-		props.src = node.props.dest
+		props.src = `data:${node.props.mime};base64, ${node.props.base64}`
 	} else if (CustomTag === 'article') {
 		props.text = ''
 	}
@@ -22,17 +26,24 @@ const Render = component$<{ node: Node }>(({ node }) => {
 		<CustomTag {...props}>
 			{props.text as string}
 			{node.nodes.map(({ key, node }) => (
-				<Render key={key} node={node} />
+				<Render key={key} node={node} path={path} />
 			))}
 		</CustomTag>
 	)
 })
 
-export default component$<{ text: string }>(({ text }) => {
+export default component$<{ path: string }>(({ path }) => {
 	const stack = useStore([] as Node['nodes'])
 
-	useTask$(() => {
-		const chunks = preprocess()(text, null, true)
+	useTask$(async () => {
+		const contents = await fetchTree(path, true)
+		if (!contents) return
+
+		const md_sha = contents.find((e) => e.path === normalize('README.md'))?.sha
+		if (!md_sha) return
+		const md = await fetchBlob(md_sha)
+
+		const chunks = preprocess()(decode(md.content), null, true)
 		const mast = postprocess(parse({}).document().write(chunks))
 
 		const enterNode = (name: string) => {
@@ -78,7 +89,7 @@ export default component$<{ text: string }>(({ text }) => {
 
 		enterNode('article')
 
-		type s = (ev: (typeof mast)[0]) => void
+		type s = ((ev: (typeof mast)[0]) => void) | ((ev: (typeof mast)[0]) => Promise<void>)
 		const handlers: {
 			enter: Record<string, s>
 			exit: Record<string, s>
@@ -146,8 +157,13 @@ export default component$<{ text: string }>(({ text }) => {
 				labelText(ev) {
 					setProp('label', ev[2].sliceSerialize(ev[1]))
 				},
-				resourceDestination(ev) {
-					setProp('dest', ev[2].sliceSerialize(ev[1]))
+				async resourceDestination(ev) {
+					const dest_path = ev[2].sliceSerialize(ev[1])
+					const md_sha = contents.find((e) => e.path === normalize(dest_path))?.sha
+					if (!md_sha) return
+
+					setProp('mime', mime.getType(dest_path) ?? '')
+					setProp('base64', (await fetchBlob(md_sha)).content)
 				},
 				thematicBreak() {
 					enterNode('br')
@@ -168,7 +184,7 @@ export default component$<{ text: string }>(({ text }) => {
 		for (const ev of mast) {
 			const h = handlers[ev[0]][ev[1].type]
 			if (h) {
-				h(ev)
+				await h(ev)
 			}
 		}
 	})
@@ -176,7 +192,7 @@ export default component$<{ text: string }>(({ text }) => {
 	return (
 		<>
 			{stack.map(({ key, node }) => (
-				<Render key={key} node={node} />
+				<Render key={key} node={node} path={path} />
 			))}
 		</>
 	)

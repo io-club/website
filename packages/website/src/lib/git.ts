@@ -16,27 +16,16 @@ export const octokit: OctokitT = new Octokit({
 	},
 })
 
-export async function fetchDir(tree_sha: string) {
-	const res = await octokit.git.getTree({
+export type Tree = GetResponseDataTypeFromEndpointMethod<typeof octokit.git.getTree>['tree']
+
+export async function fetchTree(tree_sha: string, recursive = false): Promise<Tree> {
+	const req = {
 		owner: 'io-club',
 		repo: 'share',
 		tree_sha,
-	})
+	}
+	const res = await octokit.git.getTree(recursive ? { ...req, recursive: '1' } : req)
 	return res.data.tree
-}
-
-export async function fetchSubdir(tree: GetResponseDataTypeFromEndpointMethod<typeof octokit.git.getTree>['tree']) {
-	return await Promise.all(
-		tree
-			.filter((e) => e.type === 'tree')
-			.map(async (e) => {
-				return {
-					path: e.path,
-					sha: e.sha,
-					shares: await fetchDir(e.sha as string),
-				}
-			}),
-	)
 }
 
 export async function fetchBlob(file_sha: string) {
