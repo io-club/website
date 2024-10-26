@@ -1,9 +1,25 @@
 ---
 import Common from './_common.astro'
-import Login from './login'
+import LoginCard from './_login'
+
 const { path } = Astro.params
+const session = Astro.locals.session
+console.log(session)
 ---
 
 <Common title={path}>
-	<Login />
+	{
+		session ? (
+			<>
+				<h1>logged</h1>
+				{Object.entries(session).map(([k, v]) => (
+					<p>
+						`${k}: ${v}`
+					</p>
+				))}
+			</>
+		) : (
+			<LoginCard />
+		)
+	}
 </Common>

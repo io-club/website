@@ -1,15 +1,17 @@
 import { defineMiddleware } from 'astro:middleware'
-import { validateSession } from '@lib/auth'
+import { cookieName, validateSession } from '@lib/auth'
 
-const cookieName = 'sdfdsf'
-
-export const onRequest = defineMiddleware(async (context, next) => {
-	const sessionId = context.cookies.get(cookieName)?.value
-	if (!sessionId) {
-		context.locals.session = null
+export const onRequest = defineMiddleware(async ({ locals, cookies }, next) => {
+	const sessid = cookies.get(cookieName)?.value
+	if (!sessid) {
+		locals.session = null
 		return next()
 	}
 
-	context.locals.session = await validateSession(sessionId)
+	locals.session = await validateSession(sessid)
+	console.log(cookies, sessid, locals.session)
+	if (!locals.session) {
+		cookies.delete(cookieName)
+	}
 	return next()
 })

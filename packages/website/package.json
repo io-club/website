@@ -24,11 +24,13 @@
 		"astro-hook": "workspace:*",
 		"better-sqlite3": "^11.5.0",
 		"js-base64": "^3.7.7",
+		"ky": "^1.7.2",
 		"kysely": "^0.27.4",
 		"lucia": "^3.2.2",
 		"micromark": "^4.0.0",
 		"mime": "^4.0.4",
 		"nanoid": "^5.0.7",
+		"ofetch": "^1.4.1",
 		"path-normalize": "^6.0.13",
 		"typesafe-i18n": "^5.26.2"
 	},

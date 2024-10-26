@@ -3,8 +3,9 @@ import { sha256 } from '@oslojs/crypto/sha2'
 
 import { kysely } from '@lib/db'
 
-const refreshDay = new Date(0, 0, 15).getTime()
-const extendedDay = new Date(0, 0, 30).getTime()
+const refreshDay = 1000 * 60 * 60 * 24 * 15
+const extendedDay = 1000 * 60 * 60 * 24 * 30
+export const cookieName = 'sdfdsf'
 
 export interface DatabaseUser {
 	id: string
@@ -14,51 +15,62 @@ export interface DatabaseUser {
 
 export interface Session {
 	id: string
-	user_id: number
-	expires_at: Date
+	user_id: string
+	expires_at: string
 }
 
-export function generateSessionToken(): string {
+function generateSessionToken(): string {
 	const bytes = new Uint8Array(20)
 	crypto.getRandomValues(bytes)
 	const token = encodeBase32LowerCaseNoPadding(bytes)
 	return token
 }
 
-export async function createSession(token: string, user_id: number): Promise<Session> {
-	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
+export async function createSession(user_id: string): Promise<string> {
+	const token = generateSessionToken()
+	const sessid = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
 	const session: Session = {
-		id: sessionId,
+		id: sessid,
 		user_id,
-		expires_at: new Date(Date.now() + extendedDay),
+		expires_at: new Date(Date.now() + extendedDay).toUTCString(),
 	}
 	await kysely.insertInto('session').values(session).execute()
-	return session
+	return token
 }
 
-export async function invalidateSession(sessionId: string): Promise<void> {
-	await kysely.deleteFrom('session').where('id', '=', sessionId).execute()
+export async function validateUser(username: string, password: string) {
+	const exist = await kysely
+		.selectFrom('user')
+		.select(['id'])
+		.where('username', '=', username)
+		.where('password', '=', password)
+		.executeTakeFirst()
+	return exist?.id
+}
+
+export async function invalidateSession(session_id: string): Promise<void> {
+	await kysely.deleteFrom('session').where('id', '=', session_id).execute()
 }
 
 export async function validateSession(token: string): Promise<Session | null> {
-	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
+	const sessid = encodeHexLowerCase(sha256(new TextEncoder().encode(token)))
 	const session = await kysely
 		.selectFrom('session')
 		.select(['session.id', 'user_id', 'expires_at'])
 		.innerJoin('user', 'user.id', 'session.user_id')
-		.where('id', '=', sessionId)
+		.where('session.id', '=', sessid)
 		.executeTakeFirst()
 	if (!session) {
 		return null
 	}
-	const duration = Date.now() - session.expires_at.getTime()
+	const duration = Date.now() - new Date(session.expires_at).getTime()
 	if (duration >= 0) {
-		await invalidateSession(sessionId)
+		await invalidateSession(sessid)
 		return null
 	}
 	if (duration >= -refreshDay) {
-		session.expires_at = new Date(Date.now() + extendedDay)
-		await kysely.updateTable('session').set('expires_at', session.expires_at).where('id', '=', sessionId).execute()
+		session.expires_at = new Date(Date.now() + extendedDay).toDateString()
+		await kysely.updateTable('session').set('expires_at', session.expires_at).where('id', '=', sessid).execute()
 	}
 	return session
 }
