@@ -1,6 +1,6 @@
 ---
-import Common from './_common.astro'
-import LoginCard from './_login'
+import Common from '@pages/_common.astro'
+import LoginCard from './login'
 
 const { path } = Astro.params
 const session = Astro.locals.session
@@ -8,6 +8,7 @@ console.log(session)
 ---
 
 <Common title={path}>
+	<a href="/api/login/github">Sign in with GitHub</a>
 	{
 		session ? (
 			<>

@@ -1,8 +1,7 @@
-import { component$, useSignal } from '@builder.io/qwik'
+import { component$ } from '@builder.io/qwik'
 import ky from 'ky'
 
 export default component$(() => {
-	const counter = useSignal(0)
 	return (
 		<div w-flex-grow>
 			<form

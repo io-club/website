@@ -1,9 +1,10 @@
-import type { Generated } from 'kysely'
+import type { Generated  } from 'kysely'
 
 export interface UserTable {
 	id: string
-	username: string
-	password: string
+	username: string | null
+	github_id: string | null
+	password: string | null
 	created_at: Generated<string>
 }
 

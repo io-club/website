@@ -1,2 +1,2 @@
 src/i18n/*.ts
-.env*
+.env

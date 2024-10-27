@@ -1,4 +1,5 @@
 import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding'
+import { GitHub } from 'arctic'
 import { sha256 } from '@oslojs/crypto/sha2'
 
 import { kysely } from '@lib/db'
@@ -74,3 +75,5 @@ export async function validateSession(token: string): Promise<Session | null> {
 	}
 	return session
 }
+
+export const github = new GitHub(import.meta.env.GITHUB_OAUTH_ID, import.meta.env.GITHUB_OAUTH_SECRET, null)

@@ -20,6 +20,7 @@
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"@qwikdev/astro": "^0.6.3",
+		"arctic": "^2.0.1",
 		"astro": "^4.16.7",
 		"astro-hook": "workspace:*",
 		"better-sqlite3": "^11.5.0",
