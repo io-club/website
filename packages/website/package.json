@@ -30,7 +30,7 @@
 		"lucia": "^3.2.2",
 		"micromark": "^4.0.0",
 		"mime": "^4.0.4",
-		"nanoid": "^5.0.7",
+		"nanoid": "^5.0.9",
 		"ofetch": "^1.4.1",
 		"path-normalize": "^6.0.13",
 		"typesafe-i18n": "^5.26.2"
